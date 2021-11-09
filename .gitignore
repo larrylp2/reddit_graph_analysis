@@ -30,3 +30,5 @@
 *.exe
 *.out
 *.app
+
+data-fetching/code_verifier.txt
