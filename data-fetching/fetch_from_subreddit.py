@@ -40,19 +40,29 @@ def postlist(subred):
 #Input: a json comment tree
 #Output: a list of users that commented on that root
 def treetochildren(root):
-    try:
-        userlist = []
+    
+    userlist = []
+    try: 
+        #check for deleted author
         a = root['data']['author_fullname']
         userlist.append(a)
+    except:
+        True
+
+    try: 
+        #check for end of comment when too many comments 
+        #(json will only return 100 first comments and there will be a "more" in place)
         if root['data']['replies'] == "":
             return userlist
         for i in root['data']['replies']['data']['children']:
             k = treetochildren(i)
-            for o in k:
-                userlist.append(o)
-        return userlist
+        for o in k:
+            userlist.append(o)
     except:
-        return []
+        with open('testposterror' + '.json', 'w') as file:
+            json.dump(root, file, indent = 4)
+
+    return userlist
 
 
 
@@ -86,9 +96,9 @@ def userinpostlist(post, subred):
     return userlist
 
 alluserslist = []
-pl = postlist('uiuc')
+pl = postlist('anime')
 for i in pl:
-    ul = userinpostlist(i, 'uiuc')
+    ul = userinpostlist(i, 'anime')
     for u in ul:
         alluserslist.append(u)
 for u in alluserslist:
