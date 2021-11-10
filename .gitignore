@@ -36,6 +36,6 @@ data-fetching/client_id.txt
 data-fetching/token.txt
 data-fetching/code_to_get_token.txt
 data-fetching/user_info.txt
-
+data-fetching/token.json
 data-fetching/unused/code_verifier.txt
 data-fetching/unused/code_to_get_token.txt

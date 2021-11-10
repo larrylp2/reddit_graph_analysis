@@ -7,10 +7,10 @@ token = json.load(f)
 access_token = token["access_token"]
 
 #Input: subreddit name
-#Output: a list of 100 newest post id in that subreddit
+#Output: a list of 100 post id in that subreddit
 def postlist(subred): 
-    #Get some newest post on a subreddit (r/uiuc)
-    subredditurl = 'https://oauth.reddit.com/r/' + subred + '/new'
+    #Get some newest post on a subreddit
+    subredditurl = 'https://oauth.reddit.com/r/' + subred
     subresponse = requests.get(subredditurl, headers = {
         'User-Agent': 'Graphing/0.0.1',
         'Authorization': f'Bearer {access_token}'
@@ -40,15 +40,13 @@ def postlist(subred):
 #Input: a json comment tree
 #Output: a list of users that commented on that root
 def treetochildren(root):
-    
     userlist = []
     try: 
         #check for deleted author
-        a = root['data']['author_fullname']
+        a = root['data']['author']
         userlist.append(a)
     except:
         True
-
     try: 
         #check for end of comment when too many comments 
         #(json will only return 100 first comments and there will be a "more" in place)
@@ -59,11 +57,10 @@ def treetochildren(root):
         for o in k:
             userlist.append(o)
     except:
-        with open('testposterror' + '.json', 'w') as file:
-            json.dump(root, file, indent = 4)
-
+        # with open('testposterror' + '.json', 'w') as file:
+        #     json.dump(root, file, indent = 4)
+        True
     return userlist
-
 
 
 #Input: post id and subreddit name
@@ -84,7 +81,7 @@ def userinpostlist(post, subred):
     # with open('testpost' + post + '.json', 'w') as file:
     #     json.dump(subredditjson, file, indent = 4)
     
-    author_name = subredditjson[0]['data']['children'][0]['data']['author_fullname']
+    author_name = subredditjson[0]['data']['children'][0]['data']['author']
     userlist = []
     userlist.append(author_name)
     
@@ -95,12 +92,27 @@ def userinpostlist(post, subred):
 
     return userlist
 
+#Input: a list
+#Return: the list without duplicates
+def removeDups(li):
+    existed = dict()
+    newlist = []
+    for i in li:
+        if not (i in existed):
+            newlist.append(i)
+            existed[i] = True
+    return newlist
+
 alluserslist = []
 pl = postlist('anime')
 for i in pl:
     ul = userinpostlist(i, 'anime')
     for u in ul:
         alluserslist.append(u)
+
+bef = len(alluserslist)
+alluserslist = removeDups(alluserslist)
 for u in alluserslist:
     print(u)
+print(bef)
 print(len(alluserslist))
