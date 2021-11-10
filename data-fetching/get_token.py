@@ -30,3 +30,4 @@ def get_token():
     print(r.json())
     with open('token.json', 'w') as file:
         json.dump(r.json(), file, indent = 4)
+get_token()
