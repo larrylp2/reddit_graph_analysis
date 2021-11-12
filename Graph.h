@@ -19,5 +19,5 @@ class Graph {
         Graph();
 
     private:
-        vector<Node*> nodeList; //Store the list of all nodes
+        map<string, Node*> nodeList; //Store the list of all nodes, map the name to the pointer
 };
