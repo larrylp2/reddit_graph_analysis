@@ -12,28 +12,32 @@ def fetch_from_subreddit(subr):
     #Output: a list of comments in that subreddit
     def postlist(subred): 
         #Get some newest comments on a subreddit
-        subredditurl = 'https://oauth.reddit.com/r/' + subred +'/comments'
-        subresponse = requests.get(subredditurl, headers = {
-            'User-Agent': 'Graphing/0.0.1',
-            'Authorization': f'Bearer {access_token}'
-            },
-            params={
-                'limit' :'1000'
-            })
-        subredditjson = subresponse.json()
-        subresponse.close()
-        with open('testsubreddit.json', 'w') as file:
-            json.dump(subredditjson, file, indent = 4)
-            
-
         postlist = []
-        try:
-            li = subredditjson["data"]["children"]
-            for i in li:
-                postlist.append(i["data"]["link_author"])
-                postlist.append(i["data"]["author"])
-        except:
-            True
+        startname = 'null'
+        for i in range(15):
+            subredditurl = 'https://oauth.reddit.com/r/' + subred +'/comments'
+            subresponse = requests.get(subredditurl, headers = {
+                'User-Agent': 'Graphing/0.0.1',
+                'Authorization': f'Bearer {access_token}'
+                },
+                params={
+                    'after' : startname,
+                    'limit' :'1000'
+                })
+            subredditjson = subresponse.json()
+            subresponse.close()
+            # with open('testsubreddit.json', 'w') as file:
+            #     json.dump(subredditjson, file, indent = 4)
+            try:
+                li = subredditjson["data"]["children"]
+                for i in li:
+                    postlist.append(i["data"]["link_author"])
+                    postlist.append(i["data"]["author"])
+            except:
+                True
+            startname = subredditjson["data"]["after"]
+            if not startname:
+                break
         return postlist
 
     #Input: a list
@@ -58,4 +62,4 @@ def fetch_from_subreddit(subr):
     # print(len(alluserslist))
     return alluserslist
 
-fetch_from_subreddit('anime')
+# fetch_from_subreddit('UIUC')
