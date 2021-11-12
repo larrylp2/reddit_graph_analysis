@@ -1,4 +1,4 @@
-#include "GraphBuilder.h"
+#include "../include/GraphBuilder.h"
 
 
 GraphBuilder::GraphBuilder() {
