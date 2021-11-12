@@ -17,7 +17,7 @@ class Graph {
     
     public:
         Graph();
-        
+
     private:
-        vector<Node> nodeList; //Store the list of all nodes
+        vector<Node*> nodeList; //Store the list of all nodes
 };
