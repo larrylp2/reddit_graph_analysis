@@ -5,7 +5,7 @@ GraphBuilder::GraphBuilder() {
     //default constructor
 }
 
-void GraphBuilder::PopulateUsers(std::string file_name) {
+void GraphBuilder::populateSubReddits(std::string file_name) {
     //our file_name for this includes the name of the subreddit in question
     std::string subReddit = file_name.substr(0, file_name.size() - 5); // the ".json" portion is size 5
     
@@ -62,8 +62,17 @@ void GraphBuilder::PopulateUsers(std::string file_name) {
             }
         }
     }
-
 }
+
+GraphBuilder::SubReddit* GraphBuilder::getSubReddit(std::string subReddit) {
+    std::map<std::string, SubReddit*>::iterator user_iterator = unique_subreddits.find(subReddit);
+    
+    //use ternary operator
+    //if the subreddit was found, the retValue is the pointer, otherwise it is the NULL
+    SubReddit* retValue = (user_iterator != unique_subreddits.end()) ? user_iterator->second : NULL;
+    return retValue;
+}
+
 
 //bottom is no longer needed
 /*
