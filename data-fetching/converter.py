@@ -3,7 +3,7 @@ import os
 # this converts the json files to usable txt files
 
 current_dir = "data/subreddit/"
-results_dr = "data/subreddit_text/"
+results_dr = "data/subreddit_text_new/"
 
 # iterate through subreddit json directory making sure we get only json files
 for file in os.listdir(current_dir):
@@ -22,7 +22,7 @@ for file in os.listdir(current_dir):
 
 # repeat same process with users
 current_dir = "data/user/"
-results_dr = "data/user_text/"
+results_dr = "data/user_text_new/"
 
 # iterate through user json directory, making sure we get only json files
 for file in os.listdir(current_dir):
