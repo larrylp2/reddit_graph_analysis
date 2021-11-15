@@ -19,6 +19,7 @@ class GraphBuilder {
             std::string name;
             std::vector<std::string> users;
             std::vector<SubReddit*> adjacentSubReddits;
+            std::map<std::string, std::pair<SubReddit*, int>> a;
         };
 
         GraphBuilder();
@@ -42,8 +43,11 @@ class GraphBuilder {
          */
         SubReddit* getSubReddit(std::string subReddit);
 
+
+
     private:
         //create a map with pointers to subreddit nodes as values and subreddit names as keys
+        void addWeight(std::string subreddit1, std::string subreddit2);
         std::map<std::string, SubReddit*> unique_subreddits;
 
 };
