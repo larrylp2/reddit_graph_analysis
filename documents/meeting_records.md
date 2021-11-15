@@ -24,4 +24,6 @@ Start at r/uiuc, for each user, read all the subreddits and make new nodes and m
 Finished data gathering
 Talked about making tests and created test folder
 Change timeline to do BFS before dijkstra
-Amend meetings to be remote to accommodate group members
+Amend meetings to be remote to accommodate group members.
+
+This week work: Khanh: implement Dijkstra; Natasha: test graph constructor and BFS traversal; Larry: Graph constructor.
