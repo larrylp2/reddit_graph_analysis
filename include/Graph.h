@@ -41,9 +41,9 @@ class GraphBuilder {
          * @param subReddit the name of the subreddit to find
          * @return the pointer to the input subReddit if found, NULL if not found
          */
-        SubReddit* getSubReddit(std::string subReddit);
+        SubReddit* getSubReddit(std::string subReddit) const;
 
-
+        void BFSTraversal() const; //Write to a txt file all the nodes in the graph+
 
     private:
         //create a map with pointers to subreddit nodes as values and subreddit names as keys
