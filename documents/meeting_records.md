@@ -19,11 +19,14 @@ ISR Lounge Area
 #### <strong>Time:</strong>
 6:00 PM - 7:20 PM
 #### <strong>Summary:</strong>
-Talk about the graph constructor/code we’ve written since last week
-Start at r/uiuc, for each user, read all the subreddits and make new nodes and make the connection
-Finished data gathering
-Talked about making tests and created test folder
-Change timeline to do BFS before dijkstra
-Amend meetings to be remote to accommodate group members.
+For this meeting, we mainly discussed about the code we've written since last week, as well as discussing possible implementations about our graph constructor.
+The main idea we want to implement is starting from our parent reddit, r/uiuc, and reading in all the subreddits based on each user. From there, we will make new nodes and create connections between r/uiuc and neighboring subreddits.
 
-This week work: Khanh: implement Dijkstra; Natasha: test graph constructor and BFS traversal; Larry: Graph constructor.
+We have currently finished data gathering, and will now focus on updating the graph constructor, as well as creating tests for our written code. The outline for the graph constructor has been drafted, and a test folder has been made to place all the appropriate tests.
+
+These are the following plans that we would like to address:
+1. Change timeline to do BFS before dijkstra
+2. Amend meetings to be remote to accommodate group members.
+
+This week's work: 
+Khanh: implement Dijkstra; Natasha: test graph constructor and BFS traversal; Larry: Graph constructor.
