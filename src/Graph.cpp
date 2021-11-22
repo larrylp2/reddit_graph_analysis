@@ -5,6 +5,10 @@ GraphBuilder::GraphBuilder() {
     //default constructor
 }
 
+GraphBuilder::GraphBuilder(string source_directory) {
+    source = source_directory;
+}
+
 void GraphBuilder::populateSubReddits(std::string file_name) {
     //our file_name for this includes the name of the subreddit in question
     std::string subReddit = file_name.substr(0, file_name.size() - 5); // the ".json" portion is size 5
@@ -64,7 +68,30 @@ void GraphBuilder::populateSubReddits(std::string file_name) {
     }
 }
 
-GraphBuilder::SubReddit* GraphBuilder::getSubReddit(std::string subReddit) {
+
+void GraphBuilder::toBeImplementedPopulateSubreddit(std::string name) {
+    // name is the name of the subreddit, example: UIUC
+
+    vector<string> user_list = getUserListFromSubredditFile(name);
+    for (string u : user_list) {
+        if (checked_users.find(u) != checked_users.end()) { // If the user hasn't been checked
+            checked_users[u] = true;
+            vector<string> subreddit_list = getSubRedditListFromUserFile(u);
+            addWeightToList(subreddit_list);
+        }
+    }
+
+}
+
+
+void GraphBuilder::readGraph(string root) {
+    // Create a new SubReddit of root and append to unique_subreddits
+    // Then call toBeImplementedPopulateSubreddit() to all the name in the unique_subreddits
+    // Be sure to not call it twice on one subreddit by making a map to keep track
+}
+
+
+GraphBuilder::SubReddit* GraphBuilder::getSubReddit(std::string subReddit) const{
     std::map<std::string, SubReddit*>::iterator user_iterator = unique_subreddits.find(subReddit);
     
     //use ternary operator
