@@ -32,6 +32,7 @@ class GraphBuilder {
         void populateSubReddits(string file_name);
 
         // More readable version of populateSubReddits and will replace that version after implemented
+        // Maybe put in private since this will be called in readGraph
         void toBeImplementedPopulateSubreddit(string name); 
 
         // Read and construct the graph, which calls populateSubReddits to all subreddits
@@ -55,7 +56,10 @@ class GraphBuilder {
         void BFSTraversal() const; //Write to a txt file all the nodes in the graph+
 
     private:
-
+        // Contain the directory to the data source so we can easily change which tests, sources we use
+        // Example: data-fetching/data, test/test1, test/test2
+        string source;
+        
         map<string, SubReddit*> unique_subreddits;
 
         map<string, bool> checked_users; // A map store checked user to ensure no user is checked twice
@@ -76,8 +80,6 @@ class GraphBuilder {
         // Return empty vector if not found
         vector<string> getSubRedditListFromUserFile(string user_name) const;
 
-        // Contain the directory to the data source so we can easily change which tests, sources we use
-        // Example: data-fetching/data, test/test1, test/test2
-        string source; 
+        
 
 };
