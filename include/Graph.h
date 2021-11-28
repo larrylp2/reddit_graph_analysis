@@ -4,6 +4,7 @@
 #include <map>
 #include <fstream>
 #include <iostream>
+#include <set>
 
 //#include "Graph.h"
 
@@ -17,9 +18,8 @@ class GraphBuilder {
     public:
         struct SubReddit {
             string name;
-            vector<string> users;
-            vector<SubReddit*> adjacentSubReddits;
-            map<string, pair<SubReddit*, int>> a;
+            set<string> users;
+            map<SubReddit*, int> adjacent; //key is the pointer to an adjacent subreddit, value is the strength of the connection
         };
 
         GraphBuilder();
@@ -39,19 +39,23 @@ class GraphBuilder {
         void readGraph(string start);
 
 
+        //Helper function that retrieves the pointer to a subreddit based on its name, creating a new SubReddit struct if that subreddit does not already exist
+        SubReddit* retrieveSubreddit(string name);
+
+
+        //helper function that adds edges between two subreddits (assume that sub1 and sub2 already exist in unique_subreddits)
+        void connectSubreddits(SubReddit* sub1, SubReddit* sub2);
+
+        //helper function that adds edges between all subreddits in a vector
+        void connectSubreddits(vector<SubReddit*> subs);
+        
 
         /*
          * Reads in from a user file subreddit names, initializing new subreddits if necessary
          * @param file_name the name of the inital file to be read in
          */
         //void PopulateSubreddits(string file_name);
-
-        /*
-         * Gets the SubReddit pointer for a subreddit name from the map of unique subreddits
-         * @param subReddit the name of the subreddit to find
-         * @return the pointer to the input subReddit if found, NULL if not found
-         */
-        SubReddit* getSubReddit(string subReddit) const;
+ 
 
         void BFSTraversal() const; //Write to a txt file all the nodes in the graph+
 
@@ -60,9 +64,11 @@ class GraphBuilder {
         // Example: data-fetching/data, test/test1, test/test2
         string source;
         
-        map<string, SubReddit*> unique_subreddits;
+        map<string, SubReddit*> unique_subreddits; //a map to keep track of subreddit object pointers (vertices)
 
-        map<string, bool> checked_users; // A map store checked user to ensure no user is checked twice
+        map<pair<SubReddit*, SubReddit*>, int> edges; //a set to keep track of the list of edges and their strengths
+
+        set<string> checked_users; // A set to store users that have already been checked
 
 
         // Add weight to the connection between two subreddits

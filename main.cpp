@@ -3,7 +3,7 @@
 #include <fstream>
 #include <sstream>
 
-#include "include/GraphBuilder.h"
+#include "include/Graph.h"
 
 
 int main() {
