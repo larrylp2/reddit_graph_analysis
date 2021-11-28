@@ -68,7 +68,7 @@ void GraphBuilder::populateSubReddits(std::string file_name) {
                     checked_users.insert(user);
                     original->users.insert(user); //add this user to the set of users seen active on this subreddit
 
-                    string user_file_name = user + JSON_SUFFIX;
+                    string user_file_name = user + TXT_SUFFIX;
 
                     ifstream user_file(USER_DATA_PATH + user_file_name);
                     string newSubReddit; //new subreddits that this user is active in
@@ -90,7 +90,7 @@ void GraphBuilder::populateSubReddits(std::string file_name) {
                                     subs.push_back(current);
 
                                     //call populateSubReddits recursively on this new subreddit
-                                    populateSubReddits(newSubReddit + JSON_SUFFIX);
+                                    populateSubReddits(newSubReddit + TXT_SUFFIX);
                                 }
                             }
                         }
@@ -108,25 +108,65 @@ void GraphBuilder::populateSubReddits(std::string file_name) {
 void GraphBuilder::toBeImplementedPopulateSubreddit(std::string name) {
     // name is the name of the subreddit, example: UIUC
 
-    vector<string> user_list = getUserListFromSubredditFile(name);
+    vector<string> user_list = getUserListFromSubRedditFile(name);
     for (string u : user_list) {
         if (checked_users.find(u) != checked_users.end()) { // If the user hasn't been checked
-            checked_users[u] = true;
-            vector<string> subreddit_list = getSubRedditListFromUserFile(u);
-            addWeightToList(subreddit_list);
+            addWeightToList(getSubRedditListFromUserFile(u));
         }
     }
-
 }
-
 
 void GraphBuilder::readGraph(string root) {
     // Create a new SubReddit of root and append to unique_subreddits
     // Then call toBeImplementedPopulateSubreddit() to all the name in the unique_subreddits
     // Be sure to not call it twice on one subreddit by making a map to keep track
+}
+
+// List version of addWeight, which call addWeight to all pairs in the list
+void GraphBuilder::addWeightToList(vector<string> subreddit_list) {
+    vector<SubReddit*> subs;
+    for(int i = 0; i < subreddit_list.size(); i++) {
+        subs.push_back(retrieveSubreddit(subreddit_list[i]));
+    }
+
+    for(int i = 0; i < subs.size(); i++) {
+        for(int j = i + 1; j < subs.size(); j++) {
+            connectSubreddits(subs[i], subs[j]); //simple algoritm to connect each subreddit with each other
+        }
+    }
+}
 
 
-
-
-
+// Search the file in source/subreddit_text and return the list
+// Return empty vector if not found
+vector<string> GraphBuilder::getUserListFromSubRedditFile(string subreddit) const {
+    vector<string> users;
+    
+    string user;
+    ifstream sub_file(SUBREDDIT_DATA_PATH + subreddit + JSON_SUFFIX); //gets the relative path to the subreddit filename
+    if(sub_file.is_open()) {
+        while(getline(sub_file, user)) {
+            if(user != "0") {
+                users.push_back(user);
+            }
+        }
+    }
+    return users;
+}
+        
+// Search the file in source/user_text and return the list
+// Return empty vector if not found
+vector<string> GraphBuilder::getSubRedditListFromUserFile(string username) const {
+    vector<string> subs;
+    
+    string sub;
+    ifstream user_file(SUBREDDIT_DATA_PATH + username + JSON_SUFFIX); //gets the relative path to the subreddit filename
+    if(user_file.is_open()) {
+        while(getline(user_file, sub)) {
+            if(sub != "0") {
+                subs.push_back(sub);
+            }
+        }
+    }
+    return subs;
 }

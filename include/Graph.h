@@ -8,9 +8,10 @@
 
 //#include "Graph.h"
 
-const string SUBREDDIT_DATA_PATH = "khanhn2-mohanty7--larrylp2/data-fetching/data/subreddit_text/";
-const string USER_DATA_PATH = "khanhn2-mohanty7--larrylp2/data-fetching/data/subreddit_text/";
+const string SUBREDDIT_DATA_PATH = "khanhn2-mohanty7--larrylp2/data-fetching/data/subreddit_text_new/";
+const string USER_DATA_PATH = "khanhn2-mohanty7--larrylp2/data-fetching/data/subreddit_text_new/";
 const string JSON_SUFFIX = ".json";
+const string TXT_SUFFIX = ".txt";
 using namespace std;
 
 class GraphBuilder {
@@ -80,7 +81,7 @@ class GraphBuilder {
 
         // Search the file in source/subreddit_text and return the list
         // Return empty vector if not found
-        vector<string> getUserListFromSubredditFile(string sureddit_name) const;
+        vector<string> getUserListFromSubRedditFile(string sureddit_name) const;
         
         // Search the file in source/user_text and return the list
         // Return empty vector if not found
