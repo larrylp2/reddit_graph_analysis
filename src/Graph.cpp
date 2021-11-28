@@ -120,6 +120,17 @@ void GraphBuilder::readGraph(string root) {
     // Create a new SubReddit of root and append to unique_subreddits
     // Then call toBeImplementedPopulateSubreddit() to all the name in the unique_subreddits
     // Be sure to not call it twice on one subreddit by making a map to keep track
+    toBeImplementedPopulateSubreddit(root);
+    SubReddit* rootSub = unique_subreddits.find(root)->second;
+    read_subs.insert(rootSub);
+    for(map<SubReddit*, int>::iterator it = rootSub->adjacent.begin(); it != rootSub->adjacent.end(); it++) {
+        if(read_subs.find(it->first) != read_subs.end()) { //already read this subreddit 
+            //do nothing
+        } else {
+            //recursively read this next subreddit
+            readGraph(it->first->name);
+        }
+    }
 }
 
 // List version of addWeight, which call addWeight to all pairs in the list
@@ -143,7 +154,7 @@ vector<string> GraphBuilder::getUserListFromSubRedditFile(string subreddit) cons
     vector<string> users;
     
     string user;
-    ifstream sub_file(SUBREDDIT_DATA_PATH + subreddit + JSON_SUFFIX); //gets the relative path to the subreddit filename
+    ifstream sub_file(SUBREDDIT_DATA_PATH + subreddit + TXT_SUFFIX); //gets the relative path to the subreddit filename
     if(sub_file.is_open()) {
         while(getline(sub_file, user)) {
             if(user != "0") {
@@ -160,7 +171,7 @@ vector<string> GraphBuilder::getSubRedditListFromUserFile(string username) const
     vector<string> subs;
     
     string sub;
-    ifstream user_file(SUBREDDIT_DATA_PATH + username + JSON_SUFFIX); //gets the relative path to the subreddit filename
+    ifstream user_file(USER_DATA_PATH + username + TXT_SUFFIX); //gets the relative path to the subreddit filename
     if(user_file.is_open()) {
         while(getline(user_file, sub)) {
             if(sub != "0") {

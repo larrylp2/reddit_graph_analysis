@@ -71,6 +71,8 @@ class GraphBuilder {
 
         set<string> checked_users; // A set to store users that have already been checked
 
+        set<SubReddit*> read_subs; // A set to store subs that have already been stored
+
 
         // Add weight to the connection between two subreddits
         // If a subreddit isn't exist yet, create new SubReddit* and add to unique_subreddits
