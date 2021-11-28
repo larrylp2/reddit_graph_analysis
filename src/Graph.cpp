@@ -30,9 +30,13 @@ void GraphBuilder::populateSubreddit(std::string name) {
     // name is the name of the subreddit, example: UIUC
 
     vector<string> user_list = getUserListFromSubRedditFile(name);
-    for (string u : user_list) {
-        if (checked_users.find(u) != checked_users.end()) { // If the user hasn't been checked
+    for (int i = 0; i < user_list.size(); i++) {
+        string u = user_list[i];
+        if (checked_users.find(u) != checked_users.end()) { 
+            //if the user has already been checked and exists in the set of checked users, do nothing
+        } else { //if the user has not yet been checked
             connectSubRedditList(getSubRedditListFromUserFile(u));
+            checked_users.insert(u);
         }
     }
 }
