@@ -60,35 +60,45 @@ void GraphBuilder::populateSubReddits(std::string file_name) {
         while(getline(sub_file, user)) {
             //first line of the .txt file is '0'
             if(user != "0") {
-                original->users.insert(user); //add this user to the set of users seen active on this subreddit
+                //check to see if this user has already been checked
+                if(checked_users.find(user) != checked_users.end()) {
+                    //this user has already been handled, do nothing
+                } else {
+                    //this user has not yet been handled, start process after adding this user to the list of already checked users
+                    checked_users.insert(user);
+                    original->users.insert(user); //add this user to the set of users seen active on this subreddit
 
-                string user_file_name = user + JSON_SUFFIX;
+                    string user_file_name = user + JSON_SUFFIX;
 
-                ifstream user_file(USER_DATA_PATH + user_file_name);
-                string newSubReddit; //new subreddits that this user is active in
-                vector<SubReddit*> subs; //keep track of all subreddits that this user is active in that is not our initial subreddit
+                    ifstream user_file(USER_DATA_PATH + user_file_name);
+                    string newSubReddit; //new subreddits that this user is active in
+                    vector<SubReddit*> subs; //keep track of all subreddits that this user is active in that is not our initial subreddit
 
-                if(user_file.is_open()) {
-                    while(getline(user_file, newSubReddit)) {
-                        //first line of the .txt file is '0'
-                        if(newSubReddit != "0") {
-                            //only do stuff if this subReddit is not our starting subreddit
-                            if(newSubReddit != subReddit) {
-                                
-                                //get a pointer to the subreddit this user is active in
-                                SubReddit* current = retrieveSubreddit(newSubReddit);
+                    if(user_file.is_open()) {
+                        while(getline(user_file, newSubReddit)) {
+                            //first line of the .txt file is '0'
+                            if(newSubReddit != "0") {
+                                //only do stuff if this subReddit is not our starting subreddit
+                                if(newSubReddit != subReddit) {
+                                    
+                                    //get a pointer to the subreddit this user is active in
+                                    SubReddit* current = retrieveSubreddit(newSubReddit);
 
-                                //update the adjacent subreddits
-                                connectSubreddits(original, current);
+                                    //update the adjacent subreddits
+                                    connectSubreddits(original, current);
 
-                                subs.push_back(current);
+                                    subs.push_back(current);
+
+                                    //call populateSubReddits recursively on this new subreddit
+                                    populateSubReddits(newSubReddit + JSON_SUFFIX);
+                                }
                             }
                         }
                     }
-                }
 
-                //now connect all of the subreddits this user is active in to each other
-                connectSubreddits(subs);
+                    //now connect all of the subreddits this user is active in to each other
+                    connectSubreddits(subs);   
+                }
             }
         }
     }
