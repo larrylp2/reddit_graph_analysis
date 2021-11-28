@@ -1,4 +1,4 @@
-#include "../include/Graph.h"
+#include "Graph.h"
 
 
 GraphBuilder::GraphBuilder() {
@@ -30,7 +30,7 @@ void GraphBuilder::populateSubreddit(std::string name) {
     // name is the name of the subreddit, example: UIUC
 
     vector<string> user_list = getUserListFromSubRedditFile(name);
-    for (int i = 0; i < user_list.size(); i++) {
+    for (int i = 0; i < (int)user_list.size(); i++) {
         string u = user_list[i];
         if (checked_users.find(u) != checked_users.end()) { 
             //if the user has already been checked and exists in the set of checked users, do nothing
@@ -73,12 +73,12 @@ void GraphBuilder::connectSubreddits(SubReddit* sub1, SubReddit* sub2) {
 // List version of addWeight, which call addWeight to all pairs in the list
 void GraphBuilder::connectSubRedditList(vector<string> subreddit_list) {
     vector<SubReddit*> subs;
-    for(int i = 0; i < subreddit_list.size(); i++) {
+    for(int i = 0; i < (int) subreddit_list.size(); i++) {
         subs.push_back(retrieveSubreddit(subreddit_list[i]));
     }
 
-    for(int i = 0; i < subs.size(); i++) {
-        for(int j = i + 1; j < subs.size(); j++) {
+    for(int i = 0; i < (int) subs.size(); i++) {
+        for(int j = i + 1; j < (int) subs.size(); j++) {
             connectSubreddits(subs[i], subs[j]); //simple algoritm to connect each subreddit with each other
         }
     }
