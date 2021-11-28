@@ -1,30 +1,28 @@
 # Executable names:
-EXE = mazes
-TEST = test
+EXE = graph
+TEST = testgraph
 
 # Add all object files needed for compiling:
 EXE_OBJ = main.o
-OBJS = main.o dsets.o maze.o
+OBJS = main.o Graph.o
 
 # Generated files
-CLEAN_RM = unsolved.png solved.png testdsets testsquaremaze \
-						*.o *.d tests/*.o tests/*.d cs225/*.d cs225/*.o \
-						cs225/lodepng/*.o cs225/lodepng/*.d \
-						cs225/catch/*.o cs225/catch/*.d
+CLEAN_RM = 
 
 # Use the cs225 makefile template:
 include cs225/make/cs225.mk
 
 
 # MP-specific targets
-DSETS_OBJS = testdsets.o
-DSETS_OBJS += dsets.o
 
-testdsets: $(DSETS_OBJS)
-	$(LD) $^ $(LDFLAGS) -o $@
+# DSETS_OBJS = testdsets.o
+# DSETS_OBJS += dsets.o
 
-MAZE_OBJS = $(filter-out $(EXE_OBJ), $(OBJS))
-MAZE_OBJS += testsquaremaze.o
+# testdsets: $(DSETS_OBJS)
+# 	$(LD) $^ $(LDFLAGS) -o $@
 
-testsquaremaze: $(MAZE_OBJS)
-	$(LD) $^ $(LDFLAGS) -o $@
+# MAZE_OBJS = $(filter-out $(EXE_OBJ), $(OBJS))
+# MAZE_OBJS += testsquaremaze.o
+
+# testsquaremaze: $(MAZE_OBJS)
+# 	$(LD) $^ $(LDFLAGS) -o $@
