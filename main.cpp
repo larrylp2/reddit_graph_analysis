@@ -15,10 +15,17 @@ int main() {
 
     builder.readGraphBFS("UIUC");
 
+    /*
     std::map<GraphBuilder::SubReddit*, int> adjacent = builder.retrieveSubreddit("UIUC")->adjacent;
     for(std::map<GraphBuilder::SubReddit*, int>::iterator it = adjacent.begin(); it != adjacent.end(); it++) {
         std::cout << "Subreddit: " << it->first->name << " Weight: " << it->second << std::endl;
-    } //Segmentation fault: 11, currently having a stack overflow
+    }*/
+
+    std::cout << "Users: " << builder.getUsers() << std::endl;;
+
+    std::cout << "Subs: " << builder.getSubs() << std::endl;
+
+    builder.printMaxConnection();
 
     return 0;
 }

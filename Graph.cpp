@@ -80,6 +80,19 @@ GraphBuilder::SubReddit* GraphBuilder::retrieveSubreddit(string subName) {
     }
 }
 
+int GraphBuilder::getUsers() const {
+    return checked_users.size();
+}
+
+int GraphBuilder::getSubs() const {
+    return read_subs.size();
+}
+
+void GraphBuilder::printMaxConnection() const {
+    std::cout << "Max Connection: " << max_connection << std::endl;
+    std::cout << "Sub1: " << best1 << " Sub2: " << best2 << std::endl;
+}
+
 void GraphBuilder::connectSubreddits(SubReddit* sub1, SubReddit* sub2) {
 
     //check if the two are already connected (assume that if sub1 is adjacent to sub2, sub2 is adjacent to sub1)
@@ -88,6 +101,12 @@ void GraphBuilder::connectSubreddits(SubReddit* sub1, SubReddit* sub2) {
         //increment the int
         iterator->second++;
         sub2->adjacent.find(sub1)->second++;
+
+        if(iterator->second > max_connection) {
+            max_connection = iterator->second;
+            best1 = sub1->name;
+            best2 = sub2->name;
+        }
     } else { //otherwise make a new connection
         sub1->adjacent.insert(pair<SubReddit*, int>(sub2, 1));
         sub2->adjacent.insert(pair<SubReddit*, int>(sub1, 1));

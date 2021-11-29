@@ -39,10 +39,21 @@ class GraphBuilder {
         //Helper function that retrieves the pointer to a subreddit based on its name, creating a new SubReddit struct if that subreddit does not already exist
         SubReddit* retrieveSubreddit(string name);
 
+        int getUsers() const;
+
+        int getSubs() const;
+
+        void printMaxConnection() const;
+
     private:
         // Contain the directory to the data source so we can easily change which tests, sources we use
         // Example: data-fetching/data, test/test1, test/test2
         string source;
+
+        int max_connection = 0;
+
+        string best1 = "";
+        string best2 = "";
         
         map<string, SubReddit*> unique_subreddits; //a map to keep track of subreddit object pointers (vertices)
 
