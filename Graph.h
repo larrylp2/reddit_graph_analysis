@@ -30,7 +30,7 @@ class GraphBuilder {
         GraphBuilder(string source_directory); //Construct with the directory
 
         // Read and construct the graph, which calls populateSubReddits to all subreddits
-        void readGraph(string start);
+        //void readGraph(string start);
 
         void readGraphBFS(string start);
 

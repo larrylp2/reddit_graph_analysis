@@ -27,14 +27,14 @@ void GraphBuilder::readGraph(string root) {
 void GraphBuilder::readGraphBFS(string root) {
     queue<string> subReddit;
     subReddit.push(root);
-    int pop = 0;
+    int pop = 1;
     while(!subReddit.empty()) {
         //populate the subreddit in the front of the qeueu
         string sub = subReddit.front();
         pop++;
         subReddit.pop();
         populateSubreddit(sub);
-        SubReddit* subPtr = unique_subreddits.find(sub)->second;
+        SubReddit* subPtr = retrieveSubreddit(sub);
         std::cout << "Populated: " << pop << std::endl;
         //now add the adjacent ones to the queue
         for(map<SubReddit*, int>::iterator it = subPtr->adjacent.begin(); it != subPtr->adjacent.end(); it++) {
@@ -44,6 +44,30 @@ void GraphBuilder::readGraphBFS(string root) {
                 //recursively read this next subreddit
                 subReddit.push(it->first->name);
                 read_subs.insert(it->first->name);
+            }
+        }
+    }
+}
+
+void GraphBuilder::BFSTraversal() const {
+    queue<string> subReddit;
+    subReddit.push("UIUC");
+    set<string> seen_subs; // A set to store subs that have already been seen
+    ofstream BFSOutput("BFSResults.txt");
+    BFSOutput << "UIUC" << std::endl;
+
+    while(!subReddit.empty()) {
+        string sub = subReddit.front();
+        subReddit.pop();
+        SubReddit* subPtr = unique_subreddits.find(sub)->second;
+        //now add the adjacent ones to the queue
+        for(map<SubReddit*, int>::iterator it = subPtr->adjacent.begin(); it != subPtr->adjacent.end(); it++) {
+            if(seen_subs.find(it->first->name) != seen_subs.end()) { //already read this subreddit 
+                //do nothing
+            } else {
+                //recursively read this next subreddit
+                BFSOutput << it->first->name << std::endl;
+                seen_subs.insert(it->first->name);
             }
         }
     }

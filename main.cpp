@@ -27,5 +27,7 @@ int main() {
 
     builder.printMaxConnection();
 
+    builder.BFSTraversal();
+
     return 0;
 }
