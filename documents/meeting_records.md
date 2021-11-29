@@ -30,3 +30,16 @@ These are the following plans that we would like to address:
 
 This week's work: 
 Khanh: implement Dijkstra; Natasha: test graph constructor and BFS traversal; Larry: Graph constructor.
+
+---
+#### <strong>Week:</strong>
+November 22th - November 28th
+#### <strong>Meeting Location:</strong>
+Discord
+#### <strong>Time:</strong>
+6:00 PM - 6:30 PM
+#### <strong>Summary:</strong>
+We finished the constructor and discussed on optimizing and small changes to the constructor. The constructor produces promising results but we still need to test it properly, which we also discussed how to make tests. We also planning on spliting the work for making a visualization of the graph and hope to have most of everything done by next Friday.
+
+This week's work: 
+Khanh: implement Dijkstra; Natasha: make tests for graph and BFS; Larry: implements BFS
