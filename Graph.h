@@ -10,8 +10,10 @@
 
 using namespace std;
 
-const string SUBREDDIT_DATA_PATH = "khanhn2-mohanty7--larrylp2/data-fetching/data/subreddit_text_new/";
-const string USER_DATA_PATH = "khanhn2-mohanty7--larrylp2/data-fetching/data/user_text_new/";
+//const string SUBREDDIT_DATA_PATH = "khanhn2-mohanty7--larrylp2/data-fetching/data/subreddit_text_new/";
+//const string USER_DATA_PATH = "khanhn2-mohanty7--larrylp2/data-fetching/data/user_text_new/";
+const string SUBREDDIT_DATA_PATH = "subreddit_text_new/";
+const string USER_DATA_PATH = "user_text_new/";
 const string JSON_SUFFIX = ".json";
 const string TXT_SUFFIX = ".txt";
 
@@ -32,6 +34,9 @@ class GraphBuilder {
 
         void BFSTraversal() const; //Write to a txt file all the nodes in the graph+
 
+        //Helper function that retrieves the pointer to a subreddit based on its name, creating a new SubReddit struct if that subreddit does not already exist
+        SubReddit* retrieveSubreddit(string name);
+
     private:
         // Contain the directory to the data source so we can easily change which tests, sources we use
         // Example: data-fetching/data, test/test1, test/test2
@@ -48,9 +53,6 @@ class GraphBuilder {
         // More readable version of populateSubReddits and will replace that version after implemented
         // Maybe put in private since this will be called in readGraph
         void populateSubreddit(string name); 
-
-        //Helper function that retrieves the pointer to a subreddit based on its name, creating a new SubReddit struct if that subreddit does not already exist
-        SubReddit* retrieveSubreddit(string name);
 
         // List version of connectSubreddits, which calls connectSubreddits to all pairs in the list
         void connectSubRedditList(vector<string> subreddit_list); 

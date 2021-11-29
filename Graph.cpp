@@ -91,7 +91,7 @@ vector<string> GraphBuilder::getUserListFromSubRedditFile(string subreddit) cons
     vector<string> users;
     
     string user;
-    ifstream sub_file(SUBREDDIT_DATA_PATH + subreddit + TXT_SUFFIX); //gets the relative path to the subreddit filename
+    ifstream sub_file(source + SUBREDDIT_DATA_PATH + subreddit + TXT_SUFFIX); //gets the relative path to the subreddit filename
     if(sub_file.is_open()) {
         while(getline(sub_file, user)) {
             if(user != "0") {
@@ -108,7 +108,7 @@ vector<string> GraphBuilder::getSubRedditListFromUserFile(string username) const
     vector<string> subs;
     
     string sub;
-    ifstream user_file(USER_DATA_PATH + username + TXT_SUFFIX); //gets the relative path to the subreddit filename
+    ifstream user_file(source + USER_DATA_PATH + username + TXT_SUFFIX); //gets the relative path to the subreddit filename
     if(user_file.is_open()) {
         while(getline(user_file, sub)) {
             if(sub != "0") {
