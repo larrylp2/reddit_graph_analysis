@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include <set>
+#include <queue>
 
 //#include "Graph.h"
 
@@ -22,7 +23,6 @@ class GraphBuilder {
     public:
         struct SubReddit {
             string name;
-            set<string> users;
             map<SubReddit*, int> adjacent; //key is the pointer to an adjacent subreddit, value is the strength of the connection
         };
 
@@ -31,6 +31,8 @@ class GraphBuilder {
 
         // Read and construct the graph, which calls populateSubReddits to all subreddits
         void readGraph(string start);
+
+        void readGraphBFS(string start);
 
         void BFSTraversal() const; //Write to a txt file all the nodes in the graph+
 
@@ -48,7 +50,7 @@ class GraphBuilder {
 
         set<string> checked_users; // A set to store users that have already been checked
 
-        set<SubReddit*> read_subs; // A set to store subs that have already been stored
+        set<string> read_subs; // A set to store subs that have already been stored
 
         // More readable version of populateSubReddits and will replace that version after implemented
         // Maybe put in private since this will be called in readGraph

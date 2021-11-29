@@ -8,20 +8,43 @@ GraphBuilder::GraphBuilder() {
 GraphBuilder::GraphBuilder(string source_directory) {
     source = source_directory;
 }
-
+/* this would segfault
 void GraphBuilder::readGraph(string root) {
-    // Create a new SubReddit of root and append to unique_subreddits
-    // Then call populate() to all the name in the unique_subreddits
-    // Be sure to not call it twice on one subreddit by making a map to keep track
     populateSubreddit(root);
     SubReddit* rootSub = unique_subreddits.find(root)->second;
-    read_subs.insert(rootSub);
+    read_subs.insert(rootSub->name);
+    std::cout << "Populated: " << read_subs.size() << std::endl;
     for(map<SubReddit*, int>::iterator it = rootSub->adjacent.begin(); it != rootSub->adjacent.end(); it++) {
-        if(read_subs.find(it->first) != read_subs.end()) { //already read this subreddit 
+        if(read_subs.find(it->first->name) != read_subs.end()) { //already read this subreddit 
             //do nothing
         } else {
             //recursively read this next subreddit
             readGraph(it->first->name);
+        }
+    }
+}*/
+
+void GraphBuilder::readGraphBFS(string root) {
+    queue<string> subReddit;
+    subReddit.push(root);
+    int pop = 0;
+    while(!subReddit.empty()) {
+        //populate the subreddit in the front of the qeueu
+        string sub = subReddit.front();
+        pop++;
+        subReddit.pop();
+        populateSubreddit(sub);
+        SubReddit* subPtr = unique_subreddits.find(sub)->second;
+        std::cout << "Populated: " << pop << std::endl;
+        //now add the adjacent ones to the queue
+        for(map<SubReddit*, int>::iterator it = subPtr->adjacent.begin(); it != subPtr->adjacent.end(); it++) {
+            if(read_subs.find(it->first->name) != read_subs.end()) { //already read this subreddit 
+                //do nothing
+            } else {
+                //recursively read this next subreddit
+                subReddit.push(it->first->name);
+                read_subs.insert(it->first->name);
+            }
         }
     }
 }
@@ -30,6 +53,7 @@ void GraphBuilder::populateSubreddit(std::string name) {
     // name is the name of the subreddit, example: UIUC
 
     vector<string> user_list = getUserListFromSubRedditFile(name);
+    //std::cout << "User Size: " << user_list.size() << std::endl;
     for (int i = 0; i < (int)user_list.size(); i++) {
         string u = user_list[i];
         if (checked_users.find(u) != checked_users.end()) { 
@@ -91,8 +115,10 @@ vector<string> GraphBuilder::getUserListFromSubRedditFile(string subreddit) cons
     vector<string> users;
     
     string user;
+    //std::cout << "File: " << source + SUBREDDIT_DATA_PATH + subreddit + TXT_SUFFIX << std::endl;
     ifstream sub_file(source + SUBREDDIT_DATA_PATH + subreddit + TXT_SUFFIX); //gets the relative path to the subreddit filename
     if(sub_file.is_open()) {
+        //std::cout << "File Open" << std::endl;
         while(getline(sub_file, user)) {
             if(user != "0") {
                 users.push_back(user);
