@@ -1,15 +1,15 @@
 #include "Graph.h"
 
 
-GraphBuilder::GraphBuilder() {
+Graph::Graph() {
     //default constructor
 }
 
-GraphBuilder::GraphBuilder(string source_directory) {
+Graph::Graph(string source_directory) {
     source = source_directory;
 }
 /* this would segfault
-void GraphBuilder::readGraph(string root) {
+void Graph::readGraph(string root) {
     populateSubreddit(root);
     SubReddit* rootSub = unique_subreddits.find(root)->second;
     read_subs.insert(rootSub->name);
@@ -24,7 +24,7 @@ void GraphBuilder::readGraph(string root) {
     }
 }*/
 
-void GraphBuilder::readGraphBFS(string root) {
+void Graph::readGraphBFS(string root) {
     queue<string> subReddit;
     subReddit.push(root);
     int pop = 1;
@@ -49,7 +49,7 @@ void GraphBuilder::readGraphBFS(string root) {
     }
 }
 
-void GraphBuilder::BFSTraversal() const {
+void Graph::BFSTraversal() const {
     queue<string> subReddit;
     subReddit.push("UIUC");
     set<string> seen_subs; // A set to store subs that have already been seen
@@ -73,7 +73,7 @@ void GraphBuilder::BFSTraversal() const {
     }
 }
 
-void GraphBuilder::populateSubreddit(std::string name) {
+void Graph::populateSubreddit(std::string name) {
     // name is the name of the subreddit, example: UIUC
 
     vector<string> user_list = getUserListFromSubRedditFile(name);
@@ -89,7 +89,7 @@ void GraphBuilder::populateSubreddit(std::string name) {
     }
 }
 
-GraphBuilder::SubReddit* GraphBuilder::retrieveSubreddit(string subName) {
+Graph::SubReddit* Graph::retrieveSubreddit(string subName) {
     //start by checking if the subreddit already exists in our map
     map<string, SubReddit*>::iterator iterator = unique_subreddits.find(subName);
     if(iterator != unique_subreddits.end()) {
@@ -104,20 +104,20 @@ GraphBuilder::SubReddit* GraphBuilder::retrieveSubreddit(string subName) {
     }
 }
 
-int GraphBuilder::getUsers() const {
+int Graph::getUsers() const {
     return checked_users.size();
 }
 
-int GraphBuilder::getSubs() const {
+int Graph::getSubs() const {
     return read_subs.size();
 }
 
-void GraphBuilder::printMaxConnection() const {
+void Graph::printMaxConnection() const {
     std::cout << "Max Connection: " << max_connection << std::endl;
     std::cout << "Sub1: " << best1 << " Sub2: " << best2 << std::endl;
 }
 
-void GraphBuilder::connectSubreddits(SubReddit* sub1, SubReddit* sub2) {
+void Graph::connectSubreddits(SubReddit* sub1, SubReddit* sub2) {
 
     //check if the two are already connected (assume that if sub1 is adjacent to sub2, sub2 is adjacent to sub1)
     map<SubReddit*, int>::iterator iterator = sub1->adjacent.find(sub2);
@@ -138,7 +138,7 @@ void GraphBuilder::connectSubreddits(SubReddit* sub1, SubReddit* sub2) {
 }
 
 // List version of addWeight, which call addWeight to all pairs in the list
-void GraphBuilder::connectSubRedditList(vector<string> subreddit_list) {
+void Graph::connectSubRedditList(vector<string> subreddit_list) {
     vector<SubReddit*> subs;
     for(int i = 0; i < (int) subreddit_list.size(); i++) {
         subs.push_back(retrieveSubreddit(subreddit_list[i]));
@@ -154,7 +154,7 @@ void GraphBuilder::connectSubRedditList(vector<string> subreddit_list) {
 
 // Search the file in source/subreddit_text and return the list
 // Return empty vector if not found
-vector<string> GraphBuilder::getUserListFromSubRedditFile(string subreddit) const {
+vector<string> Graph::getUserListFromSubRedditFile(string subreddit) const {
     vector<string> users;
     
     string user;
@@ -173,7 +173,7 @@ vector<string> GraphBuilder::getUserListFromSubRedditFile(string subreddit) cons
         
 // Search the file in source/user_text and return the list
 // Return empty vector if not found
-vector<string> GraphBuilder::getSubRedditListFromUserFile(string username) const {
+vector<string> Graph::getSubRedditListFromUserFile(string username) const {
     vector<string> subs;
     
     string sub;

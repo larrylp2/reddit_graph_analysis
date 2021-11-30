@@ -17,7 +17,7 @@ class HeapNodeDescriptor;
  * @author Chase Geigle
  * @date Fall 2012
  */
-template <class T, class Compare = std::less<T>>
+template <class T, class Compare>
 class heap
 {
   public:
@@ -199,4 +199,3 @@ class heap
 };
 
 #include "heap.cpp"
-#include "printheap.cpp"

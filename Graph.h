@@ -18,16 +18,15 @@ const string USER_DATA_PATH = "user_text_new/";
 const string JSON_SUFFIX = ".json";
 const string TXT_SUFFIX = ".txt";
 
-class GraphBuilder {
-
+class Graph {
     public:
         struct SubReddit {
             string name;
             map<SubReddit*, int> adjacent; //key is the pointer to an adjacent subreddit, value is the strength of the connection
         };
 
-        GraphBuilder();
-        GraphBuilder(string source_directory); //Construct with the directory
+        Graph();
+        Graph(string source_directory); //Construct with the directory
 
         // Read and construct the graph, which calls populateSubReddits to all subreddits
         //void readGraph(string start);
