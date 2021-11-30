@@ -11,15 +11,9 @@ int main() {
 
     std::string file_path = "data-fetching/data/";
     
-    GraphBuilder builder = GraphBuilder(file_path);
+    Graph builder = Graph(file_path);
 
     builder.readGraphBFS("UIUC");
-
-    /*
-    std::map<GraphBuilder::SubReddit*, int> adjacent = builder.retrieveSubreddit("UIUC")->adjacent;
-    for(std::map<GraphBuilder::SubReddit*, int>::iterator it = adjacent.begin(); it != adjacent.end(); it++) {
-        std::cout << "Subreddit: " << it->first->name << " Weight: " << it->second << std::endl;
-    }*/
 
     std::cout << "Users: " << builder.getUsers() << std::endl;;
 
@@ -29,5 +23,6 @@ int main() {
 
     builder.BFSTraversal();
 
+    std::cout << builder.dijkstra("UIUC", "AskReddit");
     return 0;
 }

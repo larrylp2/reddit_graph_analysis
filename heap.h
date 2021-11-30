@@ -90,20 +90,6 @@ class heap
      */
     size_t root() const;
 
-    /**
-     * Prints the heap to an std::ostream. Given for you. Uses the helper
-     * functions below to do its work, so please implement them!
-     *
-     * @param out The stream to be written to.
-     * @param toPrint The heap to be printed.
-     */
-    template <class Type, class Comp>
-    friend std::ostream& operator<<(std::ostream& out,
-                                    const heap<Type, Comp>& toPrint);
-
-    // friend descriptor to allow it to access private members
-    friend class HeapNodeDescriptor<T, Compare>;
-
   private:
     /**
      * The internal storage for this heap. **You may choose whether
