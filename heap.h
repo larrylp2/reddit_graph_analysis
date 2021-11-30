@@ -6,6 +6,7 @@
 #pragma once
 
 #include <vector>
+#include <map>
 
 // forward declare descriptor (used for printing, ignore)
 template <class Type, class Comp>
@@ -17,7 +18,7 @@ class HeapNodeDescriptor;
  * @author Chase Geigle
  * @date Fall 2012
  */
-template <class T, class Compare>
+template <class T, class name, class Compare>
 class heap
 {
   public:
@@ -109,6 +110,9 @@ class heap
      * `higherPriority(b, a) = false` (`b > a`, so `b` has lower priority)
      */
     Compare higherPriority;
+
+    // Track the position of where an element is
+    std::map<name, int> posTrack;
 
     /**
      * Helper function that returns the index of the left child of a

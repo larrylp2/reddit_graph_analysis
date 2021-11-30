@@ -214,8 +214,10 @@ double Graph::dijkstra(string subreddit1, string subreddit2) {
             subredditList.push_back(make_pair(s.second, -1));
         }
     }
-    
-    heap<pair<SubReddit*, double>, compareSubreddit> pqueue = heap<pair<SubReddit*, double>, compareSubreddit>(subredditList);
+    //Construct heap/priority queue
+    heap<pair<SubReddit*, double>, SubReddit*, compareSubreddit> pqueue = heap<pair<SubReddit*, double>, SubReddit*, compareSubreddit>(subredditList);
 
+
+    
     return 0;
 }
