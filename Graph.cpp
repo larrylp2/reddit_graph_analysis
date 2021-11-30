@@ -1,5 +1,4 @@
 #include "Graph.h"
-#include "heap.h"
 
 Graph::Graph() {
     //default constructor
@@ -215,7 +214,7 @@ double Graph::dijkstra(string subreddit1, string subreddit2) {
         }
     }
     //Construct heap/priority queue
-    heap<pair<SubReddit*, double>, SubReddit*, compareSubreddit> pqueue = heap<pair<SubReddit*, double>, SubReddit*, compareSubreddit>(subredditList);
+
 
 
     
