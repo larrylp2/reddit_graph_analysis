@@ -64,7 +64,7 @@ void Graph::BFSTraversal() const {
             if(seen_subs.find(it->first->name) != seen_subs.end()) { //already read this subreddit 
                 //do nothing
             } else {
-                //recursively read this next subreddit
+                subReddit.push(it->first->name);
                 BFSOutput << it->first->name << std::endl;
                 seen_subs.insert(it->first->name);
             }
