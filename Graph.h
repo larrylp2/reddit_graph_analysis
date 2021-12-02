@@ -6,7 +6,6 @@
 #include <iostream>
 #include <set>
 #include <queue>
-#include "SubReddit.h"
 //#include "Graph.h"
 
 using namespace std;
@@ -20,6 +19,11 @@ const string TXT_SUFFIX = ".txt";
 
 class Graph {
     public:
+
+        struct SubReddit {
+            string name;
+            map<SubReddit*, int> adjacent;
+        };
         Graph();
         Graph(string source_directory); //Construct with the directory
 

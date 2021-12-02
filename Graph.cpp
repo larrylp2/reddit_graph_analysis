@@ -73,7 +73,7 @@ void Graph::populateSubreddit(std::string name) {
     }
 }
 
-SubReddit* Graph::retrieveSubreddit(string subName) {
+Graph::SubReddit* Graph::retrieveSubreddit(string subName) {
     //start by checking if the subreddit already exists in our map
     map<string, SubReddit*>::iterator iterator = unique_subreddits.find(subName);
     if(iterator != unique_subreddits.end()) {
