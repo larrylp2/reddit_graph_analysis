@@ -27,6 +27,8 @@ class Graph {
         Graph();
         Graph(string source_directory); //Construct with the directory
 
+        ~Graph(); //destructor
+
         // Read and construct the graph, which calls populateSubReddits to all subreddits
         void readGraphBFS(string start);
 
@@ -78,6 +80,9 @@ class Graph {
         // Search the file in source/user_text and return the list
         // Return empty vector if not found
         vector<string> getSubRedditListFromUserFile(string user_name) const;
+
+        // private helper method that clears allocated heap memory
+        void clear();
 
         
 
