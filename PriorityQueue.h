@@ -29,7 +29,8 @@ class PriorityQueue {
         int size;
         void heapifyUp(HeapNode* node);
         void heapifyDown(HeapNode* node);
-        void swap(HeapNode* child, HeapNode* parent);
+        void swapParentChild(HeapNode* a, HeapNode* b);
+        void swap(HeapNode* a, HeapNode* b);
         bool hasAChild(HeapNode* node) const;
         bool lesser(HeapNode* left, HeapNode* right) const;
         HeapNode* rightMostNode() const;
