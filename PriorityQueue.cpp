@@ -45,6 +45,7 @@ void PriorityQueue::popMin() {
             root->parent->rightChild = NULL;
         }
     }
+    delete getithNode(size);
     size--;
 }
 
