@@ -8,6 +8,10 @@ Graph::Graph(string source_directory) {
     source = source_directory;
 }
 
+Graph::~Graph() {
+    clear();
+}
+
 void Graph::readGraphBFS(string root) {
     queue<string> subReddit;
     subReddit.push(root);
@@ -200,8 +204,21 @@ double Graph::dijkstra(string subreddit1, string subreddit2) {
     }
     //Construct heap/priority queue
 
-
-
-    
     return 0;
+}
+
+void Graph::clear() {
+    //iterates through the set of unique subreddits, deallocating each subreddit
+    for(map<string, SubReddit*>::iterator it = unique_subreddits.begin(); it != unique_subreddits.end(); it++) {
+        delete it->second;
+    }
+
+    //resets the private variables
+    unique_subreddits = map<string, SubReddit*>();
+    checked_users = set<string>();
+    read_subs = set<string>();
+    source = "";
+    best1 = "";
+    best2 = "";
+    max_connection = 0;
 }
