@@ -1,5 +1,5 @@
 #include "PriorityQueue.h"
-
+#include <stack>
 PriorityQueue::PriorityQueue() {
     // Default constructor
     size = 0;
@@ -8,7 +8,13 @@ PriorityQueue::PriorityQueue() {
 }
 
 PriorityQueue::PriorityQueue(Graph::SubReddit* first, vector<Graph::SubReddit*> rest) {
-    // Default constructor
+    root = new HeapNode();
+    root->subreddit = first;
+    root->weight = 0;
+    nodeList[first] = root;
+    for (Graph::SubReddit* s : rest) {
+        push(s, -1);
+    }
 }
 
 PriorityQueue::~PriorityQueue() {
@@ -19,30 +25,77 @@ Graph::SubReddit* PriorityQueue::peakMin() const {
     return root->subreddit;
 }
 
-void PriorityQueue::popMin() {
+double PriorityQueue::peakMinValue() const {
+    return root->weight;
+}
 
+void PriorityQueue::popMin() {
+    if (size == 1) {
+        size--;
+        delete root;
+        return;
+    }
+    HeapNode* lastNode = getithNode(size);
+    swap(lastNode, root);
+    heapifyDown(lastNode);
+    if (root->parent != NULL) {
+        if (root->parent->leftChild == root) {
+            root->parent->leftChild = NULL;
+        } else {
+            root->parent->rightChild = NULL;
+        }
+    }
+    size--;
 }
 
 void PriorityQueue::push(Graph::SubReddit* subreddit, double weight) {
-
+    size++;
+    int parentNode = size / 2;
+    HeapNode* n = getithNode(parentNode);
+    if (size % 2 == 1) {
+        n->leftChild = new HeapNode();
+        n->leftChild->parent = n;
+        n->subreddit = subreddit;
+        n->weight = weight;
+    } else {
+        n->rightChild = new HeapNode();
+        n->rightChild->parent = n;
+        n->subreddit = subreddit;
+        n->weight = weight;
+    }
+    nodeList[subreddit] = n->rightChild;
+    if (weight != -1) {
+        heapifyUp(n->rightChild);
+        heapifyDown(n->rightChild);
+    }
 }
 
 void PriorityQueue::changeWeight(Graph::SubReddit* sub, double newWeight) {
-
+    HeapNode* n = nodeList[sub];
+    n->weight = newWeight;
+    heapifyUp(n);
+    heapifyDown(n);
 }
 bool PriorityQueue::isEmpty() const {
-
+    if (size == 0) {
+        return true;
+    }
+    return false;
 }
 void PriorityQueue::heapifyUp(HeapNode* node) {
     if (node == root) {
         return;
     }
     HeapNode* p = node->parent;
+    if (p == NULL) {
+        return;
+    }
     if (lesser(node, p)) {
         swap(node, p);
         heapifyUp(node);
     }
 }
+
 void PriorityQueue::heapifyDown(HeapNode* node) {
     if (hasAChild(node) == false) {
         return;
@@ -101,11 +154,38 @@ bool PriorityQueue::lesser(HeapNode* left, HeapNode* right) const{
     return (wl < wr);
 }
 
-PriorityQueue::HeapNode* PriorityQueue::rightMostNode() const {
-    
+PriorityQueue::HeapNode* PriorityQueue::getithNode(int i) const {
+    HeapNode* n = root;
+    if (i <= 1) {
+        return n;
+    }
+    stack<int> reversedBinary;
+    while (i > 0) {
+        reversedBinary.push(i%2);
+        i = i / 2;
+    }
+    reversedBinary.pop(); //Remove first bit
+    while (!reversedBinary.empty()) {
+        int a = reversedBinary.top();
+        reversedBinary.pop();
+        if (a == 0) {
+            n = n->leftChild;
+        } else {
+            n = n->rightChild;
+        }
+    }
+    return n;
 }
 
 void PriorityQueue::swap(HeapNode* a, HeapNode* b) {
+    if (a == root) {
+        root = b;
+    } else {
+        if (b == root) {
+            root = a;
+        }
+    }
+
     if (a == b) {
         return;
     }
@@ -154,6 +234,7 @@ void PriorityQueue::swap(HeapNode* a, HeapNode* b) {
             b_parent->rightChild = a;
         }
     }
+    
 }
 
 void PriorityQueue::swapParentChild(HeapNode* a, HeapNode* b) {

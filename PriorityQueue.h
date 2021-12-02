@@ -20,6 +20,7 @@ class PriorityQueue {
         ~PriorityQueue();
         void push(Graph::SubReddit* subreddit, double weight);
         Graph::SubReddit* peakMin() const;
+        double peakMinValue() const;
         void popMin();
         void changeWeight(Graph::SubReddit* sub, double newWeight);
         bool isEmpty() const;
@@ -33,5 +34,5 @@ class PriorityQueue {
         void swap(HeapNode* a, HeapNode* b);
         bool hasAChild(HeapNode* node) const;
         bool lesser(HeapNode* left, HeapNode* right) const;
-        HeapNode* rightMostNode() const;
+        HeapNode* getithNode(int i) const;
 };
