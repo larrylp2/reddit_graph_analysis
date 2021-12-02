@@ -7,21 +7,6 @@ Graph::Graph() {
 Graph::Graph(string source_directory) {
     source = source_directory;
 }
-/* this would segfault
-void Graph::readGraph(string root) {
-    populateSubreddit(root);
-    SubReddit* rootSub = unique_subreddits.find(root)->second;
-    read_subs.insert(rootSub->name);
-    std::cout << "Populated: " << read_subs.size() << std::endl;
-    for(map<SubReddit*, int>::iterator it = rootSub->adjacent.begin(); it != rootSub->adjacent.end(); it++) {
-        if(read_subs.find(it->first->name) != read_subs.end()) { //already read this subreddit 
-            //do nothing
-        } else {
-            //recursively read this next subreddit
-            readGraph(it->first->name);
-        }
-    }
-}*/
 
 void Graph::readGraphBFS(string root) {
     queue<string> subReddit;
@@ -88,7 +73,7 @@ void Graph::populateSubreddit(std::string name) {
     }
 }
 
-Graph::SubReddit* Graph::retrieveSubreddit(string subName) {
+SubReddit* Graph::retrieveSubreddit(string subName) {
     //start by checking if the subreddit already exists in our map
     map<string, SubReddit*>::iterator iterator = unique_subreddits.find(subName);
     if(iterator != unique_subreddits.end()) {

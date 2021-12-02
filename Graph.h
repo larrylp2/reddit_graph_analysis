@@ -6,7 +6,7 @@
 #include <iostream>
 #include <set>
 #include <queue>
-
+#include "SubReddit.h"
 //#include "Graph.h"
 
 using namespace std;
@@ -20,17 +20,10 @@ const string TXT_SUFFIX = ".txt";
 
 class Graph {
     public:
-        struct SubReddit {
-            string name;
-            map<SubReddit*, int> adjacent; //key is the pointer to an adjacent subreddit, value is the strength of the connection
-        };
-
         Graph();
         Graph(string source_directory); //Construct with the directory
 
         // Read and construct the graph, which calls populateSubReddits to all subreddits
-        //void readGraph(string start);
-
         void readGraphBFS(string start);
 
         void BFSTraversal() const; //Write to a txt file all the nodes in the graph+
