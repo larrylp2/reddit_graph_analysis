@@ -194,7 +194,7 @@ double Graph::dijkstra(string subreddit1, string subreddit2) {
             }
     };
     //Make vector
-    vector<pair<SubReddit*, double>> subredditList = vector<pair<SubReddit*, double>>();
+    vector<pair<SubReddit*, double> > subredditList = vector<pair<SubReddit*, double>>();
     for (pair<string, SubReddit*> s : unique_subreddits) {
         if (s.first == subreddit1) {
             subredditList.push_back(make_pair(s.second, 0));
