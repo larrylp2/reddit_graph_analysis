@@ -48,17 +48,18 @@ cs225::PNG* GraphVisualization::drawGraph(Graph &graph) {
         }
     }
     //only issue is that each edge is drawn twice
+    return image;
 }
 
 
 
 void GraphVisualization::drawNode(cs225::PNG* image, Graph::SubReddit* node, pair<int, int> location) {
-
+    //todo
 }
 
 
 void GraphVisualization::drawLine(cs225::PNG* image, pair<int, int> coord1, pair<int, int> coord2) {
-
+    //todo
 }
 
 
