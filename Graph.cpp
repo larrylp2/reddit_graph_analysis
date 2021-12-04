@@ -178,7 +178,7 @@ vector<string> Graph::getSubRedditListFromUserFile(string username) const {
 }
 
 map<string, double> Graph::dijkstra(string start) {
-    //Construct heap/priority queue
+    // Construct heap/priority queue
     map<string, double> output = map<string, double>();
     SubReddit* startPointer;
     vector<SubReddit*> restPointers; 
@@ -190,6 +190,8 @@ map<string, double> Graph::dijkstra(string start) {
         }
     }
     PriorityQueue pq = PriorityQueue(startPointer, restPointers);
+
+    // Start of Dijkstra
     while (!pq.isEmpty()) {
         SubReddit* node = pq.peakMin();
         double weight = pq.peakMinValue();
