@@ -31,6 +31,8 @@
 *.out
 *.app
 
+.obj
+
 data-fetching/code_verifier.txt
 data-fetching/client_id.txt
 data-fetching/token.txt
