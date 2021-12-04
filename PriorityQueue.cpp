@@ -1,5 +1,6 @@
 #include "PriorityQueue.h"
 #include <stack>
+
 PriorityQueue::PriorityQueue() {
     // Default constructor
     size = 0;
