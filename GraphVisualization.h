@@ -7,18 +7,17 @@ using namespace std;
 
 class GraphVisualization {
     public:
+        GraphVisualization();
+
         GraphVisualization(int radius, int width, int height);
         
-        cs225::PNG* drawGraph(Graph &graph);
+        cs225::PNG* drawGraph(map<Graph::SubReddit*, pair<int, int>> redditCoords);
 
     private:
 
         void drawNode(cs225::PNG* image, Graph::SubReddit* node, pair<int, int> location);
 
         void drawLine(cs225::PNG* image, pair<int, int> coord1, pair<int, int> coord2);
-
-        map<Graph::SubReddit*, pair<int, int>> loadSimulation(Graph& graph);
-
 
         int radius_;
         int width_;

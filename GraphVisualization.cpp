@@ -1,4 +1,5 @@
 #include "GraphVisualization.h"
+#include <math.h>
 
 
 GraphVisualization::GraphVisualization(int radius, int width, int height) {
@@ -8,9 +9,7 @@ GraphVisualization::GraphVisualization(int radius, int width, int height) {
 }
 
 
-cs225::PNG* GraphVisualization::drawGraph(Graph &graph) {
-    map<Graph::SubReddit*, pair<int, int>> redditCoords = loadSimulation(graph);
-
+cs225::PNG* GraphVisualization::drawGraph(map<Graph::SubReddit*, pair<int, int>> redditCoords) {
     cs225::PNG* image = new cs225::PNG(width_, height_);
 
     //start drawing the graph from the first node in the dictionary iterator
@@ -54,12 +53,83 @@ cs225::PNG* GraphVisualization::drawGraph(Graph &graph) {
 
 
 void GraphVisualization::drawNode(cs225::PNG* image, Graph::SubReddit* node, pair<int, int> location) {
-    //todo
+
+    //TODO: Coloring the node
+
+
+    //draws a circle based on the existing radius at the given location
+    //creates the equation of a circle
+    // (x - startingX)^2 + (y - startingY)^2 = radius_^2
+    // positive portion and negative portions
+    // y = (radius^2 - (x - startingX)^2)^.5 - startingY
+    // y = (radius^2 - (x - startingX)^2)^.5 + startingY
+    // y-1 = (4^4 - y-1
+    // x and y are interchangable
+
+    //calculate the upper and lower y values as we go from the left most x coordinate on the circle (start - radius) to the right most x coordinate
+    //at the same time, calculates the upper and lower y values as we go from top most y coordinate to the bottom most y coordinate
+    //(found that only calculating the upper and lower y values yields a unfinished sphere for smaller radius sizes)
+    //round to nearest int when coloring png
+    //assume that the left most x coordinate is nonnegative and within bounds?
+    int x = location.first;
+    int y = location.second;
+
+    int xUpper = x + radius_;
+    int yUpper = y + radius_;
+    int offset = 0; //offset from xUpper and yUpper we are checking
+    while(offset <= radius_ * 2) {
+        //need to add way to write the name
+        //diff
+        float diffY = sqrt(1.0 * (radius_ * radius_) - (xUpper - offset - x) * (xUpper - offset - x));
+        float diffX = sqrt(1.0 * (radius_ * radius_) - (yUpper - offset - y) * (yUpper - offset - y));
+        //std::cout << "current x: " << currentX << " diff " << diff << std::endl;
+
+
+
+        image->getPixel(xUpper - offset, y + diffY).l = 0; //upper y drawn by rounding the float result
+        image->getPixel(xUpper - offset, y - diffY).l = 0; //lower y drawn by rounding the float result
+
+        image->getPixel(x + diffX, yUpper - offset).l = 0; //upper x drawn by rounding the float result
+        image->getPixel(x - diffX, yUpper - offset).l = 0; //lower x drawn by rounding the float result
+
+        offset++;
+        //float currentYUpper = y + diff;
+        //std::cout << "Y Upper: " << currentYUpper << std::endl;
+        //float currentYLower = y - diff;
+        //std::cout << "Y Lower: " << currentYLower << std::endl;
+
+        //assume that resultant y values are also within bounds of the png
+        //image->getPixel(currentX, currentYUpper).l = 0; //set luminance to 0, appears black, round the Y to the correct Y
+        //image->getPixel(currentX, currentYLower).l = 0; //set luminance to 0, appears black, round the Y to the correct Y
+    }
 }
 
 
 void GraphVisualization::drawLine(cs225::PNG* image, pair<int, int> coord1, pair<int, int> coord2) {
-    //todo
+    std::cout << "Drawing from (" << coord1.first << "," << coord1.second << ") to (" << coord2.first << "," << coord2.second << ")" << std::endl;
+    //draws a line between two points
+    int startX = coord1.first;
+    int startY = coord1.second;
+    int endX = coord2.first;
+    int endY = coord2.second;
+
+    //finds the x we need to travel 
+    int xDiff = startX - endX;
+
+    //finds the y we need to travel
+    int yDiff = startY - endY;
+
+    //find the slope (rise over run with dy/dx)
+    float slope = yDiff * 1.0 / xDiff;
+    std::cout << "Slope: " << slope << std::endl;
+    float currentY = startY;
+    float currentX = startX;
+    //follow the slope filling in the nearest whole pixel until we reach the end point
+    while(currentX < endX) {
+        image->getPixel(currentX, (int)currentY).l = 0; //set luminance to 0, appears black, round the Y to the correct Y
+        currentY += slope; //increment the current Y by the slope as we increase X by one
+        currentX++;
+    }
 }
 
 
