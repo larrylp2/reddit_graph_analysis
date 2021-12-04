@@ -34,18 +34,22 @@ cs225::PNG* GraphVisualization::drawGraph(map<Graph::SubReddit*, pair<int, int>>
             pair<int, int> coords = redditCoords.find(node)->second;
             //draw all of the outgoing edges, adding each one to the queue
             for(map<Graph::SubReddit*, int>::iterator it = node->adjacent.begin(); it != node->adjacent.end(); it++) {
-                drawLine(image, coords, redditCoords.find(it->first)->second);
+                drawLine(image, coords, redditCoords.find(it->first)->second, 0, 0, 0);
 
                 toDraw.push(it->first);
             }
-
-            //draw the node itself
-            drawNode(image, node, coords);
-
             //mark this node drawn
             drawn.insert(node);
         }
     }
+
+    //now draw all of the nodes
+    for(map<Graph::SubReddit*, pair<int, int>>::iterator it = redditCoords.begin(); it != redditCoords.end(); it++) {
+        //draw the node itself
+        drawNode(image, it->first, it->second);
+    }
+
+
     //only issue is that each edge is drawn twice
     return image;
 }
@@ -85,6 +89,10 @@ void GraphVisualization::drawNode(cs225::PNG* image, Graph::SubReddit* node, pai
         //std::cout << "current x: " << currentX << " diff " << diff << std::endl;
 
 
+        //draw lines between these two coordinates to fill the circle in addition to drawing the outline
+
+        drawLine(image, pair<int, int>(xUpper - offset, y + diffY), pair<int, int>(xUpper - offset, y - diffY), 11, .5, .5);
+        drawLine(image, pair<int, int>(x + diffX, yUpper - offset), pair<int, int>(x - diffX, yUpper - offset), 11, .5, .5);
 
         image->getPixel(xUpper - offset, y + diffY).l = 0; //upper y drawn by rounding the float result
         image->getPixel(xUpper - offset, y - diffY).l = 0; //lower y drawn by rounding the float result
@@ -105,7 +113,7 @@ void GraphVisualization::drawNode(cs225::PNG* image, Graph::SubReddit* node, pai
 }
 
 
-void GraphVisualization::drawLine(cs225::PNG* image, pair<int, int> coord1, pair<int, int> coord2) {
+void GraphVisualization::drawLine(cs225::PNG* image, pair<int, int> coord1, pair<int, int> coord2, double hue, double saturation, double luminance) {
     std::cout << "Drawing from (" << coord1.first << "," << coord1.second << ") to (" << coord2.first << "," << coord2.second << ")" << std::endl;
     //draws a line between two points
     int startX = coord1.first;
@@ -119,17 +127,34 @@ void GraphVisualization::drawLine(cs225::PNG* image, pair<int, int> coord1, pair
     //finds the y we need to travel
     int yDiff = startY - endY;
 
-    //find the slope (rise over run with dy/dx)
-    float slope = yDiff * 1.0 / xDiff;
-    std::cout << "Slope: " << slope << std::endl;
-    float currentY = startY;
-    float currentX = startX;
-    //follow the slope filling in the nearest whole pixel until we reach the end point
-    while(currentX < endX) {
-        image->getPixel(currentX, (int)currentY).l = 0; //set luminance to 0, appears black, round the Y to the correct Y
-        currentY += slope; //increment the current Y by the slope as we increase X by one
-        currentX++;
+    // we are drawing a vertical line
+    if(xDiff == 0) {
+        while(startY != endY) {
+            image->getPixel(startX, startY).h = hue;
+            image->getPixel(startX, startY).s = saturation;
+            image->getPixel(startX, startY).l = luminance;
+            int increment = (yDiff > 0) ? -1 : 1;
+            startY += increment;
+        }
+    } else {
+
+        //find the slope (rise over run with dy/dx)
+        float slope = yDiff * 1.0 / xDiff;
+        std::cout << "Slope: " << slope << std::endl;
+        float currentY = startY;
+        float currentX = startX;
+        //follow the slope filling in the nearest whole pixel until we reach the end point
+        while(currentX <= endX) {
+            image->getPixel(currentX, (int)currentY).h = hue;
+            image->getPixel(currentX, (int)currentY).s = saturation;
+            image->getPixel(currentX, (int)currentY).l = luminance;
+
+            currentY += slope; //increment the current Y by the slope as we increase X by one
+            currentX++;
+        }
     }
+
+
 }
 
 

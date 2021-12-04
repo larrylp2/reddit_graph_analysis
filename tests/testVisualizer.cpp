@@ -31,5 +31,4 @@ TEST_CASE("testSimpleGraph", "[weight=1]")
     cs225::PNG* drawing = visual.drawGraph(redditCoords);
 
     drawing->writeToFile("smallVisualizerTestOutput.png");
-    REQUIRE(0 == 0);
 }

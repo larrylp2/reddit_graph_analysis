@@ -17,7 +17,7 @@ class GraphVisualization {
 
         void drawNode(cs225::PNG* image, Graph::SubReddit* node, pair<int, int> location);
 
-        void drawLine(cs225::PNG* image, pair<int, int> coord1, pair<int, int> coord2);
+        void drawLine(cs225::PNG* image, pair<int, int> coord1, pair<int, int> coord2, double hue, double saturation, double luminance);
 
         int radius_;
         int width_;

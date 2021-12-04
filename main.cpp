@@ -7,6 +7,7 @@
 #include "GraphVisualization.h"
 
 int main() {
+    /*
     std::cout << "Compile Worked" << std::endl;
 
     std::string file_path = "data-fetching/data/";
@@ -24,6 +25,8 @@ int main() {
     builder.BFSTraversal();
 
     // std::cout << builder.dijkstra("UIUC", "AskReddit");
+    */
+   
 
     Graph::SubReddit* uiuc = new Graph::SubReddit();
     uiuc->name = "UIUC";
