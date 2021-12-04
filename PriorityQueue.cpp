@@ -20,6 +20,9 @@ PriorityQueue::PriorityQueue(Graph::SubReddit* first, vector<Graph::SubReddit*> 
 
 PriorityQueue::~PriorityQueue() {
     // Destructor
+    while (!isEmpty()) {
+        popMin();
+    }
 }
 
 Graph::SubReddit* PriorityQueue::peakMin() const {
@@ -38,38 +41,54 @@ void PriorityQueue::popMin() {
     }
     HeapNode* lastNode = getithNode(size);
     swap(lastNode, root);
-    heapifyDown(lastNode);
-    if (root->parent != NULL) {
-        if (root->parent->leftChild == root) {
-            root->parent->leftChild = NULL;
-        } else {
-            root->parent->rightChild = NULL;
-        }
+    
+    HeapNode* lastNodeParent = getithNode(size/2);
+    if (size % 2 == 1) {
+        delete lastNodeParent->rightChild;
+        lastNodeParent->rightChild = NULL;
+    } else {
+        delete lastNodeParent->leftChild;
+        lastNodeParent->leftChild = NULL;
     }
-    delete getithNode(size);
+    
+    heapifyDown(root);
     size--;
 }
 
 void PriorityQueue::push(Graph::SubReddit* subreddit, double weight) {
     size++;
+    if (size == 1) {
+        root = new HeapNode();
+        root->parent = NULL;
+        root->subreddit = subreddit;
+        root->weight = weight;
+        nodeList[subreddit] = root;
+        return;
+    }
     int parentNode = size / 2;
     HeapNode* n = getithNode(parentNode);
-    if (size % 2 == 1) {
+    if (size % 2 == 0) {
         n->leftChild = new HeapNode();
         n->leftChild->parent = n;
-        n->subreddit = subreddit;
-        n->weight = weight;
+        n->leftChild->subreddit = subreddit;
+        n->leftChild->weight = weight;
+        nodeList[subreddit] = n->leftChild;
+        if (weight != -1) {
+            heapifyUp(n->leftChild);
+            heapifyDown(n->leftChild);
+        }
     } else {
         n->rightChild = new HeapNode();
         n->rightChild->parent = n;
-        n->subreddit = subreddit;
-        n->weight = weight;
+        n->rightChild->subreddit = subreddit;
+        n->rightChild->weight = weight;
+        nodeList[subreddit] = n->rightChild;
+        if (weight != -1) {
+            heapifyUp(n->rightChild);
+            heapifyDown(n->rightChild);
+        }
     }
-    nodeList[subreddit] = n->rightChild;
-    if (weight != -1) {
-        heapifyUp(n->rightChild);
-        heapifyDown(n->rightChild);
-    }
+    
 }
 
 void PriorityQueue::changeWeight(Graph::SubReddit* sub, double newWeight) {
@@ -99,6 +118,9 @@ void PriorityQueue::heapifyUp(HeapNode* node) {
 }
 
 void PriorityQueue::heapifyDown(HeapNode* node) {
+    if (node == NULL) {
+        return;
+    }
     if (hasAChild(node) == false) {
         return;
     }
