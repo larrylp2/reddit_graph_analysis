@@ -21,6 +21,7 @@ class PriorityQueue {
         void push(Graph::SubReddit* subreddit, double weight);
         Graph::SubReddit* peakMin() const;
         double peakMinValue() const;
+        double getWeight(Graph::SubReddit* sub) const;
         void popMin();
         void changeWeight(Graph::SubReddit* sub, double newWeight);
         bool isEmpty() const;

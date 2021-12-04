@@ -5,7 +5,6 @@
 
 #include "Graph.h"
 #include "GraphVisualization.h"
-#include "PriorityQueue.h"
 
 int main() {
     std::cout << "Compile Worked" << std::endl;
@@ -24,12 +23,10 @@ int main() {
 
     builder.BFSTraversal();
 
-    std::cout << builder.dijkstra("UIUC", "AskReddit");
+    // std::cout << builder.dijkstra("UIUC", "AskReddit");
 
     Graph::SubReddit* uiuc = new Graph::SubReddit();
     uiuc->name = "UIUC";
-
-    // PriorityQueue pq = PriorityQueue();
 
     //tests out the visualization
     Graph::SubReddit* cs = new Graph::SubReddit();

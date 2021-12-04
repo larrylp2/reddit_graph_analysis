@@ -43,7 +43,7 @@ class Graph {
         void printMaxConnection() const;
 
         //Return the shortest path weight from subreddit1 to subreddit2
-        double dijkstra(string subreddit1, string subreddit2);
+        map<string, double> dijkstra(string start);
     private:
         // Contain the directory to the data source so we can easily change which tests, sources we use
         // Example: data-fetching/data, test/test1, test/test2

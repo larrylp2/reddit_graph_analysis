@@ -97,6 +97,12 @@ void PriorityQueue::changeWeight(Graph::SubReddit* sub, double newWeight) {
     heapifyUp(n);
     heapifyDown(n);
 }
+
+
+double PriorityQueue::getWeight(Graph::SubReddit* sub) const {
+    HeapNode* n = nodeList.find(sub)->second;
+    return n->weight;
+}
 bool PriorityQueue::isEmpty() const {
     if (size == 0) {
         return true;

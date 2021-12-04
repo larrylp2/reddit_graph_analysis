@@ -1,4 +1,5 @@
 #include "Graph.h"
+#include "PriorityQueue.h"
 
 Graph::Graph() {
     //default constructor
@@ -176,35 +177,37 @@ vector<string> Graph::getSubRedditListFromUserFile(string username) const {
     return subs;
 }
 
-double Graph::dijkstra(string subreddit1, string subreddit2) {
-    //Comparision class
-    class compareSubreddit {
-        public:
-            bool operator()( const pair<SubReddit*, double>& lhs, const pair<SubReddit*, double>& rhs ) const {
-                if (lhs.second == -1) {
-                    return false;
-                }
-                if (rhs.second == -1) {
-                    return true;
-                }
-                if (lhs.second < rhs.second) {
-                    return true;
-                }
-                return false;
-            }
-    };
-    //Make vector
-    vector<pair<SubReddit*, double> > subredditList = vector<pair<SubReddit*, double>>();
-    for (pair<string, SubReddit*> s : unique_subreddits) {
-        if (s.first == subreddit1) {
-            subredditList.push_back(make_pair(s.second, 0));
+map<string, double> Graph::dijkstra(string start) {
+    //Construct heap/priority queue
+    map<string, double> output = map<string, double>();
+    SubReddit* startPointer;
+    vector<SubReddit*> restPointers; 
+    for(map<string, SubReddit*>::iterator it = unique_subreddits.begin(); it != unique_subreddits.end(); it++) {
+        if (it->first == start) {
+            startPointer = it->second;
         } else {
-            subredditList.push_back(make_pair(s.second, -1));
+            restPointers.push_back(it->second);
         }
     }
-    //Construct heap/priority queue
+    PriorityQueue pq = PriorityQueue(startPointer, restPointers);
+    while (!pq.isEmpty()) {
+        SubReddit* node = pq.peakMin();
+        double weight = pq.peakMinValue();
+        pq.popMin();
+        output[node->name] = weight;
+        
+        for (map<SubReddit*, int>::iterator it = node->adjacent.begin(); it != node->adjacent.end(); it++) {
+            if (output.find(it->first->name) != output.end()) {
+                double newWeight = weight + (double) 1/ (double) it->second;
+                double oldWeight = pq.getWeight(it->first);
+                if (oldWeight == -1 || oldWeight > newWeight) {
+                    pq.changeWeight(it->first, newWeight);
+                }
+            }
+        }
 
-    return 0;
+    }
+    return output;
 }
 
 void Graph::clear() {
