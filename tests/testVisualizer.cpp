@@ -1,7 +1,10 @@
-#include "GraphVisualization.h"
+#include "../GraphVisualization.h"
+#include "../cs225/catch/catch.hpp"
 
-int main() {
-    Graph::SubReddit* uiuc = new Graph::SubReddit();
+
+TEST_CASE("testSimpleGraph", "[weight=1]")
+{
+	Graph::SubReddit* uiuc = new Graph::SubReddit();
     uiuc->name = "UIUC";
 
 
@@ -28,6 +31,5 @@ int main() {
     cs225::PNG* drawing = visual.drawGraph(redditCoords);
 
     drawing->writeToFile("smallVisualizerTestOutput.png");
-
-    return 0;
+    REQUIRE(0 == 0);
 }
