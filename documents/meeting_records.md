@@ -43,3 +43,14 @@ We finished the constructor and discussed on optimizing and small changes to the
 
 This week's work: 
 Khanh: implement Dijkstra; Natasha: make tests for graph and BFS; Larry: implements BFS
+
+---
+
+#### <strong>Week:</strong>
+November 29th - December 5th
+#### <strong>Meeting Location:</strong>
+Discord
+#### <strong>Time:</strong>
+6:00 PM - 6:20 PM
+#### <strong>Summary:</strong>
+This week, we made major progress on the project. First, we adjusted the constructor class, completed our BFS traversal, and implemented the Dijkstra's algorithm. Additionally, we started on our goal to create a force-directed diagram of the nodes, finishing a basic GraphVisualiztion class and starting on the PhysicsSimulation class. In this next week, we aim to complete the physics simulation and create tests for all of our existing classes. We hope to finish programming and debugging before the weekend so we can complete our final report and record our presentation.
