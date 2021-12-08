@@ -5,7 +5,7 @@
 #include <fstream>
 #include <sstream>
 
-TEST_CASE("testConstructor", "[weight=1]") {
+TEST_CASE("testDijkstra", "[weight=1]") {
     std::cout << "start" << std::endl;
 
     std::string file_path = "data/testDijkstra1/";
@@ -30,4 +30,9 @@ TEST_CASE("testConstructor", "[weight=1]") {
     REQUIRE((sE->adjacent)[sC] == 5);
     REQUIRE((sC->adjacent)[sE] == 5);
     REQUIRE((sC->adjacent)[sA] == 2);
+
+    map<string, double> output = g.dijkstra("A");
+    for (auto i : output) {
+        cout << i.first << " " << i.second << '\n';
+    }
 }
