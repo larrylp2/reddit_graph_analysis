@@ -32,7 +32,10 @@ TEST_CASE("testDijkstra", "[weight=1]") {
     REQUIRE((sC->adjacent)[sA] == 2);
 
     map<string, double> output = g.dijkstra("A");
-    for (auto i : output) {
-        cout << i.first << " " << i.second << '\n';
-    }
+    
+    REQUIRE(output["A"] == 0);
+    REQUIRE(output["B"] == (double) 1/3);
+    REQUIRE(output["C"] == (double) 1/2);
+    REQUIRE(output["D"] == (double) 4/3);
+    REQUIRE(output["E"] == (double) 7/10);
 }

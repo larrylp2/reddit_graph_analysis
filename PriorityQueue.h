@@ -25,6 +25,7 @@ class PriorityQueue {
         void popMin();
         void changeWeight(Graph::SubReddit* sub, double newWeight);
         bool isEmpty() const;
+        int getSize() const;
     private:
         map<Graph::SubReddit*, HeapNode*> nodeList;
         HeapNode* root;

@@ -13,9 +13,14 @@ PriorityQueue::PriorityQueue(Graph::SubReddit* first, vector<Graph::SubReddit*> 
     root->subreddit = first;
     root->weight = 0;
     nodeList[first] = root;
+    size = 1;
     for (Graph::SubReddit* s : rest) {
         push(s, -1);
     }
+}
+int PriorityQueue::getSize() const {
+    return size;
+
 }
 
 PriorityQueue::~PriorityQueue() {

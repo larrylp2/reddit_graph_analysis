@@ -199,7 +199,7 @@ map<string, double> Graph::dijkstra(string start) {
         output[node->name] = weight;
         
         for (map<SubReddit*, int>::iterator it = node->adjacent.begin(); it != node->adjacent.end(); it++) {
-            if (output.find(it->first->name) != output.end()) {
+            if (output.find(it->first->name) == output.end()) {
                 double newWeight = weight + (double) 1/ (double) it->second;
                 double oldWeight = pq.getWeight(it->first);
                 if (oldWeight == -1 || oldWeight > newWeight) {
