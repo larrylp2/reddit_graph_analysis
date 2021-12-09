@@ -1,6 +1,6 @@
 #pragma once
-#include <vector>
 #include <fstream>
+#include <set>
 
 using namespace std;
 //class that reads in subreddit and user files
@@ -18,12 +18,12 @@ class FileReader {
         FileReader(string file_path);
 
         // Search the file in source/subreddit_text and return the list
-        // Return empty vector if not found
-        vector<string> getUserListFromSubRedditFile(string subreddit_name) const;
+        // Return empty set if not found
+        set<string> getUserListFromSubRedditFile(string subreddit_name) const;
         
         // Search the file in source/user_text and return the list
-        // Return empty vector if not found
-        vector<string> getSubRedditListFromUserFile(string user_name) const;
+        // Return empty set if not found
+        set<string> getSubRedditListFromUserFile(string user_name) const;
 
     private:
         // Contain the directory to the data source so we can easily change which tests, sources we use

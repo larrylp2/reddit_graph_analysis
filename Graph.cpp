@@ -84,14 +84,16 @@ void Graph::BFSToFile() const {
 void Graph::populateSubreddit(std::string name) {
     // name is the name of the subreddit, example: UIUC
 
-    vector<string> user_list = reader.getUserListFromSubRedditFile(name);
+    set<string> user_list = reader.getUserListFromSubRedditFile(name);
     //std::cout << "User Size: " << user_list.size() << std::endl;
-    for (int i = 0; i < (int)user_list.size(); i++) {
-        string u = user_list[i];
+    for (set<string>::iterator it = user_list.begin(); it != user_list.end(); it++) {
+        string u = *it;
         if (checked_users.find(u) != checked_users.end()) { 
             //if the user has already been checked and exists in the set of checked users, do nothing
         } else { //if the user has not yet been checked
-            connectSubRedditList(reader.getSubRedditListFromUserFile(u));
+            set<string> subreddits = reader.getSubRedditListFromUserFile(u);
+            subreddits.insert(name);
+            connectSubRedditList(subreddits);
             checked_users.insert(u);
         }
     }
@@ -182,10 +184,10 @@ void Graph::connectSubreddits(SubReddit* sub1, SubReddit* sub2) {
 }
 
 // List version of addWeight, which call addWeight to all pairs in the list
-void Graph::connectSubRedditList(vector<string> subreddit_list) {
+void Graph::connectSubRedditList(set<string> subreddit_list) {
     vector<SubReddit*> subs;
-    for(int i = 0; i < (int) subreddit_list.size(); i++) {
-        subs.push_back(retrieveSubreddit(subreddit_list[i]));
+    for(set<string>::iterator it = subreddit_list.begin(); it != subreddit_list.end(); it++) {
+        subs.push_back(retrieveSubreddit(*it));
     }
 
     for(int i = 0; i < (int) subs.size(); i++) {
@@ -194,6 +196,11 @@ void Graph::connectSubRedditList(vector<string> subreddit_list) {
         }
     }
 }
+
+map<string, Graph::SubReddit*> Graph::getSubReddits() const {
+    return unique_subreddits;
+}
+
 
 map<string, double> Graph::dijkstra(string start) {
     // Construct heap/priority queue

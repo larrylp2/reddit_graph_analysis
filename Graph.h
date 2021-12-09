@@ -43,6 +43,8 @@ class Graph {
 
         int getMaxConnection() const;
 
+        map<string, Graph::SubReddit*> getSubReddits() const;
+
         //Helper function that retrieves the number of shared users between two subreddits
         int commonUsers(string sub1, string sub2) const;
 
@@ -70,7 +72,7 @@ class Graph {
         void populateSubreddit(string name); 
 
         // List version of connectSubreddits, which calls connectSubreddits to all pairs in the list
-        void connectSubRedditList(vector<string> subreddit_list); 
+        void connectSubRedditList(set<string> subreddit_list); 
 
         //helper function that adds edges between two subreddits (assume that sub1 and sub2 already exist in unique_subreddits)
         void connectSubreddits(SubReddit* sub1, SubReddit* sub2);

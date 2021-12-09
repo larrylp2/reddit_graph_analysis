@@ -8,8 +8,8 @@ FileReader::FileReader(string file_path) {
 
 // Search the file in source/subreddit_text and return the list
 // Return empty vector if not found
-vector<string> FileReader::getUserListFromSubRedditFile(string subreddit) const {
-    vector<string> users;
+set<string> FileReader::getUserListFromSubRedditFile(string subreddit) const {
+    set<string> users;
     
     string user;
     //std::cout << "File: " << source + SUBREDDIT_DATA_PATH + subreddit + TXT_SUFFIX << std::endl;
@@ -17,8 +17,8 @@ vector<string> FileReader::getUserListFromSubRedditFile(string subreddit) const 
     if(sub_file.is_open()) {
         //std::cout << "File Open" << std::endl;
         while(getline(sub_file, user)) {
-            if(user != "0") {
-                users.push_back(user);
+            if(user != "0" && user != "") {
+                users.insert(user);
             }
         }
     }
@@ -27,15 +27,15 @@ vector<string> FileReader::getUserListFromSubRedditFile(string subreddit) const 
         
 // Search the file in source/user_text and return the list
 // Return empty vector if not found
-vector<string> FileReader::getSubRedditListFromUserFile(string username) const {
-    vector<string> subs;
+set<string> FileReader::getSubRedditListFromUserFile(string username) const {
+    set<string> subs;
     
     string sub;
     ifstream user_file(source + USER_DATA_PATH + username + TXT_SUFFIX); //gets the relative path to the subreddit filename
     if(user_file.is_open()) {
         while(getline(user_file, sub)) {
-            if(sub != "0") {
-                subs.push_back(sub);
+            if(sub != "0" && sub != "") {
+                subs.insert(sub);
             }
         }
     }

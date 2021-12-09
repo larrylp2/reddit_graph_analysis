@@ -120,5 +120,10 @@ int main() {
     for(auto itr : v) {
         Dijkstra << itr.first << " " << itr.second << '\n';
     }
+    /*
+    map<Graph::SubReddit*, int> adjacent = g.getSubReddit("PokemonGoRaid")->adjacent;
+    for(map<Graph::SubReddit*, int>::iterator it = adjacent.begin(); it != adjacent.end(); it++) {
+        cout << "Sub: " << it->first->name << " Weight: " << it->second << endl; 
+    }*/
     return 0;
 }
