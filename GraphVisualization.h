@@ -10,6 +10,8 @@ class GraphVisualization {
         GraphVisualization();
 
         GraphVisualization(int radius, int width, int height);
+
+        void convertCoordinates(map<Graph::SubReddit*, pair<int, int>>& redditCoords);
         
         cs225::PNG* drawGraph(map<Graph::SubReddit*, pair<int, int>> redditCoords);
 

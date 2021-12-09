@@ -4,7 +4,7 @@ TEST = testgraph
 
 # Add all object files needed for compiling:
 EXE_OBJ = main.o
-OBJS = main.o Graph.o GraphVisualization.o PriorityQueue.o PhysicSimulation.o
+OBJS = main.o Graph.o GraphVisualization.o PriorityQueue.o PhysicSimulation.o FileReader.o
 
 # Generated files
 CLEAN_RM = 

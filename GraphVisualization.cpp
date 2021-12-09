@@ -8,6 +8,14 @@ GraphVisualization::GraphVisualization(int radius, int width, int height) {
     height_ = height;
 }
 
+void GraphVisualization::convertCoordinates(map<Graph::SubReddit*, pair<int, int>>& redditCoords) {
+    //do a pass through to find the largest and smallest x and y coordinates
+
+
+
+}
+
+
 
 cs225::PNG* GraphVisualization::drawGraph(map<Graph::SubReddit*, pair<int, int>> redditCoords) {
     cs225::PNG* image = new cs225::PNG(width_, height_);
@@ -114,7 +122,7 @@ void GraphVisualization::drawNode(cs225::PNG* image, Graph::SubReddit* node, pai
 
 
 void GraphVisualization::drawLine(cs225::PNG* image, pair<int, int> coord1, pair<int, int> coord2, double hue, double saturation, double luminance) {
-    std::cout << "Drawing from (" << coord1.first << "," << coord1.second << ") to (" << coord2.first << "," << coord2.second << ")" << std::endl;
+    //std::cout << "Drawing from (" << coord1.first << "," << coord1.second << ") to (" << coord2.first << "," << coord2.second << ")" << std::endl;
     //draws a line between two points
     int startX = coord1.first;
     int startY = coord1.second;
@@ -140,7 +148,7 @@ void GraphVisualization::drawLine(cs225::PNG* image, pair<int, int> coord1, pair
 
         //find the slope (rise over run with dy/dx)
         float slope = yDiff * 1.0 / xDiff;
-        std::cout << "Slope: " << slope << std::endl;
+        //std::cout << "Slope: " << slope << std::endl;
         float currentY = startY;
         float currentX = startX;
         //follow the slope filling in the nearest whole pixel until we reach the end point

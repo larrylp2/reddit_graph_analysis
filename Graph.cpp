@@ -1,12 +1,8 @@
 #include "Graph.h"
 #include "PriorityQueue.h"
 
-Graph::Graph() {
-    //default constructor
-}
-
 Graph::Graph(string source_directory) {
-    source = source_directory;
+    reader = FileReader(source_directory);
 }
 
 Graph::~Graph() {
@@ -38,41 +34,64 @@ void Graph::readGraphBFS(string root) {
     }
 }
 
-void Graph::BFSTraversal() const {
+vector<string> Graph::BFSTraversal(string start) const {
     queue<string> subReddit;
-    subReddit.push("UIUC");
+    subReddit.push(start);
+    vector<string> ret;
     set<string> seen_subs; // A set to store subs that have already been seen
-    ofstream BFSOutput("BFSResults.txt");
-    BFSOutput << "UIUC" << std::endl;
+    //ofstream BFSOutput("BFSResults.txt");
+    //BFSOutput << "UIUC" << std::endl;
 
     while(!subReddit.empty()) {
         string sub = subReddit.front();
         subReddit.pop();
         SubReddit* subPtr = unique_subreddits.find(sub)->second;
-        //now add the adjacent ones to the queue
+        ret.push_back(subPtr->name);
+        //add the adjacent subreddits to queue in alphabetical order
+        //(original code created different BFS outputs each time, so do this to make more uniform/testable)
+        
+        //create a vector of adjacent subreddits
+        vector<string> adjacent;
         for(map<SubReddit*, int>::iterator it = subPtr->adjacent.begin(); it != subPtr->adjacent.end(); it++) {
-            if(seen_subs.find(it->first->name) != seen_subs.end()) { //already read this subreddit 
+            adjacent.push_back(it->first->name);
+        }
+        //sort the vector
+        sort(adjacent.begin(), adjacent.end());
+
+        //now add the adjacent subreddits
+        for(string adj : adjacent) {
+            if(seen_subs.find(adj) != seen_subs.end()) { //already read this subreddit 
                 //do nothing
             } else {
-                subReddit.push(it->first->name);
-                BFSOutput << it->first->name << std::endl;
-                seen_subs.insert(it->first->name);
+                subReddit.push(adj);
+                //BFSOutput << it->first->name << std::endl;
+                seen_subs.insert(adj);
             }
         }
+        
+    }
+    return ret;
+}
+
+void Graph::BFSToFile() const {
+    vector<string> BFS = BFSTraversal("UIUC");
+    ofstream BFSOutput("BFSResults.txt");
+    for(string s : BFS) {
+        BFSOutput << s << std::endl;
     }
 }
 
 void Graph::populateSubreddit(std::string name) {
     // name is the name of the subreddit, example: UIUC
 
-    vector<string> user_list = getUserListFromSubRedditFile(name);
+    vector<string> user_list = reader.getUserListFromSubRedditFile(name);
     //std::cout << "User Size: " << user_list.size() << std::endl;
     for (int i = 0; i < (int)user_list.size(); i++) {
         string u = user_list[i];
         if (checked_users.find(u) != checked_users.end()) { 
             //if the user has already been checked and exists in the set of checked users, do nothing
         } else { //if the user has not yet been checked
-            connectSubRedditList(getSubRedditListFromUserFile(u));
+            connectSubRedditList(reader.getSubRedditListFromUserFile(u));
             checked_users.insert(u);
         }
     }
@@ -80,16 +99,27 @@ void Graph::populateSubreddit(std::string name) {
 
 Graph::SubReddit* Graph::retrieveSubreddit(string subName) {
     //start by checking if the subreddit already exists in our map
-    map<string, SubReddit*>::iterator iterator = unique_subreddits.find(subName);
-    if(iterator != unique_subreddits.end()) {
-        //subreddit already exists
-        return iterator->second;
+    Graph::SubReddit* sub = getSubReddit(subName);
+    if(sub) {
+        return sub;
     } else {
         //subreddit does not exist
         SubReddit* newSub = new SubReddit();
         newSub->name = subName;
         unique_subreddits.insert(pair<string, SubReddit*>(subName, newSub));
         return newSub; //return a pointer to the newly created subreddit struct
+    }
+}
+
+Graph::SubReddit* Graph::getSubReddit(string subName) const {
+    //start by checking if the subreddit already exists in our map
+    map<string, SubReddit*>::const_iterator iterator = unique_subreddits.find(subName);
+    if(iterator != unique_subreddits.end()) {
+        //subreddit already exists
+        return iterator->second;
+    } else {
+        //subreddit does not exist
+        return NULL;
     }
 }
 
@@ -105,6 +135,27 @@ void Graph::printMaxConnection() const {
     std::cout << "Max Connection: " << max_connection << std::endl;
     std::cout << "Sub1: " << best1 << " Sub2: " << best2 << std::endl;
 }
+
+int Graph::commonUsers(string sub1, string sub2) const {
+    //get pointers to the two subs
+    Graph::SubReddit* s1 = getSubReddit(sub1);
+    Graph::SubReddit* s2 = getSubReddit(sub2);
+
+    if(s1 && s2) { //make sure that both subreddits exist in the graph
+        //check if the two are connected
+        map<SubReddit*, int>::iterator iterator = s1->adjacent.find(s2);
+        if(iterator != s1->adjacent.end()) { //a connection exists
+            return iterator->second;
+        } else { //a connection does not exist
+            return 0;
+        }
+
+    } else { //if either subreddit does not exist in the graph, return -1
+        return -1;
+    }
+
+}
+
 
 void Graph::connectSubreddits(SubReddit* sub1, SubReddit* sub2) {
 
@@ -138,43 +189,6 @@ void Graph::connectSubRedditList(vector<string> subreddit_list) {
             connectSubreddits(subs[i], subs[j]); //simple algoritm to connect each subreddit with each other
         }
     }
-}
-
-
-// Search the file in source/subreddit_text and return the list
-// Return empty vector if not found
-vector<string> Graph::getUserListFromSubRedditFile(string subreddit) const {
-    vector<string> users;
-    
-    string user;
-    //std::cout << "File: " << source + SUBREDDIT_DATA_PATH + subreddit + TXT_SUFFIX << std::endl;
-    ifstream sub_file(source + SUBREDDIT_DATA_PATH + subreddit + TXT_SUFFIX); //gets the relative path to the subreddit filename
-    if(sub_file.is_open()) {
-        //std::cout << "File Open" << std::endl;
-        while(getline(sub_file, user)) {
-            if(user != "0") {
-                users.push_back(user);
-            }
-        }
-    }
-    return users;
-}
-        
-// Search the file in source/user_text and return the list
-// Return empty vector if not found
-vector<string> Graph::getSubRedditListFromUserFile(string username) const {
-    vector<string> subs;
-    
-    string sub;
-    ifstream user_file(source + USER_DATA_PATH + username + TXT_SUFFIX); //gets the relative path to the subreddit filename
-    if(user_file.is_open()) {
-        while(getline(user_file, sub)) {
-            if(sub != "0") {
-                subs.push_back(sub);
-            }
-        }
-    }
-    return subs;
 }
 
 map<string, double> Graph::dijkstra(string start) {
@@ -222,7 +236,7 @@ void Graph::clear() {
     unique_subreddits = map<string, SubReddit*>();
     checked_users = set<string>();
     read_subs = set<string>();
-    source = "";
+    reader = FileReader();
     best1 = "";
     best2 = "";
     max_connection = 0;

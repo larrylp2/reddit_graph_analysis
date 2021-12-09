@@ -7,14 +7,9 @@
 #include <set>
 #include <queue>
 
-using namespace std;
+#include "FileReader.h"
 
-//const string SUBREDDIT_DATA_PATH = "khanhn2-mohanty7--larrylp2/data-fetching/data/subreddit_text_new/";
-//const string USER_DATA_PATH = "khanhn2-mohanty7--larrylp2/data-fetching/data/user_text_new/";
-const string SUBREDDIT_DATA_PATH = "subreddit_text/";
-const string USER_DATA_PATH = "user_text/";
-const string JSON_SUFFIX = ".json";
-const string TXT_SUFFIX = ".txt";
+using namespace std;
 
 class Graph {
     public:
@@ -23,7 +18,6 @@ class Graph {
             string name;
             map<SubReddit*, int> adjacent;
         };
-        Graph();
         Graph(string source_directory); //Construct with the directory
 
         ~Graph(); //destructor
@@ -31,10 +25,15 @@ class Graph {
         // Read and construct the graph, which calls populateSubReddits to all subreddits
         void readGraphBFS(string start);
 
-        void BFSTraversal() const; //Write to a txt file all the nodes in the graph+
+        vector<string> BFSTraversal(string start) const; //Converts the graph into a vector of nodes through a BFS traversal starting from a certain node
+
+        void BFSToFile() const;
 
         //Helper function that retrieves the pointer to a subreddit based on its name, creating a new SubReddit struct if that subreddit does not already exist
         SubReddit* retrieveSubreddit(string name);
+
+        //Helper function that only retrives the pointer based on the name, returning NULL if the sub does not exist
+        SubReddit* getSubReddit(string name) const;
 
         int getUsers() const;
 
@@ -42,12 +41,14 @@ class Graph {
 
         void printMaxConnection() const;
 
+        //Helper function that retrieves the number of shared users between two subreddits
+        int commonUsers(string sub1, string sub2) const;
+
         //Return the shortest path weight from subreddit1 to subreddit2
         map<string, double> dijkstra(string start);
-    private:
-        // Contain the directory to the data source so we can easily change which tests, sources we use
-        // Example: data-fetching/data, test/test1, test/test2
-        string source;
+    private:    
+        //class that reads subreddit and user text files
+        FileReader reader;
 
         int max_connection = 0;
 
@@ -71,14 +72,6 @@ class Graph {
 
         //helper function that adds edges between two subreddits (assume that sub1 and sub2 already exist in unique_subreddits)
         void connectSubreddits(SubReddit* sub1, SubReddit* sub2);
-
-        // Search the file in source/subreddit_text and return the list
-        // Return empty vector if not found
-        vector<string> getUserListFromSubRedditFile(string sureddit_name) const;
-        
-        // Search the file in source/user_text and return the list
-        // Return empty vector if not found
-        vector<string> getSubRedditListFromUserFile(string user_name) const;
 
         // private helper method that clears allocated heap memory
         void clear();

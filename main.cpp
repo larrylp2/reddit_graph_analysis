@@ -7,7 +7,7 @@
 #include "GraphVisualization.h"
 
 int main() {
-    /*
+    
     std::cout << "Compile Worked" << std::endl;
 
     std::string file_path = "data-fetching/data/";
@@ -22,16 +22,15 @@ int main() {
 
     builder.printMaxConnection();
 
-    builder.BFSTraversal();
+    builder.BFSToFile();
 
     // std::cout << builder.dijkstra("UIUC", "AskReddit");
-    */
+    
    
-
+    //tests out the visualization
     Graph::SubReddit* uiuc = new Graph::SubReddit();
     uiuc->name = "UIUC";
 
-    //tests out the visualization
     Graph::SubReddit* cs = new Graph::SubReddit();
     cs->name = "CS";
     std::map<Graph::SubReddit*, int> adj;
