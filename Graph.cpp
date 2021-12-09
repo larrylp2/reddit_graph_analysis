@@ -207,7 +207,6 @@ map<string, double> Graph::dijkstra(string start) {
         }
     }
     PriorityQueue pq = PriorityQueue(startPointer, restPointers);
-
     // Start of Dijkstra
     while (!pq.isEmpty()) {
         cout << "Dijkstra remaining: " << pq.getSize() << '\n';
@@ -227,7 +226,6 @@ map<string, double> Graph::dijkstra(string start) {
                 }
             }
         }
-
     }
     return output;
 }
