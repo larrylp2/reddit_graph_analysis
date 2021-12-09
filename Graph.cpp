@@ -41,6 +41,7 @@ vector<string> Graph::BFSTraversal(string start) const {
     set<string> seen_subs; // A set to store subs that have already been seen
     //ofstream BFSOutput("BFSResults.txt");
     //BFSOutput << "UIUC" << std::endl;
+    seen_subs.insert(start);
 
     while(!subReddit.empty()) {
         string sub = subReddit.front();

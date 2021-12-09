@@ -5,7 +5,7 @@
 #include <fstream>
 #include <sstream>
 
-TEST_CASE("Constructor Simple Graph", "[weight=1]") {
+TEST_CASE("Constructor Simple Graph 1", "[weight=1]") {
     std::string file_path = "data/testConstructor/";
 
     Graph g = Graph(file_path);
@@ -23,7 +23,7 @@ TEST_CASE("Constructor Simple Graph", "[weight=1]") {
     REQUIRE((g.commonUsers("five", "four") == 0 && g.commonUsers("four", "five") == 0));
 }
 
-TEST_CASE("Constructor Larger Graph", "[weight=1]") {
+TEST_CASE("Constructor Simple Graph 2", "[weight=1]") {
     std::string file_path = "data/testDijkstra1/";
 
     Graph g = Graph(file_path);
@@ -41,3 +41,31 @@ TEST_CASE("Constructor Larger Graph", "[weight=1]") {
     REQUIRE((g.commonUsers("A", "E") == 1 && g.commonUsers("E", "A") == 1));
     REQUIRE((g.commonUsers("C", "E") == 5 && g.commonUsers("E", "C") == 5));
 }
+
+
+TEST_CASE("BFS Output Simple Graph 1", "[weight=1]") {
+    std::string file_path = "data/testConstructor/";
+
+    Graph g = Graph(file_path);
+    g.readGraphBFS("one");
+
+    vector<string> bfs = g.BFSTraversal("one");
+
+    vector<string> expected = {"one", "five", "four", "three", "two"};
+
+    REQUIRE(expected == bfs);
+}
+
+TEST_CASE("BFS Output Simple Graph 2", "[weight=1]") {
+    std::string file_path = "data/testDijkstra1/";
+
+    Graph g = Graph(file_path);
+    g.readGraphBFS("A");
+
+    vector<string> bfs = g.BFSTraversal("A");
+
+    vector<string> expected = {"A", "B", "C", "E", "D"};
+
+    REQUIRE(expected == bfs);
+}
+
