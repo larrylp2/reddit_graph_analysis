@@ -16,10 +16,11 @@ class GraphVisualization {
         cs225::PNG* drawGraph(map<Graph::SubReddit*, pair<int, int>> redditCoords);
 
     private:
+        int calculateNodeHue(Graph::SubReddit* node) const;
 
         void drawNode(cs225::PNG* image, Graph::SubReddit* node, pair<int, int> location);
 
-        void drawLine(cs225::PNG* image, pair<int, int> coord1, pair<int, int> coord2, double hue, double saturation, double luminance);
+        void drawLine(cs225::PNG* image, pair<int, int> coord1, pair<int, int> coord2, double coord1Hue, double coord2Hue, double saturation, double luminance);
 
         int radius_;
         int width_;

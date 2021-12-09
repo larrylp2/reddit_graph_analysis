@@ -75,7 +75,7 @@ cs225::PNG* GraphVisualization::drawGraph(map<Graph::SubReddit*, pair<int, int>>
             pair<int, int> coords = redditCoords.find(node)->second;
             //draw all of the outgoing edges, adding each one to the queue
             for(map<Graph::SubReddit*, int>::iterator it = node->adjacent.begin(); it != node->adjacent.end(); it++) {
-                drawLine(image, coords, redditCoords.find(it->first)->second, 0, 0, 0);
+                drawLine(image, coords, redditCoords.find(it->first)->second, calculateNodeHue(node), calculateNodeHue(it->first), .5, .5);
 
                 toDraw.push(it->first);
             }
@@ -93,6 +93,15 @@ cs225::PNG* GraphVisualization::drawGraph(map<Graph::SubReddit*, pair<int, int>>
 
     //only issue is that each edge is drawn twice
     return image;
+}
+
+int GraphVisualization::calculateNodeHue(Graph::SubReddit* node) const {
+    int scaled = 180 * 1.0 * node->adjacent.size() / max_connections_;
+    int hue = 180 - scaled;
+    if(node->name == "UIUC") {
+        hue = 11;
+    }
+    return hue;
 }
 
 
@@ -123,11 +132,7 @@ void GraphVisualization::drawNode(cs225::PNG* image, Graph::SubReddit* node, pai
     //goes from light blue to red as a node has more outgoing connections (180 - 0)
     //scale the connections to be between 0 and 180
     //we already know the max connection
-    int scaled = 180 * 1.0 * node->adjacent.size() / max_connections_;
-    int hue = 180 - scaled;
-    if(node->name == "UIUC") {
-        hue = 11;
-    }
+    int hue = calculateNodeHue(node);
 
     int xUpper = x + radius_;
     int yUpper = y + radius_;
@@ -141,9 +146,8 @@ void GraphVisualization::drawNode(cs225::PNG* image, Graph::SubReddit* node, pai
 
 
         //draw lines between these two coordinates to fill the circle in addition to drawing the outline
-
-        drawLine(image, pair<int, int>(xUpper - offset, y + diffY), pair<int, int>(xUpper - offset, y - diffY), hue, .5, .5);
-        drawLine(image, pair<int, int>(x + diffX, yUpper - offset), pair<int, int>(x - diffX, yUpper - offset), hue, .5, .5);
+        drawLine(image, pair<int, int>(xUpper - offset, y + diffY), pair<int, int>(xUpper - offset, y - diffY), hue, hue, .5, .5);
+        drawLine(image, pair<int, int>(x + diffX, yUpper - offset), pair<int, int>(x - diffX, yUpper - offset), hue, hue, .5, .5);
 
         image->getPixel(xUpper - offset, y + diffY).l = 0; //upper y drawn by rounding the float result
         image->getPixel(xUpper - offset, y - diffY).l = 0; //lower y drawn by rounding the float result
@@ -164,9 +168,13 @@ void GraphVisualization::drawNode(cs225::PNG* image, Graph::SubReddit* node, pai
 }
 
 
-void GraphVisualization::drawLine(cs225::PNG* image, pair<int, int> coord1, pair<int, int> coord2, double hue, double saturation, double luminance) {
+void GraphVisualization::drawLine(cs225::PNG* image, pair<int, int> coord1, pair<int, int> coord2, double coord1Hue, double coord2Hue, double saturation, double luminance) {
     //std::cout << "Drawing from (" << coord1.first << "," << coord1.second << ") to (" << coord2.first << "," << coord2.second << ")" << std::endl;
     //draws a line between two points
+    int hueChange = coord1Hue - coord2Hue;
+    bool check = coord1Hue == 135;
+    float currentHue = coord1Hue;
+
     int startX = coord1.first;
     int startY = coord1.second;
     int endX = coord2.first;
@@ -180,49 +188,56 @@ void GraphVisualization::drawLine(cs225::PNG* image, pair<int, int> coord1, pair
 
     // we are drawing a vertical line
     if(xDiff == 0) {
+        float hueChangeY = 1.0 * hueChange / yDiff; 
+        int counter = 0;
         while(startY != endY) {
-            image->getPixel(startX, startY).h = hue;
+            image->getPixel(startX, startY).h = currentHue;
             image->getPixel(startX, startY).s = saturation;
             image->getPixel(startX, startY).l = luminance;
             int increment = (yDiff > 0) ? -1 : 1;
             startY += increment;
+            counter++;
+            currentHue += hueChangeY;
         }
     } else {
+        if(abs(yDiff) > abs(xDiff)) { //go by Y if we are travelling through Y more
+            float hueChangeY = 1.0 * hueChange / yDiff;
+            //do from y
+            float slope = xDiff * 1.0 / yDiff;
+            float currentY = startY;
+            float currentX = startX;
+            int counter = 0;
+            while(currentY <= endY) {
+                image->getPixel(currentX, (int)currentY).h = currentHue;
+                image->getPixel(currentX, (int)currentY).s = saturation;
+                image->getPixel(currentX, (int)currentY).l = luminance;
 
-        //find the slope (rise over run with dy/dx)
-        float slope = yDiff * 1.0 / xDiff;
-        //std::cout << "Slope: " << slope << std::endl;
-        float currentY = startY;
-        float currentX = startX;
-        //follow the slope filling in the nearest whole pixel until we reach the end point
-        while(currentX <= endX) {
-            image->getPixel(currentX, (int)currentY).h = hue;
-            image->getPixel(currentX, (int)currentY).s = saturation;
-            image->getPixel(currentX, (int)currentY).l = luminance;
+                currentX += slope; //increment the current Y by the slope as we increase X by one
+                currentY++;
+                currentHue += hueChangeY;
+                counter++;
+            }
 
-            currentY += slope; //increment the current Y by the slope as we increase X by one
-            currentX++;
-        }
+        } else { //go by X if we are travelling through X more
+            float hueChangeX = 1.0 * hueChange / xDiff;
+            //find the slope (rise over run with dy/dx)
+            float slope = yDiff * 1.0 / xDiff;
+            //std::cout << "Slope: " << slope << std::endl;
+            float currentY = startY;
+            float currentX = startX;
+            //follow the slope filling in the nearest whole pixel until we reach the end point
+            while(currentX <= endX) {
+                image->getPixel(currentX, (int)currentY).h = currentHue;
+                image->getPixel(currentX, (int)currentY).s = saturation;
+                image->getPixel(currentX, (int)currentY).l = luminance;
 
-        //do from y
-        slope = xDiff * 1.0 / yDiff;
-        currentY = startY;
-        currentX = startX;
-        while(currentY <= endY) {
-            image->getPixel(currentX, (int)currentY).h = hue;
-            image->getPixel(currentX, (int)currentY).s = saturation;
-            image->getPixel(currentX, (int)currentY).l = luminance;
-
-            currentX += slope; //increment the current Y by the slope as we increase X by one
-            currentY++;
+                currentY += slope; //increment the current Y by the slope as we increase X by one
+                currentX++;
+                currentHue += hueChangeX;
+            }
         }
     }
 
 
 }
-
-
-
-
-
 
