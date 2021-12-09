@@ -27,12 +27,14 @@ TEST_CASE("testSimpleGraph", "[weight=1]")
     redditCoords.insert(pair<Graph::SubReddit*, pair<int, int>>(uiuc, position1));
     redditCoords.insert(pair<Graph::SubReddit*, pair<int, int>>(cs, position2));
 
-    GraphVisualization visual = GraphVisualization(20, 400, 350);
+    GraphVisualization visual = GraphVisualization(20, 400, 350, 2);
 
     cs225::PNG* drawing = visual.drawGraph(redditCoords);
 
+    cs225::HSLAPixel white = cs225::HSLAPixel(0, 0, 1, 1);
+
     REQUIRE(drawing->height() == 350);
     REQUIRE(drawing->width() == 400); 
-    REQUIRE(drawing->getPixel(300, 70).h == 11);
-    REQUIRE(drawing->getPixel(75, 268).h == 11);
+    REQUIRE(drawing->getPixel(300, 70).h != white);
+    REQUIRE(drawing->getPixel(75, 268).h != white);
 }

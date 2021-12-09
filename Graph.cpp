@@ -12,15 +12,15 @@ Graph::~Graph() {
 void Graph::readGraphBFS(string root) {
     queue<string> subReddit;
     subReddit.push(root);
-    int pop = 1;
+    //int pop = 1;
     while(!subReddit.empty()) {
         //populate the subreddit in the front of the qeueu
         string sub = subReddit.front();
-        pop++;
+        //pop++;
         subReddit.pop();
         populateSubreddit(sub);
         SubReddit* subPtr = retrieveSubreddit(sub);
-        std::cout << "Populated: " << pop << std::endl;
+        //std::cout << "Populated: " << pop << std::endl;
         //now add the adjacent ones to the queue
         for(map<SubReddit*, int>::iterator it = subPtr->adjacent.begin(); it != subPtr->adjacent.end(); it++) {
             if(read_subs.find(it->first->name) != read_subs.end()) { //already read this subreddit 
@@ -68,7 +68,6 @@ vector<string> Graph::BFSTraversal(string start) const {
                 seen_subs.insert(adj);
             }
         }
-        
     }
     return ret;
 }
@@ -134,6 +133,10 @@ int Graph::getSubs() const {
 void Graph::printMaxConnection() const {
     std::cout << "Max Connection: " << max_connection << std::endl;
     std::cout << "Sub1: " << best1 << " Sub2: " << best2 << std::endl;
+}
+
+int Graph::getMaxConnection() const {
+    return max_connection;
 }
 
 int Graph::commonUsers(string sub1, string sub2) const {

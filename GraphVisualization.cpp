@@ -2,10 +2,11 @@
 #include <math.h>
 
 
-GraphVisualization::GraphVisualization(int radius, int width, int height) {
+GraphVisualization::GraphVisualization(int radius, int width, int height, int max_connections) {
     radius_ = radius;
     width_ = width;
     height_ = height;
+    max_connections_ = max_connections;
 }
 
 void GraphVisualization::convertCoordinates(map<Graph::SubReddit*, pair<int, int>>& redditCoords) {
@@ -86,6 +87,16 @@ void GraphVisualization::drawNode(cs225::PNG* image, Graph::SubReddit* node, pai
     int x = location.first;
     int y = location.second;
 
+    //hue is dependent on the number of outgoing connections the subreddit has
+    //goes from light blue to red as a node has more outgoing connections (180 - 0)
+    //scale the connections to be between 0 and 180
+    //we already know the max connection
+    int scaled = 180 * 1.0 * node->adjacent.size() / max_connections_;
+    int hue = 180 - scaled;
+    if(node->name == "UIUC") {
+        hue = 11;
+    }
+
     int xUpper = x + radius_;
     int yUpper = y + radius_;
     int offset = 0; //offset from xUpper and yUpper we are checking
@@ -99,8 +110,8 @@ void GraphVisualization::drawNode(cs225::PNG* image, Graph::SubReddit* node, pai
 
         //draw lines between these two coordinates to fill the circle in addition to drawing the outline
 
-        drawLine(image, pair<int, int>(xUpper - offset, y + diffY), pair<int, int>(xUpper - offset, y - diffY), 11, .5, .5);
-        drawLine(image, pair<int, int>(x + diffX, yUpper - offset), pair<int, int>(x - diffX, yUpper - offset), 11, .5, .5);
+        drawLine(image, pair<int, int>(xUpper - offset, y + diffY), pair<int, int>(xUpper - offset, y - diffY), hue, .5, .5);
+        drawLine(image, pair<int, int>(x + diffX, yUpper - offset), pair<int, int>(x - diffX, yUpper - offset), hue, .5, .5);
 
         image->getPixel(xUpper - offset, y + diffY).l = 0; //upper y drawn by rounding the float result
         image->getPixel(xUpper - offset, y - diffY).l = 0; //lower y drawn by rounding the float result
@@ -159,6 +170,19 @@ void GraphVisualization::drawLine(cs225::PNG* image, pair<int, int> coord1, pair
 
             currentY += slope; //increment the current Y by the slope as we increase X by one
             currentX++;
+        }
+
+        //do from y
+        slope = xDiff * 1.0 / yDiff;
+        currentY = startY;
+        currentX = startX;
+        while(currentY <= endY) {
+            image->getPixel(currentX, (int)currentY).h = hue;
+            image->getPixel(currentX, (int)currentY).s = saturation;
+            image->getPixel(currentX, (int)currentY).l = luminance;
+
+            currentX += slope; //increment the current Y by the slope as we increase X by one
+            currentY++;
         }
     }
 

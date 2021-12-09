@@ -41,6 +41,8 @@ class Graph {
 
         void printMaxConnection() const;
 
+        int getMaxConnection() const;
+
         //Helper function that retrieves the number of shared users between two subreddits
         int commonUsers(string sub1, string sub2) const;
 

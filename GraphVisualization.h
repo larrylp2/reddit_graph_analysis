@@ -9,7 +9,7 @@ class GraphVisualization {
     public:
         GraphVisualization();
 
-        GraphVisualization(int radius, int width, int height);
+        GraphVisualization(int radius, int width, int height, int max_connections);
 
         void convertCoordinates(map<Graph::SubReddit*, pair<int, int>>& redditCoords);
         
@@ -24,6 +24,7 @@ class GraphVisualization {
         int radius_;
         int width_;
         int height_;
+        int max_connections_;
 
 
 };
