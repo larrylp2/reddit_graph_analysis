@@ -92,24 +92,30 @@ int main() {
 
     Graph g = Graph("data/data2/");
     g.readGraphBFS("UIUC");
-    // g.BFSToFile();
+    g.BFSToFile();
     map <string, double> dijkstra = g.dijkstra("UIUC");
     vector<pair<string, double>> v = vector<pair<string, double>>();
     for (auto itr : dijkstra) {
         v.push_back(std::make_pair(itr.first, itr.second));
     }
 
-    struct comparator {
+    struct lessthan {
         inline bool operator() (const pair<string, double>& p1, const pair<string, double>& p2) {
+            if (p1.second == -1) {
+                return false;
+            }
+            if (p2.second == -1) {
+                return true;
+            }
             return (p1.second < p2.second);
         }
     };
 
-    std::sort(v.begin(), v.end(), comparator());
+    std::sort(v.begin(), v.end(), lessthan());
     for (auto itr : v) {
         cout << itr.first << " " << itr.second << '\n';
     }
-    
+
     ofstream Dijkstra("DijkstraResult.txt");
     for(auto itr : v) {
         Dijkstra << itr.first << " " << itr.second << '\n';

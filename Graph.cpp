@@ -215,7 +215,9 @@ map<string, double> Graph::dijkstra(string start) {
         double weight = pq.peakMinValue();
         pq.popMin();
         output[node->name] = weight;
-        
+        if (weight == -1) {
+            continue;
+        }
         for (map<SubReddit*, int>::iterator it = node->adjacent.begin(); it != node->adjacent.end(); it++) {
             if (output.find(it->first->name) == output.end()) {
                 double newWeight = weight + (double) 1/ (double) it->second;
