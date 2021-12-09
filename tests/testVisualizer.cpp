@@ -31,8 +31,8 @@ TEST_CASE("testSimpleGraph", "[weight=1]")
 
     cs225::PNG* drawing = visual.drawGraph(redditCoords);
 
-    REQUIRE(drawing.height() == 350);
-    REQUIRE(drawing.width() == 400); 
-    REQUIRE(drawing.getPixel(300, 70).h == 11);
-    REQUIRE(drawing.getPixel(75, 268).h == 11);
+    REQUIRE(drawing->height() == 350);
+    REQUIRE(drawing->width() == 400); 
+    REQUIRE(drawing->getPixel(300, 70).h == 11);
+    REQUIRE(drawing->getPixel(75, 268).h == 11);
 }
