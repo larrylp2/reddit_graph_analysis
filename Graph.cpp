@@ -12,15 +12,15 @@ Graph::~Graph() {
 void Graph::readGraphBFS(string root) {
     queue<string> subReddit;
     subReddit.push(root);
-    //int pop = 1;
+    int pop = 1;
     while(!subReddit.empty()) {
         //populate the subreddit in the front of the qeueu
         string sub = subReddit.front();
-        //pop++;
+        pop++;
         subReddit.pop();
         populateSubreddit(sub);
         SubReddit* subPtr = retrieveSubreddit(sub);
-        //std::cout << "Populated: " << pop << std::endl;
+        std::cout << "Populated: " << pop << std::endl;
         //now add the adjacent ones to the queue
         for(map<SubReddit*, int>::iterator it = subPtr->adjacent.begin(); it != subPtr->adjacent.end(); it++) {
             if(read_subs.find(it->first->name) != read_subs.end()) { //already read this subreddit 
@@ -210,6 +210,7 @@ map<string, double> Graph::dijkstra(string start) {
 
     // Start of Dijkstra
     while (!pq.isEmpty()) {
+        cout << "Dijkstra remaining: " << pq.getSize() << '\n';
         SubReddit* node = pq.peakMin();
         double weight = pq.peakMinValue();
         pq.popMin();
