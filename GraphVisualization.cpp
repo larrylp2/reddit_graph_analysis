@@ -11,9 +11,41 @@ GraphVisualization::GraphVisualization(int radius, int width, int height, int ma
 
 void GraphVisualization::convertCoordinates(map<Graph::SubReddit*, pair<int, int>>& redditCoords) {
     //do a pass through to find the largest and smallest x and y coordinates
+    int smallestX = INT_MAX;
+    int smallestY = INT_MAX;
+    int largestX = INT_MIN;
+    int largestY = INT_MIN;
+
+    for(map<Graph::SubReddit*, pair<int, int>>::iterator it = redditCoords.begin(); it != redditCoords.end(); it++) {
+        int x = it->second.first;
+        int y = it->second.second;
+
+        smallestX = (x < smallestX) ? x : smallestX;
+        smallestY = (y < smallestX) ? y : smallestY;
+        largestX = (x > largestX) ? x : largestX;
+        largestY = (y > largestY) ? y : largestY;
+    }
+
+    //check if we need to make the coordinates positive by translating by the negative x and y
+    int translateY = (smallestY < 0) ? -1 * smallestY : 0;
+    int translateX = (smallestX < 0) ? -1 * smallestX : 0;
 
 
+    largestX += translateX;
+    largestY += translateY;
 
+    for(map<Graph::SubReddit*, pair<int, int>>::iterator it = redditCoords.begin(); it != redditCoords.end(); it++) {
+        int x = it->second.first + translateX; //translate to be non negative
+        int y = it->second.second + translateY; //translate to be non negative
+
+        //scale to be within height bounds
+        y = height_ * 1.0 * y / largestY;
+        x = width_ * 1.0 * y / largestX;
+
+        //update positions
+        it->second.first = x;
+        it->second.second = y;
+    }
 }
 
 
