@@ -200,9 +200,11 @@ void GraphVisualization::drawLine(cs225::PNG* image, pair<int, int> coord1, pair
         float hueChangeY = 1.0 * hueChange / yDiff; 
         int counter = 0;
         while(startY != endY) {
-            image->getPixel(startX, startY).h = currentHue;
-            image->getPixel(startX, startY).s = saturation;
-            image->getPixel(startX, startY).l = luminance;
+            for(int i = -1 * radius_ / 20; i < radius_ / 20 + 1; i++) {
+                image->getPixel(startX + i, startY).h = currentHue;
+                image->getPixel(startX + i, startY).s = saturation;
+                image->getPixel(startX + i, startY).l = luminance;
+            }
             int increment = (yDiff > 0) ? -1 : 1;
             startY += increment;
             counter++;
@@ -217,9 +219,11 @@ void GraphVisualization::drawLine(cs225::PNG* image, pair<int, int> coord1, pair
             float currentX = startX;
             int counter = 0;
             while(currentY <= endY) {
-                image->getPixel(currentX, (int)currentY).h = currentHue;
-                image->getPixel(currentX, (int)currentY).s = saturation;
-                image->getPixel(currentX, (int)currentY).l = luminance;
+                for(int i = -1 * radius_ / 20; i < radius_ / 20 + 1; i++) {
+                    image->getPixel(currentX + i, currentY).h = currentHue;
+                    image->getPixel(currentX + i, currentY).s = saturation;
+                    image->getPixel(currentX + i, currentY).l = luminance;
+                }
 
                 currentX += slope; //increment the current Y by the slope as we increase X by one
                 currentY++;
@@ -236,9 +240,11 @@ void GraphVisualization::drawLine(cs225::PNG* image, pair<int, int> coord1, pair
             float currentX = startX;
             //follow the slope filling in the nearest whole pixel until we reach the end point
             while(currentX <= endX) {
-                image->getPixel(currentX, (int)currentY).h = currentHue;
-                image->getPixel(currentX, (int)currentY).s = saturation;
-                image->getPixel(currentX, (int)currentY).l = luminance;
+                for(int i = -1 * radius_ / 20; i < radius_ / 20 + 1; i++) {
+                    image->getPixel(currentX, currentY + i).h = currentHue;
+                    image->getPixel(currentX, currentY + i).s = saturation;
+                    image->getPixel(currentX, currentY + i).l = luminance;
+                }
 
                 currentY += slope; //increment the current Y by the slope as we increase X by one
                 currentX++;
@@ -267,13 +273,15 @@ void GraphVisualization::loadCharacterPNG(string path) {
         }
         string file = path + current + suffix;
         cout << "File: " << file << endl;
-        cs225::PNG* newChar = new cs225::PNG(60, 70);
+        cs225::PNG* newChar = new cs225::PNG();
+        makeTransparent(newChar);
         newChar->readFromFile(file);
         characters_.insert(pair<char, cs225::PNG*>(c, newChar));
     }
 }
 
 void GraphVisualization::writeLabel(cs225::PNG* image, string label, pair<int, int> location) {
+    cout << "Writing Label: " << label << endl;
     int width = 0; //keep track of the estimated pixel width of the letters
     vector<cs225::PNG*> characters;
     for(char c : label) {
@@ -282,24 +290,79 @@ void GraphVisualization::writeLabel(cs225::PNG* image, string label, pair<int, i
         width += png->width();
     }
 
+    float ratio = 180.0 / width;
+
     //check if the width is greater than the one allocated by the radius
-    if(width > radius_ * 2) {
-        //do later;
+    if(ratio < 1) {
+        //todo
+        //make it centered
+        /*
+        int currentX = location.first - 90;
+        for(cs225::PNG* png : characters) {
+            int height = png->height();
+            int currentWidth = png->width();
+            cs225::PNG copy(*png);
+            copy.resize(currentWidth * ratio, height);
+            //make sure the height is centered as well
+            int startY = location.second - height / 2;
+            int currentY = startY;
+            for(unsigned x = 0; x < copy.width(); x++) {
+                for(unsigned y = 0; y < copy.height(); y++) {
+                    image->getPixel(currentX, currentY).l = copy.getPixel(x, y).l;
+                    currentY++;
+                }
+                currentY = startY;
+                currentX++;
+            }
+        }*/
+        //make it centered
+        int currentX = location.first - width / 2;
+        for(cs225::PNG* png : characters) {
+            int height = png->height();
+            int currentWidth = png->width();
+            //make sure the height is centered as well
+            int startY = location.second - height / 2;
+            int currentY = startY;
+            for(int x = 0; x < currentWidth; x++) {
+                for(int y = 0; y < height; y++) {
+                    if(png->getPixel(x, y).l != 1) {
+                        image->getPixel(currentX, currentY).l = png->getPixel(x, y).l;
+                    }
+                    currentY++;
+                }
+                currentY = startY;
+                currentX++;
+            }
+        }
 
     } else {
         //make it centered
         int currentX = location.first - width / 2;
         for(cs225::PNG* png : characters) {
             int height = png->height();
+            int currentWidth = png->width();
             //make sure the height is centered as well
-            int currentY = location.second - height / 2;
-            for(int x = 0; x < 10; x++) {
+            int startY = location.second - height / 2;
+            int currentY = startY;
+            for(int x = 0; x < currentWidth; x++) {
                 for(int y = 0; y < height; y++) {
-                    if(png->getPixel(x, y).a != 0) {
-                        image->getPixel(currentX, currentY).a = 1;
+                    if(png->getPixel(x, y).l != 1) {
+                        image->getPixel(currentX, currentY).l = png->getPixel(x, y).l;
                     }
+                    currentY++;
                 }
+                currentY = startY;
                 currentX++;
+            }
+        }
+    }
+}
+
+void GraphVisualization::makeTransparent(cs225::PNG* image) {
+    for(unsigned x = 0; x < image->width(); x++) {
+        for(unsigned y = 0; y < image->height(); y++) {
+            if(image->getPixel(x, y).l == 1) {
+                image->getPixel(x, y).a = 0;
             }
         }
     }

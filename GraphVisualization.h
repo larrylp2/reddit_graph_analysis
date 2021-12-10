@@ -28,6 +28,8 @@ class GraphVisualization {
 
         void writeLabel(cs225::PNG* image, string label, pair<int, int> location);
 
+        void makeTransparent(cs225::PNG* image);
+
         int radius_;
         int width_;
         int height_;
