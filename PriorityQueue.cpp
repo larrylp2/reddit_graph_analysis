@@ -55,9 +55,8 @@ void PriorityQueue::popMin() {
         delete lastNodeParent->leftChild;
         lastNodeParent->leftChild = NULL;
     }
-    
-    heapifyDown(root);
     size--;
+    heapifyDown(root);
 }
 
 void PriorityQueue::push(Graph::SubReddit* subreddit, double weight) {
@@ -146,7 +145,7 @@ void PriorityQueue::heapifyDown(HeapNode* node) {
         }
         if (lesser(r, node)) {
             swap(node, r);
-            heapifyUp(node);
+            heapifyDown(node);
             return;
         }
         return;
@@ -154,7 +153,7 @@ void PriorityQueue::heapifyDown(HeapNode* node) {
     if (r == NULL) { //Right NULL
         if (lesser(l, node)) {
             swap(node, l);
-            heapifyUp(node);
+            heapifyDown(node);
             return;
         }
         return;
@@ -162,11 +161,11 @@ void PriorityQueue::heapifyDown(HeapNode* node) {
     if (lesser(r, node)|| lesser(l, node)) { //Both not NULL
         if (lesser(l, r)) {
             swap(node, l);
-            heapifyUp(node);
+            heapifyDown(node);
             return;
         } else {
             swap(node, r);
-            heapifyUp(node);
+            heapifyDown(node);
             return;
         }
     }
