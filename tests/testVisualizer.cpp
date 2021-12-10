@@ -18,7 +18,7 @@ TEST_CASE("Draw Nodes Simple Graph", "[weight=1]")
     redditCoords.insert(pair<Graph::SubReddit*, pair<int, int>>(uiuc, position1));
     redditCoords.insert(pair<Graph::SubReddit*, pair<int, int>>(cs, position2));
 
-    GraphVisualization visual = GraphVisualization(4000, 3500, 2, "../InterFontCharacters/");
+    GraphVisualization visual = GraphVisualization(4000, 3500, 2, "InterFontCharacters/");
 
     cs225::PNG* drawing = visual.drawGraph(redditCoords);
 
@@ -52,7 +52,7 @@ TEST_CASE("Draw Edges Simple Graph", "[weight=1]")
     redditCoords.insert(pair<Graph::SubReddit*, pair<int, int>>(uiuc, position1));
     redditCoords.insert(pair<Graph::SubReddit*, pair<int, int>>(cs, position2));
 
-    GraphVisualization visual = GraphVisualization(4000, 3500, 2, "../InterFontCharacters/");
+    GraphVisualization visual = GraphVisualization(4000, 3500, 2, "InterFontCharacters/");
 
     cs225::PNG* drawing = visual.drawGraph(redditCoords);
 
@@ -94,7 +94,7 @@ TEST_CASE("Draw Nodes Larger Graph", "[weight=1]")
     redditCoords.insert(pair<Graph::SubReddit*, pair<int, int>>(two, position4));
     redditCoords.insert(pair<Graph::SubReddit*, pair<int, int>>(three, position5));
 
-    GraphVisualization visual = GraphVisualization(4000, 4000, 4, "../InterFontCharacters/");
+    GraphVisualization visual = GraphVisualization(4000, 4000, 4, "InterFontCharacters/");
 
     cs225::PNG* drawing = visual.drawGraph(redditCoords);
 
@@ -163,7 +163,7 @@ TEST_CASE("Draw Edges Larger Graph", "[weight=1]")
     redditCoords.insert(pair<Graph::SubReddit*, pair<int, int>>(two, position4));
     redditCoords.insert(pair<Graph::SubReddit*, pair<int, int>>(three, position5));
 
-    GraphVisualization visual = GraphVisualization(4000, 4000, 4, "khanhn2-mohanty7--larrylp2/InterFontCharacters/");
+    GraphVisualization visual = GraphVisualization(4000, 4000, 4, "InterFontCharacters/");
 
     cs225::PNG* drawing = visual.drawGraph(redditCoords);
     drawing->writeToFile("smallVisualizerTestOutput.png");
