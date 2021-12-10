@@ -1,5 +1,6 @@
 #include "Graph.h"
 #include "PriorityQueue.h"
+#include <algorithm>
 
 Graph::Graph(string source_directory) {
     reader = FileReader(source_directory);
@@ -231,6 +232,53 @@ map<string, double> Graph::dijkstra(string start) {
                 double oldWeight = pq.getWeight(it->first);
                 if (oldWeight == -1 || oldWeight > newWeight) {
                     pq.changeWeight(it->first, newWeight);
+                }
+            }
+        }
+    }
+    return output;
+}
+
+map<string, double> Graph::badDijkstra(string start) {
+    // Construct heap/priority queue
+    map<string, double> output = map<string, double>();
+    
+    map<SubReddit*, double> weightMap = map<SubReddit*, double>();
+    set<SubReddit*> visited = set<SubReddit*>();
+    
+    for(map<string, SubReddit*>::iterator it = unique_subreddits.begin(); it != unique_subreddits.end(); it++) {
+        if (it->first == start) {
+            weightMap[it->second] = 0;
+        } else {
+            weightMap[it->second] = -1;
+        }
+    }
+
+    // Start of Dijkstra
+    for (int i = 0; i < getSubs(); i++) {
+        cout << "Dijkstra remaining: " << getSubs() - i<< '\n';
+        SubReddit* node = NULL;
+        double weight = -1;
+        for (auto iter : weightMap) {
+            if (visited.find(iter.first) == visited.end()) {
+                if (weight == -1 || weight < iter.second) {
+                    weight = iter.second;
+                    node = iter.first;
+                }
+            }
+        }
+        if (node == NULL) continue;
+        visited.insert(node);
+        output[node->name] = weight;
+        if (weight == -1) {
+            continue;
+        }
+        for (map<SubReddit*, int>::iterator it = node->adjacent.begin(); it != node->adjacent.end(); it++) {
+            if (output.find(it->first->name) == output.end()) {
+                double newWeight = weight + (double) 1/ (double) it->second;
+                double oldWeight = weightMap[it->first];
+                if (oldWeight == -1 || oldWeight > newWeight) {
+                    weightMap[it->first] = newWeight;
                 }
             }
         }

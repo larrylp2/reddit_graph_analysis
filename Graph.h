@@ -50,6 +50,7 @@ class Graph {
 
         //Return the shortest path weight from subreddit1 to subreddit2
         map<string, double> dijkstra(string start);
+        map<string, double> badDijkstra(string start);
     private:    
         //class that reads subreddit and user text files
         FileReader reader;
