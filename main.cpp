@@ -38,7 +38,7 @@ int main() {
     adj2.insert({cs, 1});
 
     Graph::SubReddit* one = new Graph::SubReddit();
-    one->name = "one";
+    one->name = "long-Sub_Name12344";
     std::map<Graph::SubReddit*, int> adj3;
     adj3.insert({cs, 1});
 

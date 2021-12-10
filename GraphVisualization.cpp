@@ -156,12 +156,13 @@ void GraphVisualization::drawNode(cs225::PNG* image, Graph::SubReddit* node, pai
         //draw lines between these two coordinates to fill the circle in addition to drawing the outline
         drawLine(image, pair<int, int>(xUpper - offset, y + diffY), pair<int, int>(xUpper - offset, y - diffY), hue, hue, .5, .5);
         drawLine(image, pair<int, int>(x + diffX, yUpper - offset), pair<int, int>(x - diffX, yUpper - offset), hue, hue, .5, .5);
-
+        /*
         image->getPixel(xUpper - offset, y + diffY).l = 0; //upper y drawn by rounding the float result
         image->getPixel(xUpper - offset, y - diffY).l = 0; //lower y drawn by rounding the float result
 
         image->getPixel(x + diffX, yUpper - offset).l = 0; //upper x drawn by rounding the float result
         image->getPixel(x - diffX, yUpper - offset).l = 0; //lower x drawn by rounding the float result
+        */
 
         offset++;
         //float currentYUpper = y + diff;
@@ -274,7 +275,6 @@ void GraphVisualization::loadCharacterPNG(string path) {
         string file = path + current + suffix;
         cout << "File: " << file << endl;
         cs225::PNG* newChar = new cs225::PNG();
-        makeTransparent(newChar);
         newChar->readFromFile(file);
         characters_.insert(pair<char, cs225::PNG*>(c, newChar));
     }
@@ -296,37 +296,18 @@ void GraphVisualization::writeLabel(cs225::PNG* image, string label, pair<int, i
     if(ratio < 1) {
         //todo
         //make it centered
-        /*
         int currentX = location.first - 90;
         for(cs225::PNG* png : characters) {
             int height = png->height();
             int currentWidth = png->width();
-            cs225::PNG copy(*png);
-            copy.resize(currentWidth * ratio, height);
+            cs225::PNG copy = resize(png, ratio);
             //make sure the height is centered as well
-            int startY = location.second - height / 2;
+            int startY = location.second - copy.height() / 2;
             int currentY = startY;
             for(unsigned x = 0; x < copy.width(); x++) {
                 for(unsigned y = 0; y < copy.height(); y++) {
-                    image->getPixel(currentX, currentY).l = copy.getPixel(x, y).l;
-                    currentY++;
-                }
-                currentY = startY;
-                currentX++;
-            }
-        }*/
-        //make it centered
-        int currentX = location.first - width / 2;
-        for(cs225::PNG* png : characters) {
-            int height = png->height();
-            int currentWidth = png->width();
-            //make sure the height is centered as well
-            int startY = location.second - height / 2;
-            int currentY = startY;
-            for(int x = 0; x < currentWidth; x++) {
-                for(int y = 0; y < height; y++) {
-                    if(png->getPixel(x, y).l != 1) {
-                        image->getPixel(currentX, currentY).l = png->getPixel(x, y).l;
+                    if(copy.getPixel(x, y).l != 1) {
+                        image->getPixel(currentX, currentY).l = copy.getPixel(x, y).l;
                     }
                     currentY++;
                 }
@@ -334,7 +315,6 @@ void GraphVisualization::writeLabel(cs225::PNG* image, string label, pair<int, i
                 currentX++;
             }
         }
-
     } else {
         //make it centered
         int currentX = location.first - width / 2;
@@ -358,12 +338,25 @@ void GraphVisualization::writeLabel(cs225::PNG* image, string label, pair<int, i
     }
 }
 
-void GraphVisualization::makeTransparent(cs225::PNG* image) {
-    for(unsigned x = 0; x < image->width(); x++) {
-        for(unsigned y = 0; y < image->height(); y++) {
-            if(image->getPixel(x, y).l == 1) {
-                image->getPixel(x, y).a = 0;
-            }
+cs225::PNG GraphVisualization::resize(const cs225::PNG* image, float ratio) {
+    int newWidth = image->width() * ratio;
+    int newHeight = image->height() * ratio;
+    cs225::PNG newImage = cs225::PNG(newWidth, newHeight);
+
+    //ratios/step size
+    float step = 1.0 / ratio;
+
+    float otherX = 0;
+    float otherY = 0;
+
+    for(int x = 0; x < newWidth; x++) {
+        for(int y = 0; y < newHeight; y++) {
+            newImage.getPixel(x, y) = image->getPixel(otherX, otherY);
+            otherY += step;
         }
+        otherY = 0;
+        otherX += step;
     }
+    return newImage;
 }
+
