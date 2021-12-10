@@ -94,11 +94,15 @@ int main() {
     g.readGraphBFS("UIUC");
     g.BFSToFile();
     map <string, double> dijkstra = g.dijkstra("UIUC");
+    map <string, double> badDijkstra = g.badDijkstra("UIUC");
     vector<pair<string, double>> v = vector<pair<string, double>>();
     for (auto itr : dijkstra) {
         v.push_back(std::make_pair(itr.first, itr.second));
     }
-
+    vector<pair<string, double>> vbad = vector<pair<string, double>>();
+    for (auto itr : badDijkstra) {
+        vbad.push_back(std::make_pair(itr.first, itr.second));
+    }
     struct lessthan {
         inline bool operator() (const pair<string, double>& p1, const pair<string, double>& p2) {
             if (p1.second == -1) {
@@ -112,13 +116,16 @@ int main() {
     };
 
     std::sort(v.begin(), v.end(), lessthan());
-    for (auto itr : v) {
-        cout << itr.first << " " << itr.second << '\n';
-    }
+    std::sort(vbad.begin(), vbad.end(), lessthan());
 
     ofstream Dijkstra("DijkstraResult.txt");
     for(auto itr : v) {
         Dijkstra << itr.first << " " << itr.second << '\n';
+    }
+
+    ofstream BadDijkstra("BadDijkstraResult.txt");
+    for(auto itr : vbad) {
+        BadDijkstra << itr.first << " " << itr.second << '\n';
     }
     /*
     map<Graph::SubReddit*, int> adjacent = g.getSubReddit("PokemonGoRaid")->adjacent;
