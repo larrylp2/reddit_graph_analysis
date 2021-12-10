@@ -13,12 +13,12 @@ GraphVisualization::~GraphVisualization() {
     characters_ = map<char, cs225::PNG*>();
 }
 
-GraphVisualization::GraphVisualization(int width, int height, int max_connections) {
+GraphVisualization::GraphVisualization(int width, int height, int max_connections, string path) {
     radius_ = 100;
     width_ = width;
     height_ = height;
     max_connections_ = max_connections;
-    loadCharacterPNG();
+    loadCharacterPNG(path);
 }
 
 void GraphVisualization::convertCoordinates(map<Graph::SubReddit*, pair<int, int>>& redditCoords) {
@@ -250,9 +250,8 @@ void GraphVisualization::drawLine(cs225::PNG* image, pair<int, int> coord1, pair
 
 }
 
-void GraphVisualization::loadCharacterPNG() {
+void GraphVisualization::loadCharacterPNG(string path) {
     string neededChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
-    string folder = "/InterFontCharacters/";
     string suffix = ".png";
     for(char c : neededChars) {
         string current;
@@ -266,9 +265,9 @@ void GraphVisualization::loadCharacterPNG() {
         } else {
             current = string({c});
         }
-        string file = folder + current + suffix;
+        string file = path + current + suffix;
         cout << "File: " << file << endl;
-        cs225::PNG* newChar = new cs225::PNG(10, 16);
+        cs225::PNG* newChar = new cs225::PNG(60, 70);
         newChar->readFromFile(file);
         characters_.insert(pair<char, cs225::PNG*>(c, newChar));
     }

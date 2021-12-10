@@ -11,14 +11,14 @@ class GraphVisualization {
 
         ~GraphVisualization();
 
-        GraphVisualization(int width, int height, int max_connections);
+        GraphVisualization(int width, int height, int max_connections, string path);
 
         void convertCoordinates(map<Graph::SubReddit*, pair<int, int>>& redditCoords);
         
         cs225::PNG* drawGraph(map<Graph::SubReddit*, pair<int, int>> redditCoords);
 
     private:
-        void loadCharacterPNG();
+        void loadCharacterPNG(string path);
 
         int calculateNodeHue(Graph::SubReddit* node) const;
 
