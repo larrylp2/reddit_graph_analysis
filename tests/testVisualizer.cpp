@@ -11,21 +11,21 @@ TEST_CASE("Draw Nodes Simple Graph", "[weight=1]")
     Graph::SubReddit* cs = new Graph::SubReddit();
     cs->name = "CS";
 
-    std::pair<int, int> position1(300, 70);
-    std::pair<int ,int> position2(75, 268);
+    std::pair<int, int> position1(3000, 700);
+    std::pair<int ,int> position2(750, 2680);
 
     map<Graph::SubReddit*, pair<int, int>> redditCoords;
     redditCoords.insert(pair<Graph::SubReddit*, pair<int, int>>(uiuc, position1));
     redditCoords.insert(pair<Graph::SubReddit*, pair<int, int>>(cs, position2));
 
-    GraphVisualization visual = GraphVisualization(20, 400, 350, 2);
+    GraphVisualization visual = GraphVisualization(4000, 3500, 2);
 
     cs225::PNG* drawing = visual.drawGraph(redditCoords);
 
-    REQUIRE(drawing->height() == 350);
-    REQUIRE(drawing->width() == 400); 
-    REQUIRE(drawing->getPixel(300, 70).h == 11); //UIUC node automatically orange
-    REQUIRE(drawing->getPixel(75, 268).h != 0);
+    REQUIRE(drawing->height() == 3500);
+    REQUIRE(drawing->width() == 4000); 
+    REQUIRE(drawing->getPixel(3000, 700).h == 11); //UIUC node automatically orange
+    REQUIRE(drawing->getPixel(750, 2680).h == 180);
 }
 
 TEST_CASE("Draw Edges Simple Graph", "[weight=1]")
@@ -37,20 +37,30 @@ TEST_CASE("Draw Edges Simple Graph", "[weight=1]")
     Graph::SubReddit* cs = new Graph::SubReddit();
     cs->name = "CS";
 
-    std::pair<int, int> position1(300, 70);
-    std::pair<int ,int> position2(75, 268);
+    std::map<Graph::SubReddit*, int> adj;
+    std::map<Graph::SubReddit*, int> adj2;
+    adj2.insert({cs, 1});
+    adj.insert({uiuc, 1});
+
+    cs->adjacent = adj;
+    uiuc->adjacent = adj2;
+
+    std::pair<int, int> position1(3000, 700);
+    std::pair<int ,int> position2(750, 2680);
 
     map<Graph::SubReddit*, pair<int, int>> redditCoords;
     redditCoords.insert(pair<Graph::SubReddit*, pair<int, int>>(uiuc, position1));
     redditCoords.insert(pair<Graph::SubReddit*, pair<int, int>>(cs, position2));
 
-    GraphVisualization visual = GraphVisualization(20, 400, 350, 2);
+    GraphVisualization visual = GraphVisualization(4000, 3500, 2);
 
     cs225::PNG* drawing = visual.drawGraph(redditCoords);
 
-    REQUIRE(drawing->height() == 350);
-    REQUIRE(drawing->width() == 400); 
+    REQUIRE(drawing->height() == 3500);
+    REQUIRE(drawing->width() == 4000); 
+
     //test that the midpoint is colored instead of tracing entire edge
+    REQUIRE(drawing->getPixel((3000.0 + 750) / 2, (700.0 + 2680) / 2).l == 0.5);
 
 }
 
@@ -71,11 +81,11 @@ TEST_CASE("Draw Nodes Larger Graph", "[weight=1]")
     Graph::SubReddit* three = new Graph::SubReddit();
     three->name = "three";
 
-    std::pair<int, int> position1(300, 70);
-    std::pair<int ,int> position2(75, 268);
-    std::pair<int ,int> position3(40, 30);
-    std::pair<int ,int> position4(300, 300);
-    std::pair<int ,int> position5(200, 20);
+    std::pair<int, int> position1(3000, 700);
+    std::pair<int ,int> position2(750, 2680);
+    std::pair<int ,int> position3(400, 300);
+    std::pair<int ,int> position4(3000, 3000);
+    std::pair<int ,int> position5(2000, 200);
 
     map<Graph::SubReddit*, pair<int, int>> redditCoords;
     redditCoords.insert(pair<Graph::SubReddit*, pair<int, int>>(uiuc, position1));
@@ -84,17 +94,17 @@ TEST_CASE("Draw Nodes Larger Graph", "[weight=1]")
     redditCoords.insert(pair<Graph::SubReddit*, pair<int, int>>(two, position4));
     redditCoords.insert(pair<Graph::SubReddit*, pair<int, int>>(three, position5));
 
-    GraphVisualization visual = GraphVisualization(20, 400, 400, 4);
+    GraphVisualization visual = GraphVisualization(4000, 4000, 4);
 
     cs225::PNG* drawing = visual.drawGraph(redditCoords);
 
-    REQUIRE(drawing->height() == 400);
-    REQUIRE(drawing->width() == 400); 
-    REQUIRE(drawing->getPixel(300, 70).h == 11); //UIUC node automatically orange
-    REQUIRE(drawing->getPixel(75, 268).h != 0); 
-    REQUIRE(drawing->getPixel(40, 30).h != 0); 
-    REQUIRE(drawing->getPixel(300, 300).h != 0); 
-    REQUIRE(drawing->getPixel(200, 20).h != 0); 
+    REQUIRE(drawing->height() == 4000);
+    REQUIRE(drawing->width() == 4000); 
+    REQUIRE(drawing->getPixel(3000, 700).h == 11); //UIUC node automatically orange
+    REQUIRE(drawing->getPixel(750, 2680).h != 0); 
+    REQUIRE(drawing->getPixel(400, 300).h != 0); 
+    REQUIRE(drawing->getPixel(3000, 3000).h != 0); 
+    REQUIRE(drawing->getPixel(2000, 200).h != 0); 
 
 }
 
@@ -139,11 +149,11 @@ TEST_CASE("Draw Edges Larger Graph", "[weight=1]")
     three->adjacent = adj5;
 
 
-    std::pair<int, int> position1(300, 70);
-    std::pair<int ,int> position2(75, 268);
-    std::pair<int ,int> position3(40, 30);
-    std::pair<int ,int> position4(300, 300);
-    std::pair<int ,int> position5(200, 20);
+    std::pair<int, int> position1(3000, 700);
+    std::pair<int ,int> position2(750, 2680);
+    std::pair<int ,int> position3(400, 300);
+    std::pair<int ,int> position4(3000, 3000);
+    std::pair<int ,int> position5(2000, 200);
 
 
     map<Graph::SubReddit*, pair<int, int>> redditCoords;
@@ -153,11 +163,28 @@ TEST_CASE("Draw Edges Larger Graph", "[weight=1]")
     redditCoords.insert(pair<Graph::SubReddit*, pair<int, int>>(two, position4));
     redditCoords.insert(pair<Graph::SubReddit*, pair<int, int>>(three, position5));
 
-    GraphVisualization visual = GraphVisualization(20, 400, 400, 4);
+    GraphVisualization visual = GraphVisualization(4000, 4000, 4);
 
     cs225::PNG* drawing = visual.drawGraph(redditCoords);
+    drawing->writeToFile("smallVisualizerTestOutput.png");
+
+    REQUIRE(drawing->height() == 4000);
+    REQUIRE(drawing->width() == 4000); 
+
 
     //test the midpoints points of each edge
+    REQUIRE(drawing->getPixel((3000.0 + 750) / 2, (700.0 + 2680) / 2).l == 0.5);
+    REQUIRE(drawing->getPixel((2000.0 + 750) / 2, (200.0 + 2680) / 2).l == 0.5);
+    REQUIRE(drawing->getPixel((3000.0 + 2000) / 2, (3000.0 + 200) / 2).l == 0.5);
+
+
+    //test hues
+    REQUIRE(drawing->getPixel(3000, 700).h == 11); //UIUC node automatically orange
+    REQUIRE(drawing->getPixel(750, 2680).h == 0); 
+    REQUIRE(drawing->getPixel(400, 300).h == 135); 
+    REQUIRE(drawing->getPixel(3000, 3000).h == 90); 
+    REQUIRE(drawing->getPixel(2000, 200).h == 90); 
+
 
 }
 

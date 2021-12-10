@@ -1,12 +1,24 @@
 #include "GraphVisualization.h"
 #include <math.h>
 
+GraphVisualization::GraphVisualization() {
+    //default constructor
+}
 
-GraphVisualization::GraphVisualization(int radius, int width, int height, int max_connections) {
-    radius_ = radius;
+GraphVisualization::~GraphVisualization() {
+    //destructor
+    for(map<char, cs225::PNG*>::iterator it = characters_.begin(); it != characters_.end(); it++) {
+        delete it->second;
+    }
+    characters_ = map<char, cs225::PNG*>();
+}
+
+GraphVisualization::GraphVisualization(int width, int height, int max_connections) {
+    radius_ = 100;
     width_ = width;
     height_ = height;
     max_connections_ = max_connections;
+    loadCharacterPNG();
 }
 
 void GraphVisualization::convertCoordinates(map<Graph::SubReddit*, pair<int, int>>& redditCoords) {
@@ -47,8 +59,6 @@ void GraphVisualization::convertCoordinates(map<Graph::SubReddit*, pair<int, int
         it->second.second = y;
     }
 }
-
-
 
 cs225::PNG* GraphVisualization::drawGraph(map<Graph::SubReddit*, pair<int, int>> redditCoords) {
     cs225::PNG* image = new cs225::PNG(width_, height_);
@@ -103,8 +113,6 @@ int GraphVisualization::calculateNodeHue(Graph::SubReddit* node) const {
     }
     return hue;
 }
-
-
 
 void GraphVisualization::drawNode(cs225::PNG* image, Graph::SubReddit* node, pair<int, int> location) {
 
@@ -165,8 +173,9 @@ void GraphVisualization::drawNode(cs225::PNG* image, Graph::SubReddit* node, pai
         //image->getPixel(currentX, currentYUpper).l = 0; //set luminance to 0, appears black, round the Y to the correct Y
         //image->getPixel(currentX, currentYLower).l = 0; //set luminance to 0, appears black, round the Y to the correct Y
     }
-}
 
+    writeLabel(image, node->name, location);
+}
 
 void GraphVisualization::drawLine(cs225::PNG* image, pair<int, int> coord1, pair<int, int> coord2, double coord1Hue, double coord2Hue, double saturation, double luminance) {
     //std::cout << "Drawing from (" << coord1.first << "," << coord1.second << ") to (" << coord2.first << "," << coord2.second << ")" << std::endl;
@@ -241,3 +250,58 @@ void GraphVisualization::drawLine(cs225::PNG* image, pair<int, int> coord1, pair
 
 }
 
+void GraphVisualization::loadCharacterPNG() {
+    string neededChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
+    string folder = "/InterFontCharacters/";
+    string suffix = ".png";
+    for(char c : neededChars) {
+        string current;
+        if(c >= 65 && c <= 90) { //capital character
+            char cc = c + 32;
+            current = string({cc}) + "cap";
+        } else if (c == '-') {
+            current = "customdash";
+        } else if (c == '_') {
+            current = "customunderscore";
+        } else {
+            current = string({c});
+        }
+        string file = folder + current + suffix;
+        cout << "File: " << file << endl;
+        cs225::PNG* newChar = new cs225::PNG(10, 16);
+        newChar->readFromFile(file);
+        characters_.insert(pair<char, cs225::PNG*>(c, newChar));
+    }
+}
+
+void GraphVisualization::writeLabel(cs225::PNG* image, string label, pair<int, int> location) {
+    int width = 0; //keep track of the estimated pixel width of the letters
+    vector<cs225::PNG*> characters;
+    for(char c : label) {
+        cs225::PNG* png = characters_.find(c)->second;
+        characters.push_back(png);
+        width += png->width();
+    }
+
+    //check if the width is greater than the one allocated by the radius
+    if(width > radius_ * 2) {
+        //do later;
+
+    } else {
+        //make it centered
+        int currentX = location.first - width / 2;
+        for(cs225::PNG* png : characters) {
+            int height = png->height();
+            //make sure the height is centered as well
+            int currentY = location.second - height / 2;
+            for(int x = 0; x < 10; x++) {
+                for(int y = 0; y < height; y++) {
+                    if(png->getPixel(x, y).a != 0) {
+                        image->getPixel(currentX, currentY).a = 1;
+                    }
+                }
+                currentX++;
+            }
+        }
+    }
+}
