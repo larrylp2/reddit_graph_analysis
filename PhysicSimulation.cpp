@@ -15,11 +15,15 @@ void PhysicSimulation::initiateGraph(Graph g) {
 
     //retrieve the total number of subreddits
     //int totalSubreddits = g.getSubs();
+<<<<<<< HEAD
 
     // if (g == NULL) {
     //     return;
     // }
 
+=======
+    
+>>>>>>> a4427d6c5ad07c16fa43d0222be3e428fb7200a1
     //retrieve the collection of subreddits
     map<string, Graph::SubReddit*> subreddits = g.getSubReddits();
     //setting the common position
@@ -33,8 +37,13 @@ void PhysicSimulation::initiateGraph(Graph g) {
     }
     
 }
+<<<<<<< HEAD
 
 map<Graph::SubReddit*, pair<int, int>> PhysicSimulation::simulateFor(int seconds) {
+=======
+/**
+map<Graph::SubReddit*, pair<int, int>> simulateFor(int seconds) {
+>>>>>>> a4427d6c5ad07c16fa43d0222be3e428fb7200a1
     for (int i = 0; i < seconds; i++) {
         for (map<Graph::SubReddit*, pair<int, int>>::iterator it = positions.begin(); it != positions.end(); it++) {
             std::pair<int, int> force_vector(0, 0);
@@ -45,5 +54,9 @@ map<Graph::SubReddit*, pair<int, int>> PhysicSimulation::simulateFor(int seconds
             // int total_distance = sqrt(x_distance + y_distance);
         }
     }
+<<<<<<< HEAD
     return map<Graph::SubReddit*, pair<int,int>>();
 }
+=======
+}**/
+>>>>>>> a4427d6c5ad07c16fa43d0222be3e428fb7200a1
