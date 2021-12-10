@@ -261,7 +261,7 @@ map<string, double> Graph::badDijkstra(string start) {
         double weight = -1;
         for (auto iter : weightMap) {
             if (visited.find(iter.first) == visited.end()) {
-                if (weight == -1 || weight < iter.second) {
+                if (weight == -1 || (iter.second != -1 && weight > iter.second)) {
                     weight = iter.second;
                     node = iter.first;
                 }

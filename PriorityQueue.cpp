@@ -79,8 +79,9 @@ void PriorityQueue::push(Graph::SubReddit* subreddit, double weight) {
         n->leftChild->weight = weight;
         nodeList[subreddit] = n->leftChild;
         if (weight != -1) {
-            heapifyUp(n->leftChild);
-            heapifyDown(n->leftChild);
+            HeapNode* h = n->leftChild;
+            heapifyUp(h);
+            heapifyDown(h);
         }
     } else {
         n->rightChild = new HeapNode();
@@ -89,8 +90,9 @@ void PriorityQueue::push(Graph::SubReddit* subreddit, double weight) {
         n->rightChild->weight = weight;
         nodeList[subreddit] = n->rightChild;
         if (weight != -1) {
-            heapifyUp(n->rightChild);
-            heapifyDown(n->rightChild);
+            HeapNode* h = n->rightChild;
+            heapifyUp(h);
+            heapifyDown(h);
         }
     }
     
