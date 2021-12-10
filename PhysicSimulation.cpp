@@ -15,9 +15,7 @@ void PhysicSimulation::initiateGraph(Graph g) {
 
     //retrieve the total number of subreddits
     //int totalSubreddits = g.getSubs();
-    if (g == NULL) {
-        return;
-    }
+    
     //retrieve the collection of subreddits
     map<string, Graph::SubReddit*> subreddits = g.getSubReddits();
     //setting the common position
@@ -31,7 +29,7 @@ void PhysicSimulation::initiateGraph(Graph g) {
     }
     
 }
-
+/**
 map<Graph::SubReddit*, pair<int, int>> simulateFor(int seconds) {
     for (int i = 0; i < seconds; i++) {
         for (map<Graph::SubReddit*, pair<int, int>>::iterator it = positions.begin(); it != positions.end(); it++) {
@@ -43,4 +41,4 @@ map<Graph::SubReddit*, pair<int, int>> simulateFor(int seconds) {
             int total_distance = sqrt(x_distance + y_distance);
         }
     }
-}
+}**/
