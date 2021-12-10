@@ -22,6 +22,8 @@ GraphVisualization::GraphVisualization(int width, int height, int max_connection
 }
 
 void GraphVisualization::convertCoordinates(map<Graph::SubReddit*, pair<int, int>>& redditCoords) {
+    int margin = radius_ * 2;
+
     //do a pass through to find the largest and smallest x and y coordinates
     int smallestX = INT_MAX;
     int smallestY = INT_MAX;
@@ -38,10 +40,8 @@ void GraphVisualization::convertCoordinates(map<Graph::SubReddit*, pair<int, int
         largestY = (y > largestY) ? y : largestY;
     }
 
-    //check if we need to make the coordinates positive by translating by the negative x and y
-    int translateY = (smallestY < 0) ? -1 * smallestY : 0;
-    int translateX = (smallestX < 0) ? -1 * smallestX : 0;
-
+    int translateY = -1 * smallestY + margin;
+    int translateX = -1 * smallestX + margin;
 
     largestX += translateX;
     largestY += translateY;
@@ -50,7 +50,7 @@ void GraphVisualization::convertCoordinates(map<Graph::SubReddit*, pair<int, int
         int x = it->second.first + translateX; //translate to be non negative
         int y = it->second.second + translateY; //translate to be non negative
 
-        //scale to be within height bounds
+        //scale to be within height bounds (and)
         y = height_ * 1.0 * y / largestY;
         x = width_ * 1.0 * y / largestX;
 
@@ -273,7 +273,7 @@ void GraphVisualization::loadCharacterPNG(string path) {
             current = string({c});
         }
         string file = path + current + suffix;
-        cout << "File: " << file << endl;
+        //cout << "File: " << file << endl;
         cs225::PNG* newChar = new cs225::PNG();
         newChar->readFromFile(file);
         characters_.insert(pair<char, cs225::PNG*>(c, newChar));
@@ -281,7 +281,7 @@ void GraphVisualization::loadCharacterPNG(string path) {
 }
 
 void GraphVisualization::writeLabel(cs225::PNG* image, string label, pair<int, int> location) {
-    cout << "Writing Label: " << label << endl;
+    //cout << "Writing Label: " << label << endl;
     int width = 0; //keep track of the estimated pixel width of the letters
     vector<cs225::PNG*> characters;
     for(char c : label) {

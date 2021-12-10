@@ -173,9 +173,11 @@ TEST_CASE("Draw Edges Larger Graph", "[weight=1]")
 
 
     //test the midpoints points of each edge
-    REQUIRE(drawing->getPixel((3000.0 + 750) / 2, (700.0 + 2680) / 2).l == 0.5);
-    REQUIRE(drawing->getPixel((2000.0 + 750) / 2, (200.0 + 2680) / 2).l == 0.5);
-    REQUIRE(drawing->getPixel((3000.0 + 2000) / 2, (3000.0 + 200) / 2).l == 0.5);
+    REQUIRE(drawing->getPixel((3000.0 + 750) / 2, (700.0 + 2680) / 2).l == 0.5); //edge between UIUC and CS
+    REQUIRE(drawing->getPixel((400.0 + 750) / 2, (300.0 + 2680) / 2).l == 0.5); //edge between one and CS
+    REQUIRE(drawing->getPixel((2000.0 + 750) / 2, (200.0 + 2680) / 2).l == 0.5); //edge between two and CS
+    REQUIRE(drawing->getPixel((2000.0 + 750) / 2, (200.0 + 2680) / 2).l == 0.5); //edge between three and CS
+    REQUIRE(drawing->getPixel((3000.0 + 2000) / 2, (3000.0 + 200) / 2).l == 0.5); //edge between two and three
 
 
     //test hues
