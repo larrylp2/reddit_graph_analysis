@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Graph.h"
 #include "cs225/PNG.h"
-//#include "GraphSimulation"
+#include "PhysicSimulation.h"
+#include "Graph.h"
 using namespace std;
 
 class GraphVisualization {
@@ -13,11 +13,16 @@ class GraphVisualization {
 
         GraphVisualization(int width, int height, int max_connections, string path);
 
-        void convertCoordinates(map<Graph::SubReddit*, pair<int, int>>& redditCoords);
+        map<Graph::SubReddit*, pair<int, int>> convertCoordinates(map<Graph::SubReddit*, pair<float, float>>& redditCoords);
         
         cs225::PNG* drawGraph(map<Graph::SubReddit*, pair<int, int>> redditCoords);
 
+        void loadGraph(Graph g);
+        
+        void createVisualization();
+
     private:
+
         void loadCharacterPNG(string path);
 
         int calculateNodeHue(Graph::SubReddit* node) const;
@@ -36,4 +41,5 @@ class GraphVisualization {
         int max_connections_;
         map<char, cs225::PNG*> characters_;
 
+        Graph graph_;
 };

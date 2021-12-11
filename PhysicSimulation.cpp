@@ -1,5 +1,6 @@
 #include "PhysicSimulation.h"
 #include <cmath>
+#include <fstream>
 
 PhysicSimulation::PhysicSimulation() {
     //do something
@@ -11,7 +12,7 @@ PhysicSimulation::PhysicSimulation(int coefficient, int length) {
     springNaturalLength = length;
 }
 
-void PhysicSimulation::initiateGraph(Graph g) {
+void PhysicSimulation::initiateGraph(Graph& g) {
 
     //retrieve the total number of subreddits
     //int totalSubreddits = g.getSubs();
@@ -23,8 +24,8 @@ void PhysicSimulation::initiateGraph(Graph g) {
     //retrieve the collection of subreddits
     map<string, Graph::SubReddit*> subreddits = g.getSubReddits();
     //setting the common position
-    double x = 0;
-    double y = 0;
+    float x = 0;
+    float y = 0;
     //for each subreddit, we insert the value with 
     for(map<string, Graph::SubReddit*>::iterator it = subreddits.begin(); it != subreddits.end(); it++) {
         //check to make sure each entry is not null
@@ -34,24 +35,28 @@ void PhysicSimulation::initiateGraph(Graph g) {
             x = 0;
         }
         if (it -> second != NULL) {
-            positions.insert(pair<Graph::SubReddit*, pair<double, double>>(it -> second, make_pair(x,y)));
+            positions.insert(pair<Graph::SubReddit*, pair<float, float>>(it -> second, make_pair(x,y)));
         }
     }
     
 }
 
-map<Graph::SubReddit*, pair<double, double>> PhysicSimulation::simulateFor(int seconds) {
+map<Graph::SubReddit*, pair<float, float>> PhysicSimulation::simulateFor(int seconds) {
+    map<Graph::SubReddit*, pair<float, float>> new_positions;
+
+    ofstream newCoords("coordOutputSeconds.txt");
+
     //loop through the amount of seconds
     for (int i = 0; i < seconds; i++) {
-        map<Graph::SubReddit*, pair<double, double>> new_positions;
-        for (map<Graph::SubReddit*, pair<double, double>>::iterator it = positions.begin(); it != positions.end(); it++) {
+        newCoords << "At Second: " << i + 1 << endl;
+        for (map<Graph::SubReddit*, pair<float, float>>::iterator it = positions.begin(); it != positions.end(); it++) {
             
             //finding individual coordinates for current node
-            double cX = it -> second.first;
-            double cY = it -> second.second;
+            float cX = it -> second.first;
+            float cY = it -> second.second;
 
             //create our force vector
-            std::pair<double, double> force_vector(0, 0);
+            std::pair<float, float> force_vector(0, 0);
 
             //create a subreddit pointer for traversing adjacent nodes
             Graph::SubReddit* subPtr = it -> first;
@@ -61,21 +66,21 @@ map<Graph::SubReddit*, pair<double, double>> PhysicSimulation::simulateFor(int s
                 //need to find the position vector for the adjacent node
                 Graph::SubReddit* ptr = n -> first;
 
-                map<Graph::SubReddit*, pair<double, double>>::iterator iter = positions.find(ptr);
+                map<Graph::SubReddit*, pair<float, float>>::iterator iter = positions.find(ptr);
                 
                 //finding individual coordinates for adjacent node
-                double aX = iter -> second.first;
-                double aY = iter -> second.second;
+                float aX = iter -> second.first;
+                float aY = iter -> second.second;
 
                 //squaring the coordinate differences
-                double squared_x = pow(aX - cX, 2);
-                double squared_y = pow(aY - cY, 2);
+                float squared_x = pow(aX - cX, 2);
+                float squared_y = pow(aY - cY, 2);
 
                 //calculate the distance
-                double distance = sqrt(squared_x + squared_y);
+                float distance = sqrt(squared_x + squared_y);
                 
                 //calculate the unit vector
-                std::pair<double, double> unit_vector;
+                std::pair<float, float> unit_vector;
                 if (distance == 0) {
                     srand(rand());
                     int angle = rand();
@@ -85,8 +90,8 @@ map<Graph::SubReddit*, pair<double, double>> PhysicSimulation::simulateFor(int s
                 }
                 //compute spring force vector formula
 
-                double spring_force_value_x = (distance - springNaturalLength) * springCoefficient * unit_vector.first;
-                double spring_force_value_y = (distance - springNaturalLength) * springCoefficient * unit_vector.second;
+                float spring_force_value_x = -(distance - springNaturalLength) * springCoefficient * unit_vector.first;
+                float spring_force_value_y = -(distance - springNaturalLength) * springCoefficient * unit_vector.second;
 
                 //update the force vector
                 force_vector.first += spring_force_value_x*n->second;
@@ -96,6 +101,7 @@ map<Graph::SubReddit*, pair<double, double>> PhysicSimulation::simulateFor(int s
             //insert all the data into our newly created map
             new_positions[it -> first].first = force_vector.first + cX;
             new_positions[it -> first].second = force_vector.second + cY;
+            newCoords << "X: " << new_positions[it->first].first << " Y: " << new_positions[it->first].second << endl;
         }
         positions = new_positions;
     }

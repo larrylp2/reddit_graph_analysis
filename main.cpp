@@ -7,6 +7,28 @@
 #include "GraphVisualization.h"
 
 int main() {
+    Graph g = Graph("data/data2/");
+    g.readGraphBFS("UIUC");
+
+    cout << "Creating Visualization class" << endl;
+    GraphVisualization visual = GraphVisualization(10000, 10000, g.getMaxConnection(), "InterFontCharacters/");
+
+    cout << "Constructing Simulator" << endl;
+    PhysicSimulation sim = PhysicSimulation(1, 1);
+
+    cout << "Initiating Simulator" << endl;;
+    sim.initiateGraph(g);
+
+    cout << "Starting Simulation" << endl;
+    map<Graph::SubReddit*, pair<float, float>> positions = sim.simulateFor(20);
+
+    cout << "Converting Coordinates" << endl;
+    map<Graph::SubReddit*, pair<int, int>> convertedCoords = visual.convertCoordinates(positions);
+
+    cout << "Drawing Graph" << endl;
+    cs225::PNG* image = visual.drawGraph(convertedCoords);
+
+    image->writeToFile("full_output.png");
     
     // std::cout << "Compile Worked" << std::endl;
 
@@ -27,7 +49,7 @@ int main() {
     // // std::cout << builder.dijkstra("UIUC", "AskReddit");
 
     // Don't do tests in main.cpp lol
-
+    /*
     Graph::SubReddit* uiuc = new Graph::SubReddit();
     uiuc->name = "UIUC";
 
@@ -86,7 +108,6 @@ int main() {
     cs225::PNG* drawing = visual.drawGraph(redditCoords);
     drawing->writeToFile("smallVisualizerTestOutput.png");
 
-    /*
     Graph g = Graph("data/data2/");
     g.readGraphBFS("UIUC");
     g.BFSToFile();

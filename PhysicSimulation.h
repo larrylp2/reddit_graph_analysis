@@ -5,7 +5,7 @@ class PhysicSimulation {
         PhysicSimulation();
         PhysicSimulation(int coefficient, int length); //Constructor that initialize coefficient and length, time = 0
 
-        void initiateGraph(Graph g); // Initiate with a graph, initialize all positions to (0,0) or random
+        void initiateGraph(Graph &g); // Initiate with a graph, initialize all positions to (0,0) or random
 
         // Run simulation from current positions and return new position after simulated for some seconds
         // Can be run sequentially: For example:
@@ -18,7 +18,7 @@ class PhysicSimulation {
         //      gif.addFrame(drawGraph(simulateFor(1)));
         // }
         // return gif;
-        map<Graph::SubReddit*, pair<double, double>> simulateFor(int seconds);
+        map<Graph::SubReddit*, pair<float, float>> simulateFor(int seconds);
         // Outline of simulateFor(int seconds):
         // 
         // loop for (seconds):
@@ -34,5 +34,5 @@ class PhysicSimulation {
         int springCoefficient;
         int springNaturalLength;
         int time;
-        map<Graph::SubReddit*, pair<double, double>> positions;
+        map<Graph::SubReddit*, pair<float, float>> positions;
 };

@@ -18,6 +18,8 @@ class Graph {
             string name;
             map<SubReddit*, int> adjacent;
         };
+        Graph();
+
         Graph(string source_directory); //Construct with the directory
 
         ~Graph(); //destructor

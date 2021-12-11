@@ -1,5 +1,6 @@
 #include "GraphVisualization.h"
 #include <math.h>
+#include <fstream>
 
 GraphVisualization::GraphVisualization() {
     //default constructor
@@ -14,25 +15,30 @@ GraphVisualization::~GraphVisualization() {
 }
 
 GraphVisualization::GraphVisualization(int width, int height, int max_connections, string path) {
-    radius_ = 100;
+    radius_ = 25;
     width_ = width;
     height_ = height;
     max_connections_ = max_connections;
-    loadCharacterPNG(path);
+    //loadCharacterPNG(path);
 }
 
-void GraphVisualization::convertCoordinates(map<Graph::SubReddit*, pair<int, int>>& redditCoords) {
+void GraphVisualization::loadGraph(Graph g) {
+    graph_ = g;
+}
+
+map<Graph::SubReddit*, pair<int, int>> GraphVisualization::convertCoordinates(map<Graph::SubReddit*, pair<float, float>> &redditCoords) {
+    map<Graph::SubReddit*, pair<int, int>> ret;
     int margin = radius_ * 2;
 
     //do a pass through to find the largest and smallest x and y coordinates
-    int smallestX = INT_MAX;
-    int smallestY = INT_MAX;
-    int largestX = INT_MIN;
-    int largestY = INT_MIN;
+    float smallestX = INT_MAX;
+    float smallestY = INT_MAX;
+    float largestX = INT_MIN;
+    float largestY = INT_MIN;
 
-    for(map<Graph::SubReddit*, pair<int, int>>::iterator it = redditCoords.begin(); it != redditCoords.end(); it++) {
-        int x = it->second.first;
-        int y = it->second.second;
+    for(map<Graph::SubReddit*, pair<float, float>>::iterator it = redditCoords.begin(); it != redditCoords.end(); it++) {
+        float x = it->second.first;
+        float y = it->second.second;
 
         smallestX = (x < smallestX) ? x : smallestX;
         smallestY = (y < smallestX) ? y : smallestY;
@@ -40,24 +46,27 @@ void GraphVisualization::convertCoordinates(map<Graph::SubReddit*, pair<int, int
         largestY = (y > largestY) ? y : largestY;
     }
 
-    int translateY = -1 * smallestY + margin;
-    int translateX = -1 * smallestX + margin;
+    float translateY = -1 * smallestY + margin;
+    float translateX = -1 * smallestX + margin;
 
     largestX += translateX;
     largestY += translateY;
 
-    for(map<Graph::SubReddit*, pair<int, int>>::iterator it = redditCoords.begin(); it != redditCoords.end(); it++) {
-        int x = it->second.first + translateX; //translate to be non negative
-        int y = it->second.second + translateY; //translate to be non negative
+    ofstream original("originalcoords.txt");
+    ofstream newCoords("newcoords.txt");
+
+    for(map<Graph::SubReddit*, pair<float, float>>::iterator it = redditCoords.begin(); it != redditCoords.end(); it++) {
+        original << "X: " << it->second.first << " Y: " << it->second.second << endl;
+        float x = it->second.first + translateX; //translate to be non negative
+        float y = it->second.second + translateY; //translate to be non negative
 
         //scale to be within height bounds (and)
         y = height_ * 1.0 * y / largestY;
         x = width_ * 1.0 * y / largestX;
-
-        //update positions
-        it->second.first = x;
-        it->second.second = y;
+        newCoords << "X: " << x << " Y: " << y << endl;
+        ret.insert(pair<Graph::SubReddit*, pair<int, int>>(it->first, pair<int, int>(x, y)));
     }
+    return ret;
 }
 
 cs225::PNG* GraphVisualization::drawGraph(map<Graph::SubReddit*, pair<int, int>> redditCoords) {
@@ -175,7 +184,7 @@ void GraphVisualization::drawNode(cs225::PNG* image, Graph::SubReddit* node, pai
         //image->getPixel(currentX, currentYLower).l = 0; //set luminance to 0, appears black, round the Y to the correct Y
     }
 
-    writeLabel(image, node->name, location);
+    //writeLabel(image, node->name, location);
 }
 
 void GraphVisualization::drawLine(cs225::PNG* image, pair<int, int> coord1, pair<int, int> coord2, double coord1Hue, double coord2Hue, double saturation, double luminance) {
@@ -360,3 +369,21 @@ cs225::PNG GraphVisualization::resize(const cs225::PNG* image, float ratio) {
     return newImage;
 }
 
+void GraphVisualization::createVisualization() {
+    cout << "Constructing Simulator" << endl;
+    PhysicSimulation sim = PhysicSimulation(1, 500);
+
+    cout << "Initiating Simulator";
+    sim.initiateGraph(graph_);
+
+    cout << "Starting Simulation" << endl;
+    map<Graph::SubReddit*, pair<float, float>> positions = sim.simulateFor(20);
+
+    cout << "Converting Coordinates" << endl;
+    map<Graph::SubReddit*, pair<int, int>> convertedCoords = convertCoordinates(positions);
+
+    cout << "Drawing Graph" << endl;
+    cs225::PNG* image = drawGraph(convertedCoords);
+
+    image->writeToFile("full_output.png");
+}

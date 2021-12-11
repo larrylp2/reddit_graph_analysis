@@ -2,6 +2,10 @@
 #include "PriorityQueue.h"
 #include <algorithm>
 
+Graph::Graph() {
+    //default
+}
+
 Graph::Graph(string source_directory) {
     reader = FileReader(source_directory);
 }
