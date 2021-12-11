@@ -7,20 +7,20 @@
 #include "GraphVisualization.h"
 
 int main() {
-    Graph g = Graph("data/data2/");
+    Graph g = Graph("data/data1/");
     g.readGraphBFS("UIUC");
 
     cout << "Creating Visualization class" << endl;
-    GraphVisualization visual = GraphVisualization(100000, 100000, g.getMaxConnection(), "InterFontCharacters/");
+    GraphVisualization visual = GraphVisualization(25000, 25000, g.getMaxConnection(), "InterFontCharacters/");
 
     cout << "Constructing Simulator" << endl;
-    PhysicSimulation sim = PhysicSimulation(0.1, 1);
+    PhysicSimulation sim = PhysicSimulation(.5, 100);
 
     cout << "Initiating Simulator" << endl;;
     sim.initiateGraph(g);
 
     cout << "Starting Simulation" << endl;
-    map<Graph::SubReddit*, pair<float, float>> positions = sim.simulateFor(400);
+    map<Graph::SubReddit*, pair<float, float>> positions = sim.simulateFor(500);
 
     cout << "Converting Coordinates" << endl;
     map<Graph::SubReddit*, pair<int, int>> convertedCoords = visual.convertCoordinates(positions);

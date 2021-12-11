@@ -27,11 +27,11 @@ class GraphVisualization {
 
         int calculateNodeHue(Graph::SubReddit* node) const;
 
-        void drawNode(cs225::PNG* image, Graph::SubReddit* node, pair<int, int> location);
+        void drawNode(cs225::PNG* image, Graph::SubReddit* node, const pair<int, int> &location);
 
-        void drawLine(cs225::PNG* image, pair<int, int> coord1, pair<int, int> coord2, double coord1Hue, double coord2Hue, double saturation, double luminance);
+        void drawLine(cs225::PNG* image, const pair<int, int> &coord1, const pair<int, int> &coord2, double coord1Hue, double coord2Hue, double saturation, double luminance);
 
-        void writeLabel(cs225::PNG* image, string label, pair<int, int> location);
+        void writeLabel(cs225::PNG* image, string label, const pair<int, int> &location);
 
         cs225::PNG resize(const cs225::PNG* image, float ratio);
 

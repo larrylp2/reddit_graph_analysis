@@ -15,11 +15,11 @@ GraphVisualization::~GraphVisualization() {
 }
 
 GraphVisualization::GraphVisualization(int width, int height, int max_connections, string path) {
-    radius_ = 50;
+    radius_ = 100;
     width_ = width;
     height_ = height;
     max_connections_ = max_connections;
-    //loadCharacterPNG(path);
+    loadCharacterPNG(path);
 }
 
 void GraphVisualization::loadGraph(Graph g) {
@@ -33,8 +33,8 @@ map<Graph::SubReddit*, pair<int, int>> GraphVisualization::convertCoordinates(ma
     //do a pass through to find the largest and smallest x and y coordinates
     float smallestX = __FLT_MAX__;
     float smallestY = __FLT_MAX__;
-    float largestX = -__FLT_MAX__;
-    float largestY = -__FLT_MAX__;
+    float largestX = __FLT_MIN__;
+    float largestY = __FLT_MIN__;
 
     for(map<Graph::SubReddit*, pair<float, float>>::iterator it = redditCoords.begin(); it != redditCoords.end(); it++) {
         float x = it->second.first;
@@ -46,13 +46,15 @@ map<Graph::SubReddit*, pair<int, int>> GraphVisualization::convertCoordinates(ma
         largestY = (y > largestY) ? y : largestY;
     }
 
-    float translateY = -1 * smallestY + margin;
-    float translateX = -1 * smallestX + margin;
+    float translateY = -1 * smallestY;
+    float translateX = -1 * smallestX;
 
     largestX += translateX;
     largestY += translateY;
 
     ofstream original("originalcoords.txt");
+    original << "Largest: " << largestX << ", " << largestY << endl;
+    original << "Smallest: " << smallestX << ", " << smallestY << endl;
     ofstream newCoords("newcoords.txt");
 
     for(map<Graph::SubReddit*, pair<float, float>>::iterator it = redditCoords.begin(); it != redditCoords.end(); it++) {
@@ -123,7 +125,7 @@ int GraphVisualization::calculateNodeHue(Graph::SubReddit* node) const {
     return hue;
 }
 
-void GraphVisualization::drawNode(cs225::PNG* image, Graph::SubReddit* node, pair<int, int> location) {
+void GraphVisualization::drawNode(cs225::PNG* image, Graph::SubReddit* node, const pair<int, int> &location) {
 
     //TODO: Coloring the node
 
@@ -184,10 +186,10 @@ void GraphVisualization::drawNode(cs225::PNG* image, Graph::SubReddit* node, pai
         //image->getPixel(currentX, currentYLower).l = 0; //set luminance to 0, appears black, round the Y to the correct Y
     }
 
-    //writeLabel(image, node->name, location);
+    writeLabel(image, node->name, location);
 }
 
-void GraphVisualization::drawLine(cs225::PNG* image, pair<int, int> coord1, pair<int, int> coord2, double coord1Hue, double coord2Hue, double saturation, double luminance) {
+void GraphVisualization::drawLine(cs225::PNG* image, const pair<int, int> &coord1, const pair<int, int> &coord2, double coord1Hue, double coord2Hue, double saturation, double luminance) {
     //std::cout << "Drawing from (" << coord1.first << "," << coord1.second << ") to (" << coord2.first << "," << coord2.second << ")" << std::endl;
     //draws a line between two points
     int hueChange = coord1Hue - coord2Hue;
@@ -289,7 +291,7 @@ void GraphVisualization::loadCharacterPNG(string path) {
     }
 }
 
-void GraphVisualization::writeLabel(cs225::PNG* image, string label, pair<int, int> location) {
+void GraphVisualization::writeLabel(cs225::PNG* image, string label, const pair<int, int>& location) {
     //cout << "Writing Label: " << label << endl;
     int width = 0; //keep track of the estimated pixel width of the letters
     vector<cs225::PNG*> characters;
@@ -316,7 +318,7 @@ void GraphVisualization::writeLabel(cs225::PNG* image, string label, pair<int, i
             for(unsigned x = 0; x < copy.width(); x++) {
                 for(unsigned y = 0; y < copy.height(); y++) {
                     if(copy.getPixel(x, y).l != 1) {
-                        image->getPixel(currentX, currentY).l = copy.getPixel(x, y).l;
+                        image->getPixel(currentX, currentY).l = 0;
                     }
                     currentY++;
                 }
@@ -336,7 +338,7 @@ void GraphVisualization::writeLabel(cs225::PNG* image, string label, pair<int, i
             for(int x = 0; x < currentWidth; x++) {
                 for(int y = 0; y < height; y++) {
                     if(png->getPixel(x, y).l != 1) {
-                        image->getPixel(currentX, currentY).l = png->getPixel(x, y).l;
+                        image->getPixel(currentX, currentY).l = 0;
                     }
                     currentY++;
                 }

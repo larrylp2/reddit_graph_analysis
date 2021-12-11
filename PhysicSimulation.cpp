@@ -29,14 +29,20 @@ void PhysicSimulation::initiateGraph(Graph& g) {
     //for each subreddit, we insert the value with 
     for(map<string, Graph::SubReddit*>::iterator it = subreddits.begin(); it != subreddits.end(); it++) {
         //check to make sure each entry is not null
-        x++;
-        if (x >= sqrt(g.getSubs())) {
-            y++;
-            x = 0;
+        srand(rand());
+        int newX = rand() % 100;
+        int newY = rand() % 100;
+        int xneg = rand() % 2;
+        int yneg = rand() % 2;
+        if(xneg == 0) {
+            newX *= -1;
         }
-        if (it -> second != NULL) {
-            positions.insert(pair<Graph::SubReddit*, pair<float, float>>(it -> second, make_pair(x,y)));
+
+        if(yneg == 0) {
+            newY *= -1;
         }
+
+        positions.insert(pair<Graph::SubReddit*, pair<float, float>>(it -> second, make_pair(newX,newY)));
     }
     
 }
@@ -86,8 +92,8 @@ map<Graph::SubReddit*, pair<float, float>> PhysicSimulation::simulateFor(int sec
                 // float spring_force_value_x = distance*distance/(springNaturalLength) * unit_vector.first;
                 // float spring_force_value_y = distance*distance/(springNaturalLength) * unit_vector.second;
                 
-                float spring_force_value_x = log(distance/ springNaturalLength * n->second)*springCoefficient*unit_vector.first;
-                float spring_force_value_y = log(distance/ springNaturalLength * n->second)*springCoefficient*unit_vector.second;
+                float spring_force_value_x = log(distance/ (springNaturalLength * n->second))*springCoefficient*unit_vector.first;
+                float spring_force_value_y = log(distance/ (springNaturalLength * n->second))*springCoefficient*unit_vector.second;
 
                 //update the force vector
                 force_vector.first += spring_force_value_x;
