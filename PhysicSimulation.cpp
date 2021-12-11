@@ -44,7 +44,7 @@ void PhysicSimulation::initiateGraph(Graph& g) {
 map<Graph::SubReddit*, pair<float, float>> PhysicSimulation::simulateFor(int seconds) {
     map<Graph::SubReddit*, pair<float, float>> new_positions;
 
-    ofstream newCoords("coordOutputSeconds.txt");
+    //ofstream newCoords("coordOutputSeconds.txt");
 
     //loop through the amount of seconds
     for (int i = 0; i < seconds; i++) {
@@ -121,9 +121,9 @@ map<Graph::SubReddit*, pair<float, float>> PhysicSimulation::simulateFor(int sec
             // }
 
             //insert all the data into our newly created map
-            new_positions[it -> first].first = 100*exp(-time/100)*force_vector.first + cX;
-            new_positions[it -> first].second = 100*exp(-time/100)*force_vector.second + cY;
-            newCoords << "X: " << new_positions[it->first].first << " Y: " << new_positions[it->first].second << endl;   
+            new_positions[it -> first].first = 10*exp(-time/10000)*force_vector.first + cX;
+            new_positions[it -> first].second = 10*exp(-time/10000)*force_vector.second + cY;
+            //newCoords << "X: " << new_positions[it->first].first << " Y: " << new_positions[it->first].second << endl;   
         }
         positions = new_positions;
         time++;

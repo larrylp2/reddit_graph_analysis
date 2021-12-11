@@ -63,8 +63,8 @@ map<Graph::SubReddit*, pair<int, int>> GraphVisualization::convertCoordinates(ma
         float y = it->second.second + translateY; //translate to be non negative
 
         //scale to be within height bounds (and)
-        y = height_ * 1.0 * y / largestY;
-        x = width_ * 1.0 * x / largestX;
+        y = (height_ - 2 - radius_ * 2) * 1.0 * y / largestY + radius_ + 1;
+        x = (width_ - 2 - radius_ * 2) * 1.0 * x / largestX + radius_ + 1;
         newCoords << "X: " << x << " Y: " << y << endl;
         ret.insert(pair<Graph::SubReddit*, pair<int, int>>(it->first, pair<int, int>(x, y)));
     }

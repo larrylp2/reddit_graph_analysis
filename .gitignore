@@ -41,5 +41,8 @@ data-fetching/user_info.txt
 data-fetching/token.json
 data-fetching/unused/code_verifier.txt
 data-fetching/unused/code_to_get_token.txt
+newcoords.txt
+originalcoords.txt
+coordOutputSeconds.txt
 BFSResults.txt
 graph
