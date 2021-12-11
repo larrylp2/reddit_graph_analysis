@@ -11,7 +11,7 @@ int main() {
     g.readGraphBFS("UIUC");
 
     cout << "Creating Visualization class" << endl;
-    GraphVisualization visual = GraphVisualization(10000, 10000, g.getMaxConnection(), "InterFontCharacters/");
+    GraphVisualization visual = GraphVisualization(100000, 100000, g.getMaxConnection(), "InterFontCharacters/");
 
     cout << "Constructing Simulator" << endl;
     PhysicSimulation sim = PhysicSimulation(0.1, 1);
@@ -20,7 +20,7 @@ int main() {
     sim.initiateGraph(g);
 
     cout << "Starting Simulation" << endl;
-    map<Graph::SubReddit*, pair<float, float>> positions = sim.simulateFor(20);
+    map<Graph::SubReddit*, pair<float, float>> positions = sim.simulateFor(400);
 
     cout << "Converting Coordinates" << endl;
     map<Graph::SubReddit*, pair<int, int>> convertedCoords = visual.convertCoordinates(positions);

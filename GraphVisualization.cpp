@@ -15,7 +15,7 @@ GraphVisualization::~GraphVisualization() {
 }
 
 GraphVisualization::GraphVisualization(int width, int height, int max_connections, string path) {
-    radius_ = 25;
+    radius_ = 50;
     width_ = width;
     height_ = height;
     max_connections_ = max_connections;
@@ -28,7 +28,7 @@ void GraphVisualization::loadGraph(Graph g) {
 
 map<Graph::SubReddit*, pair<int, int>> GraphVisualization::convertCoordinates(map<Graph::SubReddit*, pair<float, float>> &redditCoords) {
     map<Graph::SubReddit*, pair<int, int>> ret;
-    int margin = radius_ * 2;
+    int margin = radius_;
 
     //do a pass through to find the largest and smallest x and y coordinates
     float smallestX = __FLT_MAX__;
