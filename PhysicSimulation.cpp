@@ -70,9 +70,13 @@ map<Graph::SubReddit*, pair<double, double>> PhysicSimulation::simulateFor(int s
 
                 //calculate the distance
                 double distance = sqrt(squared_x + squared_y);
+                
+                //calculate the unit vector
+                double unit_vector = ((aX - cX) + (aY - cY)) / distance;
+
                 //compute spring force vector formula
 
-                double spring_force_value = (distance - springNaturalLength) * springCoefficient;
+                double spring_force_value = (distance - springNaturalLength) * springCoefficient * unit_vector;
 
                 //update the force vector
                 force_vector = make_pair(cX + spring_force_value, cY + spring_force_value);
@@ -81,7 +85,8 @@ map<Graph::SubReddit*, pair<double, double>> PhysicSimulation::simulateFor(int s
             //insert all the data into our newly created map
             new_positions.insert(pair<Graph::SubReddit*, pair<double, double>>(it -> first, force_vector));
         }
+        positions = new_positions;
     }
 
-    return new_positions;
+    return positions;
 }
