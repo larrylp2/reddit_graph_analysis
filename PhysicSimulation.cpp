@@ -83,8 +83,8 @@ map<Graph::SubReddit*, pair<double, double>> PhysicSimulation::simulateFor(int s
                 double spring_force_value_y = (distance - springNaturalLength) * springCoefficient * unit_vector.second;
 
                 //update the force vector
-                force_vector.first += spring_force_value_x;
-                force_vector.second += spring_force_value_y;
+                force_vector.first += spring_force_value_x*n->second;
+                force_vector.second += spring_force_value_y*n->second;
             }
 
             //insert all the data into our newly created map
