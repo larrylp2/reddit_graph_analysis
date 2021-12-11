@@ -23,12 +23,18 @@ void PhysicSimulation::initiateGraph(Graph g) {
     //retrieve the collection of subreddits
     map<string, Graph::SubReddit*> subreddits = g.getSubReddits();
     //setting the common position
-    std::pair<int, int> starting_point(0, 0);
+    double x = 0;
+    double y = 0;
     //for each subreddit, we insert the value with 
     for(map<string, Graph::SubReddit*>::iterator it = subreddits.begin(); it != subreddits.end(); it++) {
         //check to make sure each entry is not null
+        x++;
+        if (x >= sqrt(g.getSubs())) {
+            y++;
+            x = 0;
+        }
         if (it -> second != NULL) {
-            positions.insert(pair<Graph::SubReddit*, pair<int, int>>(it -> second, starting_point));
+            positions.insert(pair<Graph::SubReddit*, pair<double, double>>(it -> second, make_pair(x,y)));
         }
     }
     
