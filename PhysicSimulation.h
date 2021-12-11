@@ -18,7 +18,7 @@ class PhysicSimulation {
         //      gif.addFrame(drawGraph(simulateFor(1)));
         // }
         // return gif;
-        map<Graph::SubReddit*, pair<int, int>> simulateFor(int seconds);
+        map<Graph::SubReddit*, pair<double, double>> simulateFor(int seconds);
         // Outline of simulateFor(int seconds):
         // 
         // loop for (seconds):
@@ -34,5 +34,5 @@ class PhysicSimulation {
         int springCoefficient;
         int springNaturalLength;
         int time;
-        map<Graph::SubReddit*, pair<int, int>> positions;
+        map<Graph::SubReddit*, pair<double, double>> positions;
 };
