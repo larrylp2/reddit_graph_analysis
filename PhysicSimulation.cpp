@@ -86,8 +86,8 @@ map<Graph::SubReddit*, pair<float, float>> PhysicSimulation::simulateFor(int sec
                 // float spring_force_value_x = distance*distance/(springNaturalLength) * unit_vector.first;
                 // float spring_force_value_y = distance*distance/(springNaturalLength) * unit_vector.second;
                 
-                float spring_force_value_x = (springNaturalLength - distance)*springCoefficient*unit_vector.first;
-                float spring_force_value_y = (springNaturalLength - distance)*springCoefficient*unit_vector.second;
+                float spring_force_value_x = log(distance/ springNaturalLength * n->second)*springCoefficient*unit_vector.first;
+                float spring_force_value_y = log(distance/ springNaturalLength * n->second)*springCoefficient*unit_vector.second;
 
                 //update the force vector
                 force_vector.first += spring_force_value_x;
@@ -121,8 +121,8 @@ map<Graph::SubReddit*, pair<float, float>> PhysicSimulation::simulateFor(int sec
             // }
 
             //insert all the data into our newly created map
-            new_positions[it -> first].first = 0.0001*force_vector.first + cX;
-            new_positions[it -> first].second = 0.0001*force_vector.second + cY;
+            new_positions[it -> first].first = 0.01*force_vector.first + cX;
+            new_positions[it -> first].second = 0.01*force_vector.second + cY;
             newCoords << "X: " << new_positions[it->first].first << " Y: " << new_positions[it->first].second << endl;   
         }
         positions = new_positions;
