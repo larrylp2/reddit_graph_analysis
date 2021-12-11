@@ -31,10 +31,10 @@ map<Graph::SubReddit*, pair<int, int>> GraphVisualization::convertCoordinates(ma
     int margin = radius_ * 2;
 
     //do a pass through to find the largest and smallest x and y coordinates
-    float smallestX = INT_MAX;
-    float smallestY = INT_MAX;
-    float largestX = INT_MIN;
-    float largestY = INT_MIN;
+    float smallestX = __FLT_MAX__;
+    float smallestY = __FLT_MAX__;
+    float largestX = -__FLT_MAX__;
+    float largestY = -__FLT_MAX__;
 
     for(map<Graph::SubReddit*, pair<float, float>>::iterator it = redditCoords.begin(); it != redditCoords.end(); it++) {
         float x = it->second.first;

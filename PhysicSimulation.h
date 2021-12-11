@@ -3,7 +3,7 @@
 class PhysicSimulation {
     public:
         PhysicSimulation();
-        PhysicSimulation(int coefficient, int length); //Constructor that initialize coefficient and length, time = 0
+        PhysicSimulation(float coefficient, float length); //Constructor that initialize coefficient and length, time = 0
 
         void initiateGraph(Graph &g); // Initiate with a graph, initialize all positions to (0,0) or random
 
@@ -31,8 +31,8 @@ class PhysicSimulation {
         //      translate A positions by forceVector
         
     private:
-        int springCoefficient;
-        int springNaturalLength;
+        float springCoefficient;
+        float springNaturalLength;
         int time;
         map<Graph::SubReddit*, pair<float, float>> positions;
 };

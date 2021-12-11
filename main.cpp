@@ -14,7 +14,7 @@ int main() {
     GraphVisualization visual = GraphVisualization(10000, 10000, g.getMaxConnection(), "InterFontCharacters/");
 
     cout << "Constructing Simulator" << endl;
-    PhysicSimulation sim = PhysicSimulation(1, 1);
+    PhysicSimulation sim = PhysicSimulation(0.1, 1);
 
     cout << "Initiating Simulator" << endl;;
     sim.initiateGraph(g);

@@ -6,7 +6,7 @@ PhysicSimulation::PhysicSimulation() {
     //do something
 }
 
-PhysicSimulation::PhysicSimulation(int coefficient, int length) {
+PhysicSimulation::PhysicSimulation(float coefficient, float length) {
     time = 0;
     springCoefficient = coefficient;
     springNaturalLength = length;
@@ -67,19 +67,11 @@ map<Graph::SubReddit*, pair<float, float>> PhysicSimulation::simulateFor(int sec
                 Graph::SubReddit* ptr = n -> first;
 
                 map<Graph::SubReddit*, pair<float, float>>::iterator iter = positions.find(ptr);
-                
-                //finding individual coordinates for adjacent node
                 float aX = iter -> second.first;
                 float aY = iter -> second.second;
-
-                //squaring the coordinate differences
                 float squared_x = pow(aX - cX, 2);
                 float squared_y = pow(aY - cY, 2);
-
-                //calculate the distance
                 float distance = sqrt(squared_x + squared_y);
-                
-                //calculate the unit vector
                 std::pair<float, float> unit_vector;
                 if (distance == 0) {
                     srand(rand());
@@ -90,21 +82,50 @@ map<Graph::SubReddit*, pair<float, float>> PhysicSimulation::simulateFor(int sec
                 }
                 //compute spring force vector formula
 
-                float spring_force_value_x = -(distance - springNaturalLength) * springCoefficient * unit_vector.first;
-                float spring_force_value_y = -(distance - springNaturalLength) * springCoefficient * unit_vector.second;
+                // Fruchterman & Reingold Model
+                // float spring_force_value_x = distance*distance/(springNaturalLength) * unit_vector.first;
+                // float spring_force_value_y = distance*distance/(springNaturalLength) * unit_vector.second;
+                
+                float spring_force_value_x = (springNaturalLength - distance)*springCoefficient*unit_vector.first;
+                float spring_force_value_y = (springNaturalLength - distance)*springCoefficient*unit_vector.second;
 
                 //update the force vector
-                force_vector.first += spring_force_value_x*n->second;
-                force_vector.second += spring_force_value_y*n->second;
+                force_vector.first += spring_force_value_x;
+                force_vector.second += spring_force_value_y;
             }
 
+            // for (map<Graph::SubReddit*, pair<float, float>>::iterator itt = positions.begin(); itt != positions.end(); itt++) {
+            //     if (itt->first == it->first) continue;
+            //     float aX = itt -> second.first;
+            //     float aY = itt -> second.second;
+            //     float squared_x = pow(aX - cX, 2);
+            //     float squared_y = pow(aY - cY, 2);
+            //     float distance = sqrt(squared_x + squared_y);
+
+            //     std::pair<float, float> unit_vector;
+            //     if (distance == 0) {
+            //         srand(rand());
+            //         int angle = rand();
+            //         unit_vector = make_pair(cos(angle),sin(angle));
+            //         distance = 0.0001;
+            //     } else {
+            //         unit_vector = make_pair((aX - cX) / distance, (aY - cY)/distance);
+            //     }
+
+            //     float spring_force_value_x = -springNaturalLength*springNaturalLength/distance * unit_vector.first;
+            //     float spring_force_value_y = -springNaturalLength*springNaturalLength/distance * unit_vector.second;
+
+            //     //update the force vector
+            //     force_vector.first += spring_force_value_x;
+            //     force_vector.second += spring_force_value_y;
+            // }
+
             //insert all the data into our newly created map
-            new_positions[it -> first].first = force_vector.first + cX;
-            new_positions[it -> first].second = force_vector.second + cY;
-            newCoords << "X: " << new_positions[it->first].first << " Y: " << new_positions[it->first].second << endl;
+            new_positions[it -> first].first = 0.0001*force_vector.first + cX;
+            new_positions[it -> first].second = 0.0001*force_vector.second + cY;
+            newCoords << "X: " << new_positions[it->first].first << " Y: " << new_positions[it->first].second << endl;   
         }
         positions = new_positions;
     }
-
     return positions;
 }
