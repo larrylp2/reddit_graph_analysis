@@ -41,7 +41,7 @@ map<Graph::SubReddit*, pair<int, int>> GraphVisualization::convertCoordinates(ma
         float y = it->second.second;
 
         smallestX = (x < smallestX) ? x : smallestX;
-        smallestY = (y < smallestX) ? y : smallestY;
+        smallestY = (y < smallestY) ? y : smallestY;
         largestX = (x > largestX) ? x : largestX;
         largestY = (y > largestY) ? y : largestY;
     }
@@ -62,7 +62,7 @@ map<Graph::SubReddit*, pair<int, int>> GraphVisualization::convertCoordinates(ma
 
         //scale to be within height bounds (and)
         y = height_ * 1.0 * y / largestY;
-        x = width_ * 1.0 * y / largestX;
+        x = width_ * 1.0 * x / largestX;
         newCoords << "X: " << x << " Y: " << y << endl;
         ret.insert(pair<Graph::SubReddit*, pair<int, int>>(it->first, pair<int, int>(x, y)));
     }
