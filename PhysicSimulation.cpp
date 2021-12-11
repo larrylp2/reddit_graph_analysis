@@ -35,12 +35,9 @@ void PhysicSimulation::initiateGraph(Graph g) {
 }
 
 map<Graph::SubReddit*, pair<double, double>> PhysicSimulation::simulateFor(int seconds) {
-    //create a map that we will return
-    map<Graph::SubReddit*, pair<double, double>> new_positions;
-    
     //loop through the amount of seconds
     for (int i = 0; i < seconds; i++) {
-
+        map<Graph::SubReddit*, pair<double, double>> new_positions;
         for (map<Graph::SubReddit*, pair<double, double>>::iterator it = positions.begin(); it != positions.end(); it++) {
             
             //finding individual coordinates for current node
@@ -48,7 +45,7 @@ map<Graph::SubReddit*, pair<double, double>> PhysicSimulation::simulateFor(int s
             double cY = it -> second.second;
 
             //create our force vector
-            std::pair<double, double> force_vector(cX, cY);
+            std::pair<double, double> force_vector(0, 0);
 
             //create a subreddit pointer for traversing adjacent nodes
             Graph::SubReddit* subPtr = it -> first;
@@ -72,18 +69,27 @@ map<Graph::SubReddit*, pair<double, double>> PhysicSimulation::simulateFor(int s
                 double distance = sqrt(squared_x + squared_y);
                 
                 //calculate the unit vector
-                double unit_vector = ((aX - cX) + (aY - cY)) / distance;
-
+                std::pair<double, double> unit_vector;
+                if (distance == 0) {
+                    srand(rand());
+                    int angle = rand();
+                    unit_vector = make_pair(cos(angle),sin(angle));
+                } else {
+                    unit_vector = make_pair((aX - cX) / distance, (aY - cY)/distance);
+                }
                 //compute spring force vector formula
 
-                double spring_force_value = (distance - springNaturalLength) * springCoefficient * unit_vector;
+                double spring_force_value_x = (distance - springNaturalLength) * springCoefficient * unit_vector.first;
+                double spring_force_value_y = (distance - springNaturalLength) * springCoefficient * unit_vector.second;
 
                 //update the force vector
-                force_vector = make_pair(cX + spring_force_value, cY + spring_force_value);
+                force_vector.first += spring_force_value_x;
+                force_vector.second += spring_force_value_y;
             }
 
             //insert all the data into our newly created map
-            new_positions.insert(pair<Graph::SubReddit*, pair<double, double>>(it -> first, force_vector));
+            new_positions[it -> first].first = force_vector.first + cX;
+            new_positions[it -> first].second = force_vector.second + cY;
         }
         positions = new_positions;
     }
