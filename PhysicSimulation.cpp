@@ -121,8 +121,8 @@ map<Graph::SubReddit*, pair<float, float>> PhysicSimulation::simulateFor(int sec
             // }
 
             //insert all the data into our newly created map
-            new_positions[it -> first].first = 100*exp(-time/10)*force_vector.first + cX;
-            new_positions[it -> first].second = 100*exp(-time/10)*force_vector.second + cY;
+            new_positions[it -> first].first = 100*exp(-time/100)*force_vector.first + cX;
+            new_positions[it -> first].second = 100*exp(-time/100)*force_vector.second + cY;
             newCoords << "X: " << new_positions[it->first].first << " Y: " << new_positions[it->first].second << endl;   
         }
         positions = new_positions;
