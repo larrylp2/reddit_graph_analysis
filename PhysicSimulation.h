@@ -33,6 +33,6 @@ class PhysicSimulation {
     private:
         float springCoefficient;
         float springNaturalLength;
-        int time;
+        float time;
         map<Graph::SubReddit*, pair<float, float>> positions;
 };
