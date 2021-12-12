@@ -20,7 +20,7 @@ int main() {
     sim.initiateGraph(g);
 
     cout << "Starting Simulation" << endl;
-    map<Graph::SubReddit*, pair<float, float>> positions = sim.simulateFor(100000);
+    map<Graph::SubReddit*, pair<float, float>> positions = sim.simulateFor(2000);
 
     cout << "Converting Coordinates" << endl;
     map<Graph::SubReddit*, pair<int, int>> convertedCoords = visual.convertCoordinates(positions);
