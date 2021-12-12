@@ -57,3 +57,15 @@ Discord
 #### <strong>Summary:</strong>
 This week, we made major progress on the project. First, we adjusted the constructor class, completed our BFS traversal, and implemented the Dijkstra's algorithm. Additionally, we started on our goal to create a force-directed diagram of the nodes, finishing a basic GraphVisualiztion class and starting on the PhysicsSimulation class. In the next week, we aim to complete the physics simulation and create tests for all of our existing classes. We hope to finish programming and debugging before the weekend so we can complete our final report and record our presentation.
 
+---
+
+#### <strong>Week:</strong>
+December 6th - December 12th
+#### <strong>Meeting Location:</strong>
+Discord
+#### <strong>Time:</strong>
+6:00 PM - 6:20 PM
+#### <strong>Summary:</strong>
+This week was primarily focused on implementing the PhysicSimulation class, which would be responsible for emulating the simulation for our graph. After implementing the class constructor, most of the time was spent on creating methods that calculated new positions for our nodes. While running the simulation, we ran into several issues surrounding memory allocation. In order to fix the memory leak, we added optimizations within the PhysicSimulation class, where we changed the storage type of positions. Besides technical implementations of our code, we continued to work on completing our final project report. This included revising our development and goal drafts, as well as writing the results section of our final draft. During our meeting time, we spent time writing our scripts and recording our presentation.
+
+
