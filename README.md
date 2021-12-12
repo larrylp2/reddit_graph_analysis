@@ -73,9 +73,9 @@ Enter the command, then the output location and the starting point. The output w
 ![image](https://media.github-dev.cs.illinois.edu/user/11993/files/7c7d0e4c-d5bb-4f52-8454-46a251b48522)
 Enter the command, followed by the output location, then the seconds to simulate, typically from 1000 to 2000, and enter picture size
 
-`switch`: Switch to another graph. The current graph will be erased and you can enter the directory to a new dataset
+`Switch`: Switch to another graph. The current graph will be erased and you can enter the directory to a new dataset
 
-`exit`: Exit
+`Exit`: Exit
 
 ## Testing
 To build the test:
