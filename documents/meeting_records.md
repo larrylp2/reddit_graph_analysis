@@ -55,4 +55,5 @@ Discord
 #### <strong>Time:</strong>
 6:00 PM - 6:20 PM
 #### <strong>Summary:</strong>
-This week, we made major progress on the project. First, we adjusted the constructor class, completed our BFS traversal, and implemented the Dijkstra's algorithm. Additionally, we started on our goal to create a force-directed diagram of the nodes, finishing a basic GraphVisualiztion class and starting on the PhysicsSimulation class. In this next week, we aim to complete the physics simulation and create tests for all of our existing classes. We hope to finish programming and debugging before the weekend so we can complete our final report and record our presentation.
+This week, we made major progress on the project. First, we adjusted the constructor class, completed our BFS traversal, and implemented the Dijkstra's algorithm. Additionally, we started on our goal to create a force-directed diagram of the nodes, finishing a basic GraphVisualiztion class and starting on the PhysicsSimulation class. In the next week, we aim to complete the physics simulation and create tests for all of our existing classes. We hope to finish programming and debugging before the weekend so we can complete our final report and record our presentation.
+
