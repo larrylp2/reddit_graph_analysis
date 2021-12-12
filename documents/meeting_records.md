@@ -9,7 +9,8 @@ ISR Lounge Area
 #### <strong>Time:</strong>
 6:00 PM - 7:20 PM
 #### <strong>Summary:</strong>
-This meeting we worked on our Final Project Proposal, discussing the specifics of our project idea and potential applications of traversals. This week, we finished up our Team Contract and Final Project Proposal, writing both of them as Markdown files and commiting them to our project repository.
+This meeting we worked on our Final Project Proposal, while discussing the specifics of our project idea and potential applications of traversals. To complete the project, we decided to  outline the basic structure of our program, by detailing the contents included within our classes, and constructing methods that are necessary to access specific parts of data. There was also a discussion on the specific data structures that we wanted to implement, such as minHeap and maps. This week, we finished up our Team Contract and Final Project Proposal, writing both of them as Markdown files and committing them to our project repository.
+
 
 ---
 #### <strong>Week:</strong>
