@@ -26,6 +26,9 @@ TEST_CASE("Draw Nodes Simple Graph", "[weight=1]")
     REQUIRE(drawing->width() == 4000); 
     REQUIRE(drawing->getPixel(3000, 700).h == 11); //UIUC node automatically orange
     REQUIRE(drawing->getPixel(750, 2680).h == 180);
+    delete uiuc;
+    delete cs;
+    delete drawing;
 }
 
 TEST_CASE("Draw Edges Simple Graph", "[weight=1]")
@@ -61,6 +64,9 @@ TEST_CASE("Draw Edges Simple Graph", "[weight=1]")
 
     //test that the midpoint is colored instead of tracing entire edge
     REQUIRE(drawing->getPixel((3000.0 + 750) / 2, (700.0 + 2680) / 2).l == 0.5);
+    delete uiuc;
+    delete cs;
+    delete drawing;
 
 }
 
@@ -105,7 +111,12 @@ TEST_CASE("Draw Nodes Larger Graph", "[weight=1]")
     REQUIRE(drawing->getPixel(400, 300).h != 0); 
     REQUIRE(drawing->getPixel(3000, 3000).h != 0); 
     REQUIRE(drawing->getPixel(2000, 200).h != 0); 
-
+    delete uiuc;
+    delete cs;
+    delete one;
+    delete two;
+    delete three;
+    delete drawing;
 }
 
 TEST_CASE("Draw Edges Larger Graph", "[weight=1]")
@@ -187,6 +198,12 @@ TEST_CASE("Draw Edges Larger Graph", "[weight=1]")
     REQUIRE(drawing->getPixel(3000, 3000).h == 90); 
     REQUIRE(drawing->getPixel(2000, 200).h == 90); 
 
+    delete uiuc;
+    delete cs;
+    delete one;
+    delete two;
+    delete three;
+    delete drawing;
 
 }
 

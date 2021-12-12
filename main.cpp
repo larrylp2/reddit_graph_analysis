@@ -49,6 +49,7 @@ int main() {
                 cout << "Drawing Graph" << endl;
                 cs225::PNG* image = visual.drawGraph(convertedCoords);
                 image->writeToFile(output_lo);
+                delete image;
             }
             if (command == "Dijkstra") {
                 cout << "Enter starting point..." << '\n';
