@@ -52,20 +52,20 @@ map<Graph::SubReddit*, pair<int, int>> GraphVisualization::convertCoordinates(ma
     largestX += translateX;
     largestY += translateY;
 
-    ofstream original("originalcoords.txt");
-    original << "Largest: " << largestX << ", " << largestY << endl;
-    original << "Smallest: " << smallestX << ", " << smallestY << endl;
-    ofstream newCoords("newcoords.txt");
+    // ofstream original("originalcoords.txt");
+    // original << "Largest: " << largestX << ", " << largestY << endl;
+    // original << "Smallest: " << smallestX << ", " << smallestY << endl;
+    // ofstream newCoords("newcoords.txt");
 
     for(map<Graph::SubReddit*, pair<float, float>>::iterator it = redditCoords.begin(); it != redditCoords.end(); it++) {
-        original << "X: " << it->second.first << " Y: " << it->second.second << endl;
+        // original << "X: " << it->second.first << " Y: " << it->second.second << endl;
         float x = it->second.first + translateX; //translate to be non negative
         float y = it->second.second + translateY; //translate to be non negative
 
         //scale to be within height bounds (and)
         y = (height_ - 2 - radius_ * 2) * 1.0 * y / largestY + radius_ + 1;
         x = (width_ - 2 - radius_ * 2) * 1.0 * x / largestX + radius_ + 1;
-        newCoords << "X: " << x << " Y: " << y << endl;
+        // newCoords << "X: " << x << " Y: " << y << endl;
         ret.insert(pair<Graph::SubReddit*, pair<int, int>>(it->first, pair<int, int>(x, y)));
     }
     return ret;
