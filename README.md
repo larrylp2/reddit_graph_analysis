@@ -54,11 +54,28 @@ You will then be entered into our advanced UI environment. Enter the input direc
 ![image](https://media.github-dev.cs.illinois.edu/user/11993/files/7e919c69-093f-4ce3-91d7-74924ee25121)
 
 Then it will ask you what you want to do. Enter the command correspondingly:
-* Dijkstra: ![image](https://media.github-dev.cs.illinois.edu/user/11993/files/ed14d428-f80d-4c4a-bfdb-7f90b4a5823a) Enter the command, then the output location and the starting point. The output will look like this ![image](https://media.github-dev.cs.illinois.edu/user/11993/files/791adaa9-4250-4985-9e80-745fc60fe1a1) with the number next to each corresponse to the distance from the starting node
-* BFS: ![image](https://media.github-dev.cs.illinois.edu/user/11993/files/d6a9454f-f71a-41c0-b3ea-244c12048438) Enter the command, then the output location and the starting point. The output will look like this ![image](https://media.github-dev.cs.illinois.edu/user/11993/files/22fb8991-3857-4d93-92f4-d52318c37d0f)
-* Visualization: ![image](https://media.github-dev.cs.illinois.edu/user/11993/files/7c7d0e4c-d5bb-4f52-8454-46a251b48522) Enter the command, followed by the output location, then the seconds to simulate, typically from 1000 to 2000, and enter picture size
-* Switch: Switch to another graph. The current graph will be erased and you can enter the directory to a new dataset
-* Exit: Exit
+
+### Dijkstra:
+![image](https://media.github-dev.cs.illinois.edu/user/11993/files/ed14d428-f80d-4c4a-bfdb-7f90b4a5823a)
+
+Enter the command, then the output location and the starting point. The output will look like this
+
+![image](https://media.github-dev.cs.illinois.edu/user/11993/files/791adaa9-4250-4985-9e80-745fc60fe1a1) with the number next to each corresponse to the distance from the starting node
+
+### BFS:
+![image](https://media.github-dev.cs.illinois.edu/user/11993/files/d6a9454f-f71a-41c0-b3ea-244c12048438)
+
+Enter the command, then the output location and the starting point. The output will look like this
+
+![image](https://media.github-dev.cs.illinois.edu/user/11993/files/22fb8991-3857-4d93-92f4-d52318c37d0f)
+
+### Visualization:
+![image](https://media.github-dev.cs.illinois.edu/user/11993/files/7c7d0e4c-d5bb-4f52-8454-46a251b48522)
+Enter the command, followed by the output location, then the seconds to simulate, typically from 1000 to 2000, and enter picture size
+
+`switch`: Switch to another graph. The current graph will be erased and you can enter the directory to a new dataset
+
+`exit`: Exit
 
 ## Testing
 To build the test:
