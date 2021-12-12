@@ -126,8 +126,8 @@ map<Graph::SubReddit*, pair<float, float>> PhysicSimulation::simulateFor(int sec
             }
 
             //insert all the data into our newly created map
-            new_positions[it -> first].first = exp(-time/10000)*force_vector.first + cX;
-            new_positions[it -> first].second = exp(-time/10000)*force_vector.second + cY;
+            new_positions[it -> first].first = exp(-time/100000)*force_vector.first + cX;
+            new_positions[it -> first].second = exp(-time/100000)*force_vector.second + cY;
 
             if (new_positions[it -> first].first > 100000) {
                 new_positions[it -> first].first = 100000;
