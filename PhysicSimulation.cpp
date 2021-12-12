@@ -89,8 +89,8 @@ map<Graph::SubReddit*, pair<float, float>> PhysicSimulation::simulateFor(int sec
                 //compute spring force vector formula
 
                 // Fruchterman & Reingold Model
-                float spring_force_value_x = distance*distance/(k/n->second*10000) * unit_vector.first;
-                float spring_force_value_y = distance*distance/(k/n->second*10000) * unit_vector.second;
+                float spring_force_value_x = distance*distance/(k/n->second*1000) * unit_vector.first;
+                float spring_force_value_y = distance*distance/(k/n->second*1000) * unit_vector.second;
                 
                 // float spring_force_value_x = log(distance/ springNaturalLength * n->second)*springCoefficient*unit_vector.first;
                 // float spring_force_value_y = log(distance/ springNaturalLength * n->second)*springCoefficient*unit_vector.second;
@@ -118,8 +118,8 @@ map<Graph::SubReddit*, pair<float, float>> PhysicSimulation::simulateFor(int sec
                     unit_vector = make_pair((aX - cX) / distance, (aY - cY)/distance);
                 }
 
-                float spring_force_value_x = -0.00000001*k*k/distance * unit_vector.first;
-                float spring_force_value_y = -0.00000001*k*k/distance * unit_vector.second;
+                float spring_force_value_x = -0.000001*k*k/distance * unit_vector.first;
+                float spring_force_value_y = -0.000001*k*k/distance * unit_vector.second;
 
                 //update the force vector
                 force_vector.first += spring_force_value_x;
