@@ -4,7 +4,10 @@
 
 The first is our graph implementation and constructor. The format of our collected Reddit data heavily influenced our initial approach to graph construction. Each data set will be a folder containing two folders, /subreddit_text and /user_text. Each file in /subreddit_text will be named as the subreddit_name.txt and each line in the file will contain a user name. Similarly, each file in /user_text will each be named as user_name.txt and each line in that file will contain a subreddit name the user uses.
 
-//image here
+| ![](/images/subredditfile.png "SubReddit data file") | ![](/images/userfile.png "User data file")|
+|----|---|
+| /subreddit_text/UIUC.txt | /user_text/someone.txt|
+
 
 As such, we decided to represent each subreddit as a node struct initialized on the heap. Within our Graph class itself is a map of all unique subreddits we have initialized, with the key as the name of the subreddit and the value as the pointer to the subreddit in memory.
 
@@ -43,23 +46,27 @@ Since real life physics are continuous while computer simulation is step by step
 
 Additionally, we decided to use our smaller dataset of 900 nodes instead of the main data of 60000 nodes because of the simulation’s runtime, taking O(m) for each step (m is the number of edges). Thus we can’t run the simulation for large enough steps and the resulting graph only changes minimally:
 
-// image here
+![](/images/60000nodeoutput.png "60000 Nodes") 
+
+60000 nodes data, initiated in a square formation, spring-only model, simulated for 20 steps, constant step of size 1
 
 Thus we decided to use our 900 nodes data. However, the spring-only model doesn’t yield a very good result for this either.
 
-// image here
-// image here
+![](/images/spring100steps.png "900 nodes spring only")
+
+900 nodes data, initiated in a square formation, spring-only model, simulated for 100 steps, constant step of size 1
+
+![](/images/spring1000steps.png "900 nodes spring only 2")
 
 The spring-only model forced low-weighted nodes to be concentrated in the center, pushed by nodes all around them. We decided to add a repulsive force applied to all the nodes that originated at the origin, roughly following Coulomb’s law. But the graph tends to be shifted to one side since the Coulomb’s law origin doesn’t always follow the center of the graph.
 
 Therefore we decided to use another model, Fruchterman and Reingold’s model. We found a paper: [Handbook of Graph Drawing and Visualization (brown.edu)](http://cs.brown.edu/people/rtamassi/gdhandbook/) and in chapter 12, there is the pseudo-code for the algorithm by Fruchterman and Reingold. We were initially apprehensive about this model since the algorithm complexity is O(m + n^2), which takes much longer time when we first use it on our graph of 60000 nodes. However, since we decided to use the 900 nodes graph for visualization, we can use the Fruchterman and Reingold model. However, this model and many others we found do not take into consideration edge weight between two nodes, so we decided to modify the equations to account for the weight between each node. For the attractive force, we multiplied the original equation by the weight, and divided by a constant, let's call this k. The reason for the divided constant is because our weight ranges from 1 to 5000, and we don’t want the 5000-weight to output 5000 times the force compared to the 1-weight. For the repulsive force, we divided the original by k^2 to account the attractive force being divided by k. The reason for the square is because originally we use the weight to affect the “natural length” in the model, and while the attractive force is proportional to 1/(natural length), the repulsive force is proportional to (natural length)^2, so we square the k in return.
 
-// image here
+![](/images/F_R10000steps.png "10000 steps")
 
 This time, we can clearly see clusters of nodes, and each of these clusters corresponds to a common group of subreddits that many people have in common. For example, one of the clusters in the following pictures is a group of crypto currencies subreddit. We were really happy with this result and decided to move forward using this model.
 
-// image here
-
+![](/images/similarsubreddits.png "Subreddit cluster")
 
 ---
 ## Tests

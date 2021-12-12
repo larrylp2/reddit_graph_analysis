@@ -21,7 +21,7 @@
 /documents : Contains all the documents
 * /documents/meeting_records.md : Log of meeting records/DEVELOPMENT file
 * /documents/project_proposal.md : Project proposal/GOALS file
-* /documents/results_report.md : Two page final report with the final project deliverables
+* /documents/results_report.md : Two page final report with the final project deliverables/RESULTS file
 * /documents/team_contract.md : Team contract
 
 /images : Contains image resources used in the final report
