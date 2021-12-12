@@ -42,9 +42,11 @@ PriorityQueue.cpp PriorityQueue.h : Pointer-based min heap for Dijkstra
 
 ## Building and running the executable
 To build the program:
-make graph
+`make graph`
+
 To run the program:
-./graph
+`./graph`
+
 You will then be entered into our advanced UI environment. Enter the input directory and the starting node to read from the dataset.
 
 ![image](https://media.github-dev.cs.illinois.edu/user/11993/files/cab1515d-3e7f-46d4-adc3-602dd4868870)
@@ -60,10 +62,12 @@ Then it will ask you what you want to do. Enter the command correspondingly:
 
 ## Testing
 To build the test:
-make testgraph
+`make testgraph`
+
 To run the test:
-./testgraph
-We created the test for all of our feature. All test read in a small dataset we created and calculated. Dijkstra and BFS test will test whether the output is as we expected from our own calculation of shortest paths. The constructor will test both the read function and the graph constructor, testing whether the graph formed the structure we intended, with the right weight all edges are two directional. There is also FileReader test which tests whether the FileReader read correctly, not missing any line and ignore empty lines. PriorityQueue test tests for basic functionality of the PriorityQueue. For the Visualizer test, we test if the output images changes the pixels at the locations that we wanted or not. For the PhysicSimulation class, we output the image, look at the image and adjust the physics model correspondingly. There are no test for this class and we just tune it so that it can output a pretty image.
+`./testgraph`
+
+We created tests for all of our features. All tests read in a small dataset we created and calculated. Dijkstra and BFS test will test whether the output is as we expected from our own calculation of shortest paths. The constructor will test both the read function and the graph constructor, testing whether the graph formed the structure we intended, with the right weight all edges are two directional. There is also FileReader test which tests whether the FileReader read correctly, not missing any line and ignore empty lines. PriorityQueue test tests for basic functionality of the PriorityQueue. For the Visualizer test, we test if the output images changes the pixels at the locations that we wanted or not. For the PhysicSimulation class, we output the image, look at the image and adjust the physics model correspondingly. There are no test for this class and we just tune it so that it can output a pretty image.
 
 
 
