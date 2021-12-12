@@ -6,7 +6,6 @@
 #include <sstream>
 
 TEST_CASE("testDijkstra", "[weight=1]") {
-    std::cout << "start" << std::endl;
 
     std::string file_path = "data/testDijkstra1/";
 
