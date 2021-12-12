@@ -40,7 +40,8 @@ Discord
 #### <strong>Time:</strong>
 6:00 PM - 6:30 PM
 #### <strong>Summary:</strong>
-We finished the constructor and discussed on optimizing and small changes to the constructor. The constructor produces promising results but we still need to test it properly, which we also discussed how to make tests. We also planning on spliting the work for making a visualization of the graph and hope to have most of everything done by next Friday.
+This week, we focused on the Graph class, where we implemented the constructor and its various inner methods. To improve performance, we discussed optimization solutions and made small changes within the constructor by having helper methods store its attributes. The constructor produces promising results, but we still need to test the output properly. For this to work, we also discussed how to make tests. We are also planning on splitting the work for making a visualization of the graph and hope to have mostly everything done by next Friday.
+
 
 This week's work: 
 Khanh: implement Dijkstra; Natasha: make tests for graph and BFS; Larry: implements BFS
