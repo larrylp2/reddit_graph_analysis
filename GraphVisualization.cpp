@@ -373,7 +373,7 @@ cs225::PNG GraphVisualization::resize(const cs225::PNG* image, float ratio) {
 
 void GraphVisualization::createVisualization() {
     cout << "Constructing Simulator" << endl;
-    PhysicSimulation sim = PhysicSimulation(1, 500);
+    PhysicSimulation sim = PhysicSimulation();
 
     cout << "Initiating Simulator";
     sim.initiateGraph(graph_);

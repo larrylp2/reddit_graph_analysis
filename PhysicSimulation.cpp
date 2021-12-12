@@ -3,13 +3,7 @@
 #include <fstream>
 
 PhysicSimulation::PhysicSimulation() {
-    //do something
-}
-
-PhysicSimulation::PhysicSimulation(float coefficient, float length) {
     time = 0;
-    springCoefficient = coefficient;
-    springNaturalLength = length;
 }
 
 void PhysicSimulation::initiateGraph(Graph& g) {
