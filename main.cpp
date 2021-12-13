@@ -28,7 +28,6 @@ int main() {
                 cout << "Enter output location..." << '\n';
                 cin >> output_lo;
             }
-            
             if (command == "Visualization") {
                 cout << "Enter seconds to simulate..." << '\n';
                 int step;
