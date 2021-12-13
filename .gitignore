@@ -33,6 +33,8 @@
 
 .obj
 .vscode
+graph
+testgraph
 data-fetching/__pycache__
 data-fetching/code_verifier.txt
 data-fetching/client_id.txt
