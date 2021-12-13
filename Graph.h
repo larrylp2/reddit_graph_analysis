@@ -72,7 +72,4 @@ class Graph {
 
         // private helper method that clears allocated heap memory
         void clear();
-
-        
-
 };

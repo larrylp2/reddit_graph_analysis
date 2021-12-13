@@ -185,9 +185,12 @@ void GraphVisualization::drawLine(cs225::PNG* image, const pair<int, int> &coord
         int counter = 0;
         while(startY != endY) {
             for(int i = -1 * radius_ / 20; i < radius_ / 20 + 1; i++) {
-                image->getPixel(startX + i, startY).h = currentHue;
-                image->getPixel(startX + i, startY).s = saturation;
-                image->getPixel(startX + i, startY).l = luminance;
+                if(startX + i < 0 || startY < 0 || startX + i >= width_ || startY >= height_) {} 
+                else {
+                    image->getPixel(startX + i, startY).h = currentHue;
+                    image->getPixel(startX + i, startY).s = saturation;
+                    image->getPixel(startX + i, startY).l = luminance;
+                }
             }
             int increment = (yDiff > 0) ? -1 : 1;
             startY += increment;
@@ -204,9 +207,12 @@ void GraphVisualization::drawLine(cs225::PNG* image, const pair<int, int> &coord
             int counter = 0;
             while(currentY <= endY) {
                 for(int i = -1 * radius_ / 20; i < radius_ / 20 + 1; i++) {
-                    image->getPixel(currentX + i, currentY).h = currentHue;
-                    image->getPixel(currentX + i, currentY).s = saturation;
-                    image->getPixel(currentX + i, currentY).l = luminance;
+                    if(currentX + i < 0 || currentY < 0 || currentX + i >= width_ || currentY >= height_) {
+                    } else {
+                        image->getPixel(currentX + i, currentY).h = currentHue;
+                        image->getPixel(currentX + i, currentY).s = saturation;
+                        image->getPixel(currentX + i, currentY).l = luminance;
+                    }
                 }
 
                 currentX += slope; //increment the current Y by the slope as we increase X by one
@@ -224,9 +230,13 @@ void GraphVisualization::drawLine(cs225::PNG* image, const pair<int, int> &coord
             //follow the slope filling in the nearest whole pixel until we reach the end point
             while(currentX <= endX) {
                 for(int i = -1 * radius_ / 20; i < radius_ / 20 + 1; i++) {
-                    image->getPixel(currentX, currentY + i).h = currentHue;
-                    image->getPixel(currentX, currentY + i).s = saturation;
-                    image->getPixel(currentX, currentY + i).l = luminance;
+                    if(currentX < 0 || currentY + i< 0 || currentX >= width_ || currentY + i >= height_) {
+                        //do nothing
+                    } else {
+                        image->getPixel(currentX, currentY + i).h = currentHue;
+                        image->getPixel(currentX, currentY + i).s = saturation;
+                        image->getPixel(currentX, currentY + i).l = luminance;
+                    }
                 }
 
                 currentY += slope; //increment the current Y by the slope as we increase X by one
