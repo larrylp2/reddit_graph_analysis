@@ -35,6 +35,7 @@
 .vscode
 graph
 testgraph
+smallVisualizerTestOutput.png
 data-fetching/__pycache__
 data-fetching/code_verifier.txt
 data-fetching/client_id.txt
