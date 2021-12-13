@@ -7,7 +7,6 @@ using namespace std;
 
 class GraphVisualization {
     public:
-
         ~GraphVisualization();
 
         GraphVisualization(int width, int height, int max_connections, string path);
@@ -17,8 +16,6 @@ class GraphVisualization {
         cs225::PNG* drawGraph(map<Graph::SubReddit*, pair<int, int>> redditCoords);
 
         void loadGraph(Graph g);
-        
-        void createVisualization();
 
     private:
 

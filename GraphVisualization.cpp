@@ -48,20 +48,13 @@ map<Graph::SubReddit*, pair<int, int>> GraphVisualization::convertCoordinates(ma
     largestX += translateX;
     largestY += translateY;
 
-    // ofstream original("originalcoords.txt");
-    // original << "Largest: " << largestX << ", " << largestY << endl;
-    // original << "Smallest: " << smallestX << ", " << smallestY << endl;
-    // ofstream newCoords("newcoords.txt");
-
     for(map<Graph::SubReddit*, pair<float, float>>::iterator it = redditCoords.begin(); it != redditCoords.end(); it++) {
-        // original << "X: " << it->second.first << " Y: " << it->second.second << endl;
         float x = it->second.first + translateX; //translate to be non negative
         float y = it->second.second + translateY; //translate to be non negative
 
         //scale to be within height bounds (and)
         y = (height_ - 2 - radius_ * 2) * 1.0 * y / largestY + radius_ + 1;
         x = (width_ - 2 - radius_ * 2) * 1.0 * x / largestX + radius_ + 1;
-        // newCoords << "X: " << x << " Y: " << y << endl;
         ret.insert(pair<Graph::SubReddit*, pair<int, int>>(it->first, pair<int, int>(x, y)));
     }
     return ret;
@@ -157,36 +150,19 @@ void GraphVisualization::drawNode(cs225::PNG* image, Graph::SubReddit* node, con
         //diff
         float diffY = sqrt(1.0 * (radius_ * radius_) - (xUpper - offset - x) * (xUpper - offset - x));
         float diffX = sqrt(1.0 * (radius_ * radius_) - (yUpper - offset - y) * (yUpper - offset - y));
-        //std::cout << "current x: " << currentX << " diff " << diff << std::endl;
 
 
         //draw lines between these two coordinates to fill the circle in addition to drawing the outline
         drawLine(image, pair<int, int>(xUpper - offset, y + diffY), pair<int, int>(xUpper - offset, y - diffY), hue, hue, .5, .5);
         drawLine(image, pair<int, int>(x + diffX, yUpper - offset), pair<int, int>(x - diffX, yUpper - offset), hue, hue, .5, .5);
-        /*
-        image->getPixel(xUpper - offset, y + diffY).l = 0; //upper y drawn by rounding the float result
-        image->getPixel(xUpper - offset, y - diffY).l = 0; //lower y drawn by rounding the float result
-
-        image->getPixel(x + diffX, yUpper - offset).l = 0; //upper x drawn by rounding the float result
-        image->getPixel(x - diffX, yUpper - offset).l = 0; //lower x drawn by rounding the float result
-        */
 
         offset++;
-        //float currentYUpper = y + diff;
-        //std::cout << "Y Upper: " << currentYUpper << std::endl;
-        //float currentYLower = y - diff;
-        //std::cout << "Y Lower: " << currentYLower << std::endl;
-
-        //assume that resultant y values are also within bounds of the png
-        //image->getPixel(currentX, currentYUpper).l = 0; //set luminance to 0, appears black, round the Y to the correct Y
-        //image->getPixel(currentX, currentYLower).l = 0; //set luminance to 0, appears black, round the Y to the correct Y
     }
 
     writeLabel(image, node->name, location);
 }
 
 void GraphVisualization::drawLine(cs225::PNG* image, const pair<int, int> &coord1, const pair<int, int> &coord2, double coord1Hue, double coord2Hue, double saturation, double luminance) {
-    //std::cout << "Drawing from (" << coord1.first << "," << coord1.second << ") to (" << coord2.first << "," << coord2.second << ")" << std::endl;
     //draws a line between two points
     int hueChange = coord1Hue - coord2Hue;
     bool check = coord1Hue == 135;
@@ -243,7 +219,6 @@ void GraphVisualization::drawLine(cs225::PNG* image, const pair<int, int> &coord
             float hueChangeX = 1.0 * hueChange / xDiff;
             //find the slope (rise over run with dy/dx)
             float slope = yDiff * 1.0 / xDiff;
-            //std::cout << "Slope: " << slope << std::endl;
             float currentY = startY;
             float currentX = startX;
             //follow the slope filling in the nearest whole pixel until we reach the end point
@@ -280,7 +255,6 @@ void GraphVisualization::loadCharacterPNG(string path) {
             current = string({c});
         }
         string file = path + current + suffix;
-        //cout << "File: " << file << endl;
         cs225::PNG* newChar = new cs225::PNG();
         newChar->readFromFile(file);
         characters_.insert(pair<char, cs225::PNG*>(c, newChar));
@@ -288,7 +262,6 @@ void GraphVisualization::loadCharacterPNG(string path) {
 }
 
 void GraphVisualization::writeLabel(cs225::PNG* image, string label, const pair<int, int>& location) {
-    //cout << "Writing Label: " << label << endl;
     int width = 0; //keep track of the estimated pixel width of the letters
     vector<cs225::PNG*> characters;
     for(char c : label) {
@@ -365,23 +338,4 @@ cs225::PNG GraphVisualization::resize(const cs225::PNG* image, float ratio) {
         otherX += step;
     }
     return newImage;
-}
-
-void GraphVisualization::createVisualization() {
-    cout << "Constructing Simulator" << endl;
-    PhysicSimulation sim = PhysicSimulation();
-
-    cout << "Initiating Simulator";
-    sim.initiateGraph(graph_);
-
-    cout << "Starting Simulation" << endl;
-    map<Graph::SubReddit*, pair<float, float>> positions = sim.simulateFor(20);
-
-    cout << "Converting Coordinates" << endl;
-    map<Graph::SubReddit*, pair<int, int>> convertedCoords = convertCoordinates(positions);
-
-    cout << "Drawing Graph" << endl;
-    cs225::PNG* image = drawGraph(convertedCoords);
-
-    image->writeToFile("full_output.png");
 }

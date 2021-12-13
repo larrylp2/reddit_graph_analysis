@@ -39,6 +39,8 @@ class Graph {
 
         int getSubs() const;
 
+        int getMaxConnection() const;
+
         map<string, Graph::SubReddit*> getSubReddits() const;
 
         //Helper function that retrieves the number of shared users between two subreddits
@@ -49,13 +51,19 @@ class Graph {
     private:    
         //class that reads subreddit and user text files
         FileReader reader;
-        
+
+        int max_connection = 0;
+
         map<string, SubReddit*> unique_subreddits; //a map to keep track of subreddit object pointers (vertices)
+
+        //map<pair<SubReddit*, SubReddit*>, int> edges; //a set to keep track of the list of edges and their strengths
 
         set<string> checked_users; // A set to store users that have already been checked
 
         set<string> read_subs; // A set to store subs that have already been stored
 
+        // More readable version of populateSubReddits and will replace that version after implemented
+        // Maybe put in private since this will be called in readGraph
         void populateSubreddit(string name); 
 
         // List version of connectSubreddits, which calls connectSubreddits to all pairs in the list
@@ -65,6 +73,8 @@ class Graph {
         void connectSubreddits(SubReddit* sub1, SubReddit* sub2);
 
         // private helper method that clears allocated heap memory
-        void clear();  
+        void clear();
+
+        
 
 };

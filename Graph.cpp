@@ -13,7 +13,9 @@ Graph::Graph(string source_directory) {
 Graph::~Graph() {
     clear();
 }
-
+int Graph::getMaxConnection() const {
+    return max_connection;
+}
 void Graph::readGraphBFS(string root) {
     queue<string> subReddit;
     subReddit.push(root);
@@ -44,6 +46,8 @@ vector<string> Graph::BFSTraversal(string start) const {
     subReddit.push(start);
     vector<string> ret;
     set<string> seen_subs; // A set to store subs that have already been seen
+    //ofstream BFSOutput("BFSResults.txt");
+    //BFSOutput << "UIUC" << std::endl;
     seen_subs.insert(start);
 
     while(!subReddit.empty()) {
@@ -68,6 +72,7 @@ vector<string> Graph::BFSTraversal(string start) const {
                 //do nothing
             } else {
                 subReddit.push(adj);
+                //BFSOutput << it->first->name << std::endl;
                 seen_subs.insert(adj);
             }
         }
@@ -77,7 +82,9 @@ vector<string> Graph::BFSTraversal(string start) const {
 
 void Graph::populateSubreddit(std::string name) {
     // name is the name of the subreddit, example: UIUC
+
     set<string> user_list = reader.getUserListFromSubRedditFile(name);
+    //std::cout << "User Size: " << user_list.size() << std::endl;
     for (set<string>::iterator it = user_list.begin(); it != user_list.end(); it++) {
         string u = *it;
         if (checked_users.find(u) != checked_users.end()) { 
@@ -155,6 +162,9 @@ void Graph::connectSubreddits(SubReddit* sub1, SubReddit* sub2) {
         iterator->second++;
         sub2->adjacent.find(sub1)->second++;
 
+        if(iterator->second > max_connection) {
+            max_connection = iterator->second;
+        }
     } else { //otherwise make a new connection
         sub1->adjacent.insert(pair<SubReddit*, int>(sub2, 1));
         sub2->adjacent.insert(pair<SubReddit*, int>(sub1, 1));
@@ -227,4 +237,5 @@ void Graph::clear() {
     checked_users = set<string>();
     read_subs = set<string>();
     reader = FileReader();
+    max_connection = 0;
 }
