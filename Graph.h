@@ -37,6 +37,8 @@ class Graph {
         //Helper function that only retrives the pointer based on the name, returning NULL if the sub does not exist
         SubReddit* getSubReddit(string name) const;
 
+        void outputSubReddit(string name) const;
+
         int getUsers() const;
 
         int getSubs() const;

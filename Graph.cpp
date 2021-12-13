@@ -86,6 +86,29 @@ void Graph::BFSToFile() const {
     }
 }
 
+void Graph::outputSubReddit(string name) const {
+    ofstream subOutput("subredditOutput.txt");
+    SubReddit* node = getSubReddit(name);
+    if(node) {
+        subOutput << "Results for Subreddit: r/" << name << endl;
+
+        vector<pair<int, string>> weightAdj;
+        for(map<SubReddit*, int>::iterator it = node->adjacent.begin(); it != node->adjacent.end(); it++) {
+            weightAdj.push_back(make_pair(it->second, it->first->name));
+        }
+        subOutput << weightAdj.size() << " adjacent Subreddits" << endl;
+
+        sort(weightAdj.begin(), weightAdj.end());
+        for(int i = weightAdj.size() - 1; i >= 0; i--) {
+            subOutput << "Related Sub: r/" << weightAdj[i].second << " Shared Users: " << weightAdj[i].first << endl;
+        }
+
+    } else {
+        subOutput << "No Subreddit Named r/" << name << endl;
+
+    }
+}
+
 void Graph::populateSubreddit(std::string name) {
     // name is the name of the subreddit, example: UIUC
 
