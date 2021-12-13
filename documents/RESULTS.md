@@ -88,8 +88,27 @@ For our discoveries, the two major results of our project included a list of the
 
 For our results, we were able to alphabetically sort the adjacent nodes from r/UIUC, by using the BFS traversal, as seen below:
 
-![](/images/similarsubreddits.png "Subreddit cluster")
-| ![](/images/subredditfile.png "SubReddit data file") | ![](/images/userfile.png "User data file") |
+![](/images/bfs_one.png "BFS Output")
+| ![](/images/bfs_two.png "BFS Output")
+
+From our results, we discovered that there were definitely some common subreddits that r/UIUC users visited. We were able to determine the results based on our Dijkstra’s algorithm. 
+
+![](/images/dijkstra_output.png "Dijkstra Output")
+
+Based on the results of Dijkstra’s algorithm, we can conclude that some of the top subreddits visited include: r/AskReddit, r/pics, r/memes & r/funny. To confirm that our algorithm properly determined the most common subreddits, we also checked with our graph constructor, which determined the following:
+
+
+In addition to determining the common subreddits r/UIUC users frequently visited, the graph constructor also tracked the number of shared users between the parent subreddit, r/UIUC, and the adjacent subreddits. We were able to determine the number of shared users, by using Dijkstra’s algorithm, which calculated the shortest path between two subreddits. Visually, we were able to illustrate this connection by drawing edges between connected subreddits.
+
+Concerning the visual output of our graph, we were happy with how beautiful how the graph turned out. However, a major problem we encountered was the runtime concerning the program, as well as memory limitation of the graphic output. Take for instance, the following two graphs:
+
+![](/images/khanh_output.png "Khanh Graph")
+| ![](/images/larry_output.png "Larry Graph")
+
+The top graph was run on Khanh’s computer, whereas the bottom graph was run on Larry’s computer. Because both Khanh and Larry’s computers required different memory sizes, the processing of the images was quite different. The top image is more distorted compared than the bottom image, as the clusters of nodes appear more distorted, making it harder to distinguish the connections. Part of the reason the images differ is because of the memory limitation on both devices. The graphic output depends on the type of computer the program is executed on. In order to run our program, we originally outputted our image to 25000 pixels vs 25000 pixels, which requires around 9GB of RAM. Because not all operating systems have that amount of memory allocation, we had to reduce the PNG output to 1000 x 1000 pixels. Even still, the computers need a proper amount of memory to run the program. 
+
+It was necessary to make adjustments, in order to have a visually pleasing graph. However, each simulation runtime took approximately 20 - 30 minutes to complete. What was even jarring was that it took this much time on a 900 node dataset, which was significantly smaller than our 60,000 node dataset. 
+
 
 ---
 ## Conclusion
