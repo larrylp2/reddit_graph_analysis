@@ -26,8 +26,6 @@ def fetch_from_subreddit(subr):
                 })
             subredditjson = subresponse.json()
             subresponse.close()
-            # with open('testsubreddit.json', 'w') as file:
-            #     json.dump(subredditjson, file, indent = 4)
             try:
                 li = subredditjson["data"]["children"]
                 for i in li:
@@ -56,10 +54,4 @@ def fetch_from_subreddit(subr):
 
     alluserslist = removeDups(alluserslist)
 
-    # for u in alluserslist:
-    #     print(u)
-        
-    # print(len(alluserslist))
     return alluserslist
-
-# fetch_from_subreddit('UIUC')

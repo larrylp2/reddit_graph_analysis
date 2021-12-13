@@ -11,8 +11,6 @@ for file in os.listdir(current_dir):
         # find the exact path to this json file
         json_name = os.path.join(current_dir, file)
 
-        
-        # print(json_name)
         # read the json file into a python dataframe
         json_df = pd.read_json(json_name)
 
@@ -30,7 +28,6 @@ for file in os.listdir(current_dir):
         # find the exact path to this json file
         json_name = os.path.join(current_dir, file)
 
-        # print(json_name)
         # read the json file into a python dataframe
         json_df = pd.read_json(json_name)
 

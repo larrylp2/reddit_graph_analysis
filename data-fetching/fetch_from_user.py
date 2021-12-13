@@ -31,8 +31,6 @@ def fetch_from_user(usern):
                 return []
             subredditjson = subresponse.json()
             subresponse.close()
-            # with open('testsubreddit.json', 'w') as file:
-            #     json.dump(subredditjson, file, indent = 4)
             #Turn into post id
             if not ("data" in subredditjson):
                 return[]
@@ -44,7 +42,6 @@ def fetch_from_user(usern):
                 postlist.append(s)
 
             startname = subredditjson["data"]["after"]
-            # print(startname)
             if not startname:
                 break
         return postlist
@@ -63,10 +60,4 @@ def fetch_from_user(usern):
     pl = postlist(usern)
     bef = len(pl)
     pl = removeDups(pl)
-    # for u in pl:
-    #     print(u)
-    # print(bef)
-    # print(len(pl))
     return pl
-
-# fetch_from_user('AnimeMod')

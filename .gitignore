@@ -32,6 +32,7 @@
 *.app
 
 .DS_Store
+images/.DS_Store
 .obj
 .vscode
 graph
