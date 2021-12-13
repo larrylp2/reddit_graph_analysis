@@ -97,6 +97,7 @@ From our results, we discovered that there were definitely some common subreddit
 
 Based on the results of Dijkstra’s algorithm, we can conclude that some of the top subreddits visited include: r/AskReddit, r/pics, r/memes & r/funny. To confirm that our algorithm properly determined the most common subreddits, we also checked with our graph constructor, which determined the following:
 
+![](/images/graph_constructor.png "Graph Constructor")
 
 In addition to determining the common subreddits r/UIUC users frequently visited, the graph constructor also tracked the number of shared users between the parent subreddit, r/UIUC, and the adjacent subreddits. We were able to determine the number of shared users, by using Dijkstra’s algorithm, which calculated the shortest path between two subreddits. Visually, we were able to illustrate this connection by drawing edges between connected subreddits.
 
