@@ -84,7 +84,16 @@ To test the PriorityQueue, we created a small test that tests the basic function
 
 ---
 ## Discoveries
+For our discoveries, the two major results of our project included a list of the common subreddits that r/UIUC users visit, as well as optimizing visualization and memory leaks when testing on a larger dataset.
 
+For our results, we were able to alphabetically sort the adjacent nodes from r/UIUC, by using the BFS traversal, as seen below:
+
+![](/images/similarsubreddits.png "Subreddit cluster")
+| ![](/images/subredditfile.png "SubReddit data file") | ![](/images/userfile.png "User data file") |
+
+---
+## Conclusion
+Overall, when creating this project, we learned a lot about working with real datasets. There are many imperfections with real-life data, so we had to analyze it in an appropriate manner. Using physics models was quite helpful, because we were able to use formulas that added more real world simulation to our final project. While creating the proper algorithms are important for executing our program, working with proper memory storage is also quite important. In our experience, dealing with the extensive runtime was quite tedious. We did try implementing optimization solutions, such as increasing the runtime for our physics calculations. It did improve our runtime a little bit, however there are many improvements we could have made, if given more time. In addition to dealing with memory storage, we would also like to tune our physics model, so that it emulates real-world physics accurately. This was a really rewarding experience, that we learned a lot from!
 
 --- 
 ## Project Presentation
