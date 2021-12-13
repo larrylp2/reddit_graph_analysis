@@ -56,8 +56,6 @@ class Graph {
 
         map<string, SubReddit*> unique_subreddits; //a map to keep track of subreddit object pointers (vertices)
 
-        //map<pair<SubReddit*, SubReddit*>, int> edges; //a set to keep track of the list of edges and their strengths
-
         set<string> checked_users; // A set to store users that have already been checked
 
         set<string> read_subs; // A set to store subs that have already been stored

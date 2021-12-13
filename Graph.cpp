@@ -46,8 +46,6 @@ vector<string> Graph::BFSTraversal(string start) const {
     subReddit.push(start);
     vector<string> ret;
     set<string> seen_subs; // A set to store subs that have already been seen
-    //ofstream BFSOutput("BFSResults.txt");
-    //BFSOutput << "UIUC" << std::endl;
     seen_subs.insert(start);
 
     while(!subReddit.empty()) {
@@ -72,7 +70,6 @@ vector<string> Graph::BFSTraversal(string start) const {
                 //do nothing
             } else {
                 subReddit.push(adj);
-                //BFSOutput << it->first->name << std::endl;
                 seen_subs.insert(adj);
             }
         }
@@ -84,7 +81,6 @@ void Graph::populateSubreddit(std::string name) {
     // name is the name of the subreddit, example: UIUC
 
     set<string> user_list = reader.getUserListFromSubRedditFile(name);
-    //std::cout << "User Size: " << user_list.size() << std::endl;
     for (set<string>::iterator it = user_list.begin(); it != user_list.end(); it++) {
         string u = *it;
         if (checked_users.find(u) != checked_users.end()) { 
