@@ -2,10 +2,6 @@
 #include <math.h>
 #include <fstream>
 
-GraphVisualization::GraphVisualization() {
-    //default constructor
-}
-
 GraphVisualization::~GraphVisualization() {
     //destructor
     for(map<char, cs225::PNG*>::iterator it = characters_.begin(); it != characters_.end(); it++) {

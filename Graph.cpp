@@ -44,8 +44,6 @@ vector<string> Graph::BFSTraversal(string start) const {
     subReddit.push(start);
     vector<string> ret;
     set<string> seen_subs; // A set to store subs that have already been seen
-    //ofstream BFSOutput("BFSResults.txt");
-    //BFSOutput << "UIUC" << std::endl;
     seen_subs.insert(start);
 
     while(!subReddit.empty()) {
@@ -70,7 +68,6 @@ vector<string> Graph::BFSTraversal(string start) const {
                 //do nothing
             } else {
                 subReddit.push(adj);
-                //BFSOutput << it->first->name << std::endl;
                 seen_subs.insert(adj);
             }
         }
@@ -78,42 +75,9 @@ vector<string> Graph::BFSTraversal(string start) const {
     return ret;
 }
 
-void Graph::BFSToFile() const {
-    vector<string> BFS = BFSTraversal("UIUC");
-    ofstream BFSOutput("BFSResults.txt");
-    for(string s : BFS) {
-        BFSOutput << s << std::endl;
-    }
-}
-
-void Graph::outputSubReddit(string name) const {
-    ofstream subOutput("subredditOutput.txt");
-    SubReddit* node = getSubReddit(name);
-    if(node) {
-        subOutput << "Results for Subreddit: r/" << name << endl;
-
-        vector<pair<int, string>> weightAdj;
-        for(map<SubReddit*, int>::iterator it = node->adjacent.begin(); it != node->adjacent.end(); it++) {
-            weightAdj.push_back(make_pair(it->second, it->first->name));
-        }
-        subOutput << weightAdj.size() << " adjacent Subreddits" << endl;
-
-        sort(weightAdj.begin(), weightAdj.end());
-        for(int i = weightAdj.size() - 1; i >= 0; i--) {
-            subOutput << "Related Sub: r/" << weightAdj[i].second << " Shared Users: " << weightAdj[i].first << endl;
-        }
-
-    } else {
-        subOutput << "No Subreddit Named r/" << name << endl;
-
-    }
-}
-
 void Graph::populateSubreddit(std::string name) {
     // name is the name of the subreddit, example: UIUC
-
     set<string> user_list = reader.getUserListFromSubRedditFile(name);
-    //std::cout << "User Size: " << user_list.size() << std::endl;
     for (set<string>::iterator it = user_list.begin(); it != user_list.end(); it++) {
         string u = *it;
         if (checked_users.find(u) != checked_users.end()) { 
@@ -161,15 +125,6 @@ int Graph::getSubs() const {
     return read_subs.size();
 }
 
-void Graph::printMaxConnection() const {
-    std::cout << "Max Connection: " << max_connection << std::endl;
-    std::cout << "Sub1: " << best1 << " Sub2: " << best2 << std::endl;
-}
-
-int Graph::getMaxConnection() const {
-    return max_connection;
-}
-
 int Graph::commonUsers(string sub1, string sub2) const {
     //get pointers to the two subs
     Graph::SubReddit* s1 = getSubReddit(sub1);
@@ -200,11 +155,6 @@ void Graph::connectSubreddits(SubReddit* sub1, SubReddit* sub2) {
         iterator->second++;
         sub2->adjacent.find(sub1)->second++;
 
-        if(iterator->second > max_connection) {
-            max_connection = iterator->second;
-            best1 = sub1->name;
-            best2 = sub2->name;
-        }
     } else { //otherwise make a new connection
         sub1->adjacent.insert(pair<SubReddit*, int>(sub2, 1));
         sub2->adjacent.insert(pair<SubReddit*, int>(sub1, 1));
@@ -266,53 +216,6 @@ map<string, double> Graph::dijkstra(string start) {
     return output;
 }
 
-map<string, double> Graph::badDijkstra(string start) {
-    // Construct heap/priority queue
-    map<string, double> output = map<string, double>();
-    
-    map<SubReddit*, double> weightMap = map<SubReddit*, double>();
-    set<SubReddit*> visited = set<SubReddit*>();
-    
-    for(map<string, SubReddit*>::iterator it = unique_subreddits.begin(); it != unique_subreddits.end(); it++) {
-        if (it->first == start) {
-            weightMap[it->second] = 0;
-        } else {
-            weightMap[it->second] = -1;
-        }
-    }
-
-    // Start of Dijkstra
-    for (int i = 0; i < getSubs(); i++) {
-        cout << "Dijkstra remaining: " << getSubs() - i<< '\n';
-        SubReddit* node = NULL;
-        double weight = -1;
-        for (auto iter : weightMap) {
-            if (visited.find(iter.first) == visited.end()) {
-                if (weight == -1 || (iter.second != -1 && weight > iter.second)) {
-                    weight = iter.second;
-                    node = iter.first;
-                }
-            }
-        }
-        if (node == NULL) continue;
-        visited.insert(node);
-        output[node->name] = weight;
-        if (weight == -1) {
-            continue;
-        }
-        for (map<SubReddit*, int>::iterator it = node->adjacent.begin(); it != node->adjacent.end(); it++) {
-            if (output.find(it->first->name) == output.end()) {
-                double newWeight = weight + (double) 1/ (double) it->second;
-                double oldWeight = weightMap[it->first];
-                if (oldWeight == -1 || oldWeight > newWeight) {
-                    weightMap[it->first] = newWeight;
-                }
-            }
-        }
-    }
-    return output;
-}
-
 void Graph::clear() {
     //iterates through the set of unique subreddits, deallocating each subreddit
     for(map<string, SubReddit*>::iterator it = unique_subreddits.begin(); it != unique_subreddits.end(); it++) {
@@ -324,7 +227,4 @@ void Graph::clear() {
     checked_users = set<string>();
     read_subs = set<string>();
     reader = FileReader();
-    best1 = "";
-    best2 = "";
-    max_connection = 0;
 }

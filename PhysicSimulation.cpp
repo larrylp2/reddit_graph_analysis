@@ -8,13 +8,6 @@ PhysicSimulation::PhysicSimulation() {
 
 void PhysicSimulation::initiateGraph(Graph& g) {
 
-    //retrieve the total number of subreddits
-    //int totalSubreddits = g.getSubs();
-
-    // if (g == NULL) {
-    //     return;
-    // }
-
     //retrieve the collection of subreddits
     map<string, Graph::SubReddit*> subreddits = g.getSubReddits();
     //setting the common position
@@ -38,7 +31,6 @@ void PhysicSimulation::initiateGraph(Graph& g) {
 map<Graph::SubReddit*, pair<float, float>> PhysicSimulation::simulateFor(int seconds) {
     map<Graph::SubReddit*, pair<float, float>> new_positions;
 
-    //ofstream newCoords("coordOutputSeconds.txt");
 
     float W = 200000;
     float L = 200000;
@@ -48,7 +40,6 @@ map<Graph::SubReddit*, pair<float, float>> PhysicSimulation::simulateFor(int sec
     for (int i = 0; i < seconds; i++) {
         time += 0.01;
         cout << "Simulating Second: " << i + 1 << endl;
-        //newCoords << "At Second: " << i + 1 << endl;
         for (map<Graph::SubReddit*, pair<float, float>>::iterator it = positions.begin(); it != positions.end(); it++) {
             
             //finding individual coordinates for current node
@@ -86,9 +77,6 @@ map<Graph::SubReddit*, pair<float, float>> PhysicSimulation::simulateFor(int sec
                 float spring_force_value_x = distance*distance/(k/n->second*1000) * unit_vector.first;
                 float spring_force_value_y = distance*distance/(k/n->second*1000) * unit_vector.second;
                 
-                // float spring_force_value_x = log(distance/ springNaturalLength * n->second)*springCoefficient*unit_vector.first;
-                // float spring_force_value_y = log(distance/ springNaturalLength * n->second)*springCoefficient*unit_vector.second;
-
                 //update the force vector
                 force_vector.first += spring_force_value_x;
                 force_vector.second += spring_force_value_y;
@@ -136,7 +124,6 @@ map<Graph::SubReddit*, pair<float, float>> PhysicSimulation::simulateFor(int sec
             if (new_positions[it -> first].second < -100000) {
                 new_positions[it -> first].second = -100000;
             }
-            //newCoords << "X: " << new_positions[it->first].first << " Y: " << new_positions[it->first].second << endl;   
         }
         positions = new_positions;
     }
