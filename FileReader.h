@@ -5,8 +5,7 @@
 using namespace std;
 //class that reads in subreddit and user files
 
-//const string SUBREDDIT_DATA_PATH = "khanhn2-mohanty7--larrylp2/data-fetching/data/subreddit_text_new/";
-//const string USER_DATA_PATH = "khanhn2-mohanty7--larrylp2/data-fetching/data/user_text_new/";
+//how the data directories are expected to be formatted
 const string SUBREDDIT_DATA_PATH = "subreddit_text/";
 const string USER_DATA_PATH = "user_text/";
 const string JSON_SUFFIX = ".json";

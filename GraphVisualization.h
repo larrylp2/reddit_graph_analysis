@@ -11,6 +11,7 @@ class GraphVisualization {
 
         GraphVisualization(int width, int height, int max_connections, string path);
 
+        //converts the coordinate output from PhysicSimulation into one translated and scaled to fit within the PNG coordinates
         map<Graph::SubReddit*, pair<int, int>> convertCoordinates(map<Graph::SubReddit*, pair<float, float>>& redditCoords);
         
         cs225::PNG* drawGraph(map<Graph::SubReddit*, pair<int, int>> redditCoords);
@@ -19,9 +20,9 @@ class GraphVisualization {
 
     private:
 
-        void loadCharacterPNG(string path);
+        void loadCharacterPNG(string path); //loads in the characters/font from a directory
 
-        int calculateNodeHue(Graph::SubReddit* node) const;
+        int calculateNodeHue(Graph::SubReddit* node) const; //assigns a node hue based on its adjacent nodes
 
         void drawNode(cs225::PNG* image, Graph::SubReddit* node, const pair<int, int> &location);
 

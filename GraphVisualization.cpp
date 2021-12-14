@@ -11,7 +11,7 @@ GraphVisualization::~GraphVisualization() {
 }
 
 GraphVisualization::GraphVisualization(int width, int height, int max_connections, string path) {
-    radius_ = 100;
+    radius_ = 100; //default radius size
     width_ = width;
     height_ = height;
     max_connections_ = max_connections;
@@ -32,6 +32,7 @@ map<Graph::SubReddit*, pair<int, int>> GraphVisualization::convertCoordinates(ma
     float largestX = __FLT_MIN__;
     float largestY = __FLT_MIN__;
 
+    //scales the coordinates to be nonnegative and begin close to (0,0)
     for(map<Graph::SubReddit*, pair<float, float>>::iterator it = redditCoords.begin(); it != redditCoords.end(); it++) {
         float x = it->second.first;
         float y = it->second.second;
@@ -116,12 +117,7 @@ int GraphVisualization::calculateNodeHue(Graph::SubReddit* node) const {
 
 void GraphVisualization::drawNode(cs225::PNG* image, Graph::SubReddit* node, const pair<int, int> &location) {
 
-    //TODO: Coloring the node
-
-
-    //draws a circle based on the existing radius at the given location
-    //creates the equation of a circle
-    // (x - startingX)^2 + (y - startingY)^2 = radius_^2
+    //draws a circle based on the existing radius at the given location using the equation of a circle
     // positive portion and negative portions
     // y = (radius^2 - (x - startingX)^2)^.5 - startingY
     // y = (radius^2 - (x - startingX)^2)^.5 + startingY
@@ -146,8 +142,7 @@ void GraphVisualization::drawNode(cs225::PNG* image, Graph::SubReddit* node, con
     int yUpper = y + radius_;
     int offset = 0; //offset from xUpper and yUpper we are checking
     while(offset <= radius_ * 2) {
-        //need to add way to write the name
-        //diff
+        //calculates the expected offset using the equation
         float diffY = sqrt(1.0 * (radius_ * radius_) - (xUpper - offset - x) * (xUpper - offset - x));
         float diffX = sqrt(1.0 * (radius_ * radius_) - (yUpper - offset - y) * (yUpper - offset - y));
 
@@ -198,7 +193,7 @@ void GraphVisualization::drawLine(cs225::PNG* image, const pair<int, int> &coord
             currentHue += hueChangeY;
         }
     } else {
-        if(abs(yDiff) > abs(xDiff)) { //go by Y if we are travelling through Y more
+        if(abs(yDiff) > abs(xDiff)) { //go by Y if we are travelling through Y more, this way we do not skip any part of the line
             float hueChangeY = 1.0 * hueChange / yDiff;
             //do from y
             float slope = xDiff * 1.0 / yDiff;
@@ -221,7 +216,7 @@ void GraphVisualization::drawLine(cs225::PNG* image, const pair<int, int> &coord
                 counter++;
             }
 
-        } else { //go by X if we are travelling through X more
+        } else { //go by X if we are travelling through X more, this way we do not skip any part of the line
             float hueChangeX = 1.0 * hueChange / xDiff;
             //find the slope (rise over run with dy/dx)
             float slope = yDiff * 1.0 / xDiff;
@@ -250,7 +245,7 @@ void GraphVisualization::drawLine(cs225::PNG* image, const pair<int, int> &coord
 }
 
 void GraphVisualization::loadCharacterPNG(string path) {
-    string neededChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
+    string neededChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_"; //the alphanumeric characters we need to load in
     string suffix = ".png";
     for(char c : neededChars) {
         string current;
@@ -265,6 +260,8 @@ void GraphVisualization::loadCharacterPNG(string path) {
             current = string({c});
         }
         string file = path + current + suffix;
+
+        //allocates an image on the heap dedicated to each character
         cs225::PNG* newChar = new cs225::PNG();
         newChar->readFromFile(file);
         characters_.insert(pair<char, cs225::PNG*>(c, newChar));
@@ -272,7 +269,7 @@ void GraphVisualization::loadCharacterPNG(string path) {
 }
 
 void GraphVisualization::writeLabel(cs225::PNG* image, string label, const pair<int, int>& location) {
-    int width = 0; //keep track of the estimated pixel width of the letters
+    int width = 0; //keep track of the estimated pixel width of the entire string
     vector<cs225::PNG*> characters;
     for(char c : label) {
         cs225::PNG* png = characters_.find(c)->second;
@@ -280,17 +277,20 @@ void GraphVisualization::writeLabel(cs225::PNG* image, string label, const pair<
         width += png->width();
     }
 
+    //finds the ratio of the entire string and the width we hope to fit it within
     float ratio = 180.0 / width;
 
     //check if the width is greater than the one allocated by the radius
     if(ratio < 1) {
-        //todo
-        //make it centered
+        //centers the characters
         int currentX = location.first - 90;
         for(cs225::PNG* png : characters) {
             int height = png->height();
             int currentWidth = png->width();
+
+            //resize each character to fit within the bounds of the node
             cs225::PNG copy = resize(png, ratio);
+
             //make sure the height is centered as well
             int startY = location.second - copy.height() / 2;
             int currentY = startY;
@@ -305,7 +305,7 @@ void GraphVisualization::writeLabel(cs225::PNG* image, string label, const pair<
                 currentX++;
             }
         }
-    } else {
+    } else { //otherwise, no need to scale the characters smaller
         //make it centered
         int currentX = location.first - width / 2;
         for(cs225::PNG* png : characters) {
@@ -339,6 +339,7 @@ cs225::PNG GraphVisualization::resize(const cs225::PNG* image, float ratio) {
     float otherX = 0;
     float otherY = 0;
 
+    //resizes a copy of an image
     for(int x = 0; x < newWidth; x++) {
         for(int y = 0; y < newHeight; y++) {
             newImage.getPixel(x, y) = image->getPixel(otherX, otherY);

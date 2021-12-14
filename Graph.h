@@ -35,10 +35,13 @@ class Graph {
         //Helper function that only retrives the pointer based on the name, returning NULL if the sub does not exist
         SubReddit* getSubReddit(string name) const;
 
+        //returns the number of users in the graph
         int getUsers() const;
 
+        //returns the number of subreddits in the graph
         int getSubs() const;
 
+        //returns the max number of users shared between two subreddits
         int getMaxConnection() const;
 
         map<string, Graph::SubReddit*> getSubReddits() const;
