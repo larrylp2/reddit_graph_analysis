@@ -5,7 +5,7 @@
 
 The first is our graph implementation and constructor. The format of our collected Reddit data heavily influenced our initial approach to graph construction. Each data set will be a folder containing two folders, /subreddit_text and /user_text. Each file in /subreddit_text will be named as the subreddit_name.txt and each line in the file will contain a user name. Similarly, each file in /user_text will each be named as user_name.txt and each line in that file will contain a subreddit name the user uses.
 
-| ![](/images/subredditfile.png "SubReddit data file") | ![](/images/userfile.png "User data file") |
+| ![](/images/Subredditfile.png "SubReddit data file") | ![](/images/userfile.png "User data file") |
 |----|---|
 | /subreddit_text/somesub.txt | /user_text/someone.txt|
 
