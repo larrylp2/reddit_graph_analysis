@@ -1,4 +1,8 @@
 # Reddit Graph
+### Khanh Nguyen, Larry Peng, Natasha Mohanty
+
+## Final Report
+[Here](docs/index.md) is our final project report.
 
 ## The location of all major code, data, and results
 
@@ -103,6 +107,5 @@ We created tests for all of our features. All tests read in a small dataset we c
 
 ## Project Presentation
 [Here](https://youtu.be/uCpAovuVFHs) is a link to our final project presentation.
-
 
 
