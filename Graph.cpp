@@ -16,21 +16,22 @@ Graph::~Graph() {
 int Graph::getMaxConnection() const {
     return max_connection;
 }
-void Graph::readGraphBFS(string root) {
+
+void Graph::readGraphBFS(const string &root) {
     queue<string> subReddit;
     subReddit.push(root);
     int pop = 1;
     while(!subReddit.empty()) {
-        //populate the subreddit in the front of the qeueu
+        //populate the current subreddit that is in the front of the queue
         string sub = subReddit.front();
         pop++;
         subReddit.pop();
         populateSubreddit(sub);
         SubReddit* subPtr = retrieveSubreddit(sub);
         std::cout << "Populated: " << pop << std::endl;
-        //now add the adjacent ones to the queue
+        //now add the adjacent subreddits to the queue
         for(map<SubReddit*, int>::iterator it = subPtr->adjacent.begin(); it != subPtr->adjacent.end(); it++) {
-            if(read_subs.find(it->first->name) != read_subs.end()) { //already read this subreddit 
+            if(read_subs.find(it->first->name) != read_subs.end()) { // if already seen this subreddit 
                 //do nothing
             } else {
                 //recursively read this next subreddit
@@ -78,8 +79,6 @@ vector<string> Graph::BFSTraversal(string start) const {
 }
 
 void Graph::populateSubreddit(std::string name) {
-    // name is the name of the subreddit, example: UIUC
-
     set<string> user_list = reader.getUserListFromSubRedditFile(name);
     for (set<string>::iterator it = user_list.begin(); it != user_list.end(); it++) {
         string u = *it;
@@ -167,7 +166,7 @@ void Graph::connectSubreddits(SubReddit* sub1, SubReddit* sub2) {
     }
 }
 
-// List version of addWeight, which call addWeight to all pairs in the list
+// Set version of connectSubreddits that calls connectSubreddits on all pairs within the set
 void Graph::connectSubRedditList(set<string> subreddit_list) {
     vector<SubReddit*> subs;
     for(set<string>::iterator it = subreddit_list.begin(); it != subreddit_list.end(); it++) {
