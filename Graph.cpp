@@ -42,7 +42,7 @@ void Graph::readGraphBFS(const string &root) {
     }
 }
 
-vector<string> Graph::BFSTraversal(string start) const {
+vector<string> Graph::BFSTraversal(const string & start) const {
     queue<string> subReddit;
     subReddit.push(start);
     vector<string> ret;
@@ -78,7 +78,7 @@ vector<string> Graph::BFSTraversal(string start) const {
     return ret;
 }
 
-void Graph::populateSubreddit(std::string name) {
+void Graph::populateSubreddit(const string & name) {
     set<string> user_list = reader.getUserListFromSubRedditFile(name);
     for (set<string>::iterator it = user_list.begin(); it != user_list.end(); it++) {
         string u = *it;
@@ -93,7 +93,7 @@ void Graph::populateSubreddit(std::string name) {
     }
 }
 
-Graph::SubReddit* Graph::retrieveSubreddit(string subName) {
+Graph::SubReddit* Graph::retrieveSubreddit(const string & subName) {
     //start by checking if the subreddit already exists in our map
     Graph::SubReddit* sub = getSubReddit(subName);
     if(sub) {
@@ -107,7 +107,7 @@ Graph::SubReddit* Graph::retrieveSubreddit(string subName) {
     }
 }
 
-Graph::SubReddit* Graph::getSubReddit(string subName) const {
+Graph::SubReddit* Graph::getSubReddit(const string & subName) const {
     //start by checking if the subreddit already exists in our map
     map<string, SubReddit*>::const_iterator iterator = unique_subreddits.find(subName);
     if(iterator != unique_subreddits.end()) {
@@ -127,7 +127,7 @@ int Graph::getSubs() const {
     return read_subs.size();
 }
 
-int Graph::commonUsers(string sub1, string sub2) const {
+int Graph::commonUsers(const string & sub1, const string & sub2) const {
     //get pointers to the two subs
     Graph::SubReddit* s1 = getSubReddit(sub1);
     Graph::SubReddit* s2 = getSubReddit(sub2);
@@ -167,7 +167,7 @@ void Graph::connectSubreddits(SubReddit* sub1, SubReddit* sub2) {
 }
 
 // Set version of connectSubreddits that calls connectSubreddits on all pairs within the set
-void Graph::connectSubRedditList(set<string> subreddit_list) {
+void Graph::connectSubRedditList(const set<string> & subreddit_list) {
     vector<SubReddit*> subs;
     for(set<string>::iterator it = subreddit_list.begin(); it != subreddit_list.end(); it++) {
         subs.push_back(retrieveSubreddit(*it));
@@ -185,7 +185,7 @@ map<string, Graph::SubReddit*> Graph::getSubReddits() const {
 }
 
 
-map<string, double> Graph::dijkstra(string start) {
+map<string, double> Graph::dijkstra(const string & start) {
     // Construct heap/priority queue
     map<string, double> output = map<string, double>();
     SubReddit* startPointer;

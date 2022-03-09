@@ -25,15 +25,15 @@ class Graph {
         ~Graph(); //destructor
 
         // Read and construct the graph, which calls populateSubReddits to all subreddits
-        void readGraphBFS(string start);
+        void readGraphBFS(const string & start);
 
-        vector<string> BFSTraversal(string start) const; //Converts the graph into a vector of nodes through a BFS traversal starting from a certain node
+        vector<string> BFSTraversal(const string & start) const; //Converts the graph into a vector of nodes through a BFS traversal starting from a certain node
 
         //Helper function that retrieves the pointer to a subreddit based on its name, creating a new SubReddit struct if that subreddit does not already exist
-        SubReddit* retrieveSubreddit(string name);
+        SubReddit* retrieveSubreddit(const string & name);
 
         //Helper function that only retrives the pointer based on the name, returning NULL if the sub does not exist
-        SubReddit* getSubReddit(string name) const;
+        SubReddit* getSubReddit(const string & name) const;
 
         //returns the number of users in the graph
         int getUsers() const;
@@ -47,10 +47,10 @@ class Graph {
         map<string, Graph::SubReddit*> getSubReddits() const;
 
         //Helper function that retrieves the number of shared users between two subreddits
-        int commonUsers(string sub1, string sub2) const;
+        int commonUsers(const string & sub1, const string & sub2) const;
 
         //Return the shortest path weight from subreddit1 to subreddit2
-        map<string, double> dijkstra(string start);
+        map<string, double> dijkstra(const string & start);
     private:    
         //class that reads subreddit and user text files
         FileReader reader;
@@ -65,10 +65,10 @@ class Graph {
 
         // More readable version of populateSubReddits and will replace that version after implemented
         // Maybe put in private since this will be called in readGraph
-        void populateSubreddit(string name); 
+        void populateSubreddit(const string & name); 
 
         // List version of connectSubreddits, which calls connectSubreddits to all pairs in the list
-        void connectSubRedditList(set<string> subreddit_list); 
+        void connectSubRedditList(const set<string> & subreddit_list); 
 
         //helper function that adds edges between two subreddits (assume that sub1 and sub2 already exist in unique_subreddits)
         void connectSubreddits(SubReddit* sub1, SubReddit* sub2);
